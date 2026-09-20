@@ -1,18 +1,24 @@
-# This .gitignore is appropriate for repositories deployed to GitHub Pages and using
-# a Gemfile as specified at https://github.com/github/pages-gem#conventional
+# Abhängigkeiten
+node_modules/
 
-# Basic Jekyll gitignores (synchronize to Jekyll.gitignore)
-_site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
+# Vite-Build, wird von der GitHub-Action erzeugt und nach gh-pages deployt
+dist/
+dist-ssr/
 
-# Additional Ruby/bundler ignore for when you run: bundle install
-/vendor
+# Aus lassoDBData synchronisierte Daten, siehe scripts/sync-data.mjs.
+# Keine eigene Kopie im Repository, sonst laeuft sie gegenueber der
+# eigentlichen Quelle auseinander. Wird vor jedem dev/build neu geholt.
+src/data/
 
-# Specific ignore for GitHub Pages
-# GitHub Pages will always use its own deployed version of pages-gem
-# This means GitHub Pages will NOT use your Gemfile.lock and therefore it is
-# counterproductive to check this file into the repository.
-# Details at https://github.com/github/pages-gem/issues/768
-Gemfile.lock
+# Logs
+npm-debug.log*
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Betriebssystem
+.DS_Store
+Thumbs.db

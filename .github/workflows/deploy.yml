@@ -1,0 +1,69 @@
+name: Build und Deploy nach GitHub Pages
+
+# Baut bei jeder Aenderung an main neu und veroeffentlicht auf GitHub Pages.
+# Die eigentlichen Daten liegen in einem zweiten, getrennten Repository,
+# lassoDBData, siehe docs/entscheidungen.md dort, Abschnitt 1. Dieser
+# Workflow checkt es zusaetzlich aus und uebergibt den Pfad an sync-data.mjs.
+# In der fruehen Phase wird gegen dessen main-Branch gebaut, nicht gegen ein
+# Tag, siehe Abschnitt 1 dort zur Begruendung.
+on:
+  push:
+    branches: [main]
+  # Erlaubt einen manuellen Rebuild, z.B. nachdem lassoDBData sich geaendert
+  # hat, ohne dass hier etwas committet wurde.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: lassoDB auschecken
+        uses: actions/checkout@v4
+
+      - name: lassoDBData auschecken
+        uses: actions/checkout@v4
+        with:
+          repository: nikilachniki/lassoDBData
+          path: lassoDBData
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Abhaengigkeiten installieren
+        run: npm ci
+
+      - name: Bauen
+        env:
+          LASSO_DATA_DIR: ${{ github.workspace }}/lassoDBData/data
+        run: npm run build
+
+      - name: Pages vorbereiten
+        uses: actions/configure-pages@v5
+
+      - name: Build-Ergebnis hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Nach GitHub Pages deployen
+        id: deployment
+        uses: actions/deploy-pages@v4
