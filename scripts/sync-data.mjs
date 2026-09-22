@@ -28,7 +28,14 @@ const sourceDir =
   process.env.LASSO_DATA_DIR ?? path.resolve(projectRoot, '..', 'lassoDBData', 'data')
 const targetDir = path.resolve(projectRoot, 'src', 'data')
 
-const FILES = ['entries.json', 'works.json', 'prints.json', 'persons.json', 'meta.json']
+const FILES = [
+  'entries.json',
+  'manuscripts.json',
+  'works.json',
+  'prints.json',
+  'persons.json',
+  'meta.json',
+]
 
 if (!existsSync(sourceDir)) {
   console.error(`Quellverzeichnis nicht gefunden: ${sourceDir}`)

@@ -66,6 +66,7 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
       const haystack = normalize(
         [
           work.lv,
+          work.lvAnh !== null ? `Anh. ${work.lvAnh}` : '',
           ...work.titles,
           ...work.textAuthors,
           ...work.textSources,
