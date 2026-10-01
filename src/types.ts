@@ -7,13 +7,19 @@ export interface Work {
   lv: string | null
   lvBase: number | null
   lvPart: number | null
-  lvVariant: string | null
   // Nummer im LV-Anhang (Boetticher) fuer Werke, die nicht im Haupt-LV-Katalog
   // stehen, sondern nur handschriftlich ueberliefert sind. lv und lvAnh
   // schliessen sich gegenseitig aus: entweder das Werk hat eine reguläre
   // LV-Nummer, oder es steht im Anhang, nie beides.
   lvAnh: number | null
-  titles: string[]
+  // Teil-Beziehung: ein Teil wie "100-2" verweist auf sein Gesamtwerk
+  // ("work:100"), das Gesamtwerk listet seine Teile.
+  isPartOf: string | null
+  hasPart: string[]
+  // Titel des fruehesten Drucks (sonst der ersten Handschrift), dazu alle
+  // weiteren Titel als Varianten.
+  preferredTitle: string | null
+  variantTitles: string[]
   voiceCounts: number[]
   prints: string[]
   textAuthors: string[]
@@ -21,12 +27,41 @@ export interface Work {
   completeEditions: string[]
   entries: string[]
   manuscripts: string[]
+  // Fassungen des Werks, siehe Expression
+  expressions: string[]
   entryCount: number
 }
 
 export interface WorksFile {
   '@context': string
   items: Work[]
+}
+
+// Eine Fassung im Sinne von FRBR (Expression): dasselbe Werk in abweichender
+// Gestalt, meist mit anderer Stimmenzahl in einem anderen Druck. Die Quelle
+// kennzeichnet sie mit einer roemischen Ziffer hinter der LV-Nummer, etwa
+// "193 (II)"; die Ziffer (pars) bezeichnet den Teil des Werks, den die Fassung
+// bringt. Siehe lassoDBData/docs/entscheidungen.md, Abschnitt 17.
+export interface Expression {
+  '@id': string
+  '@type': 'Expression'
+  lv: string
+  lvBase: number
+  pars: string
+  realizationOf: string
+  preferredTitle: string | null
+  variantTitles: string[]
+  voiceCounts: number[]
+  prints: string[]
+  textAuthors: string[]
+  textSources: string[]
+  completeEditions: string[]
+  entries: string[]
+}
+
+export interface ExpressionsFile {
+  '@context': string
+  items: Expression[]
 }
 
 // Ein Eintrag entspricht einem Werk in genau einem Druck, nicht dem Werk

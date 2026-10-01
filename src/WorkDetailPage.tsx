@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react'
-import { Link as RouterLink, useLocation, useParams } from 'react-router-dom'
+import { Navigate, Link as RouterLink, useLocation, useParams } from 'react-router-dom'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -24,17 +24,18 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { authorOrSourceLabel, AuthorOrSourceText } from './AuthorOrSource'
-import type { CatalogueEntry, ManuscriptWitness, Work } from './types'
+import type { CatalogueEntry, Expression, ManuscriptWitness, Work } from './types'
 import {
-  findBaseWork,
   findRelatedParts,
+  findWholeWork,
+  findWorkByExpressionSlug,
   findWorkBySlug,
   formatCatalogNumber,
+  getExpressions,
   getManuscripts,
   getSortedEntries,
   isBaseWork,
   mainTitle,
-  variantTitles,
   workSlug,
 } from './worksData'
 
@@ -84,9 +85,6 @@ function Linkified({ text }: { text: string }) {
 }
 
 function partLabel(work: Work): string {
-  if (work.lvVariant) {
-    return `Fassung ${work.lvVariant}`
-  }
   if (work.lvPart) {
     return `Teil ${work.lvPart}`
   }
@@ -135,6 +133,48 @@ function RelatedPartsTable({ parts, focusId }: { parts: Work[]; focusId?: string
                 <AuthorOrSourceText authors={part.textAuthors} sources={part.textSources} />
               </TableCell>
               <TableCell>{part.completeEditions.join(', ')}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  )
+}
+
+// Die Fassungen (Expressions) eines Werks. "Teil" ist die roemische Ziffer
+// aus der Quelle und bezeichnet den Teil des Werks, den die Fassung bringt.
+function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
+  const authorOrSourceHeader = authorOrSourceLabel(
+    expressions.some((expression) => expression.textAuthors.length > 0),
+    expressions.some((expression) => expression.textSources.length > 0),
+  )
+
+  return (
+    <TableContainer>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>Teil</TableCell>
+            <TableCell>LV</TableCell>
+            <TableCell>Titel</TableCell>
+            <TableCell>Stimmen</TableCell>
+            <TableCell>Druck</TableCell>
+            <TableCell>{authorOrSourceHeader}</TableCell>
+            <TableCell>Gesamtausgabe</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {expressions.map((expression) => (
+            <TableRow key={expression['@id']}>
+              <TableCell>{expression.pars}</TableCell>
+              <TableCell sx={{ whiteSpace: 'nowrap' }}>{expression.lv}</TableCell>
+              <TableCell>{mainTitle(expression)}</TableCell>
+              <TableCell>{expression.voiceCounts.join(', ')}</TableCell>
+              <TableCell>{expression.prints.join(', ')}</TableCell>
+              <TableCell>
+                <AuthorOrSourceText authors={expression.textAuthors} sources={expression.textSources} />
+              </TableCell>
+              <TableCell>{expression.completeEditions.join(', ')}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -286,6 +326,12 @@ export function WorkDetailPage() {
   const focusPart = (useLocation().state as { focusPart?: string } | null)?.focusPart
   const work = slug ? findWorkBySlug(slug) : undefined
 
+  // Alte Adresse einer Fassung (z.B. /werk/74-IV): zum zugehoerigen Werk.
+  const expressionWork = !work && slug ? findWorkByExpressionSlug(slug) : undefined
+  if (expressionWork) {
+    return <Navigate to={`/werk/${workSlug(expressionWork)}`} replace />
+  }
+
   if (!work) {
     return (
       <Container maxWidth="md" sx={{ py: 4 }}>
@@ -297,10 +343,11 @@ export function WorkDetailPage() {
     )
   }
 
-  const baseWork = !isBaseWork(work) && work.lvBase !== null ? findBaseWork(work.lvBase) : undefined
+  const baseWork = findWholeWork(work)
   const relatedParts = findRelatedParts(work)
   const [firstEntry, ...remainingEntries] = getSortedEntries(work)
   const manuscriptWitnesses = getManuscripts(work)
+  const expressions = getExpressions(work)
 
   return (
     <Container maxWidth="md" sx={{ py: { xs: 2, sm: 3 }, overflowY: 'auto', flex: 1, minHeight: 0 }}>
@@ -328,7 +375,7 @@ export function WorkDetailPage() {
         </Typography>
 
         <Stack spacing={1.5}>
-          <Fact label="Weitere Titel" value={variantTitles(work).join(' / ')} />
+          <Fact label="Weitere Titel" value={work.variantTitles.join(' / ')} />
           <Fact label="Stimmen" value={work.voiceCounts.join(', ')} />
           <Fact label="Erstdruck" value={firstEntry?.firstPrint ?? ''} />
           <Fact
@@ -342,7 +389,7 @@ export function WorkDetailPage() {
           <>
             <Divider sx={{ my: 3 }} />
             <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
-              Weitere Fassungen
+              Weitere Drucke
             </Typography>
             <Box sx={{ overflowX: 'auto' }}>
               <EntriesTable entries={remainingEntries} />
@@ -368,6 +415,22 @@ export function WorkDetailPage() {
             </Typography>
             <Box sx={{ overflowX: 'auto' }}>
               <RelatedPartsTable parts={relatedParts} focusId={focusPart} />
+            </Box>
+          </>
+        )}
+
+        {expressions.length > 0 && (
+          <>
+            <Divider sx={{ my: 3 }} />
+            <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
+              Fassungen
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              Einzelne Teile dieses Werks in abweichender Gestalt, meist mit anderer Stimmenzahl in
+              einem anderen Druck.
+            </Typography>
+            <Box sx={{ overflowX: 'auto' }}>
+              <ExpressionsTable expressions={expressions} />
             </Box>
           </>
         )}

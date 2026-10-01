@@ -19,7 +19,7 @@ import {
 } from '@mui/x-data-grid'
 import { AuthorOrSourceText } from './AuthorOrSource'
 import type { Work } from './types'
-import { findBaseWork, getManuscripts, isBaseWork, mainTitle, workSlug, works } from './worksData'
+import { getManuscripts, getParts, isBaseWork, mainTitle, workSlug, works } from './worksData'
 import { collectDistinct, filterWorks, hasActiveFilters, type WorksFilters } from './search/filterWorks'
 import { Highlight } from './search/Highlight'
 import { WorksGridToolbar } from './search/WorksGridToolbar'
@@ -46,8 +46,9 @@ interface Row {
   // Treffer der aktiven Suche/Filter. Basiswerke, die nur als Rahmen fuer
   // einen passenden Teil erscheinen, sind keine Treffer.
   isMatch: boolean
-  lvBase: number | null
-  // Anzahl der in der Tabelle zugeordneten Teile/Fassungen (nur Basiswerke)
+  // Gesamtwerk eines Teils (@id), fuer Gesamtwerke null
+  isPartOf: string | null
+  // Anzahl der in der Tabelle zugeordneten Teile (nur Basiswerke)
   partCount: number
   expanded: boolean
 }
@@ -57,15 +58,8 @@ interface Row {
 // von Intl behandelt die eingebetteten Zahlen dagegen als Zahlen.
 const lvComparator = (a: string, b: string) => a.localeCompare(b, 'de', { numeric: true })
 
-// Teile und Fassungen je Basiswerk (lvBase), unabhaengig von Suche und Filtern.
-const partsByBase = new Map<number, Work[]>()
-for (const work of works) {
-  if (!isBaseWork(work) && work.lvBase !== null) {
-    partsByBase.set(work.lvBase, [...(partsByBase.get(work.lvBase) ?? []), work])
-  }
-}
-
-const expandedOverrides = new Map<number, boolean>()
+// Von Hand auf- oder zugeklappte Gruppen, je Gesamtwerk (@id), siehe WorksPage.
+const expandedOverrides = new Map<string, boolean>()
 
 // Ein Werk hat entweder eine LV-Nummer oder, wenn es nur handschriftlich
 // ueberliefert ist, eine Nummer aus dem LV-Anhang. Die Spalte bleibt "LV"
@@ -196,7 +190,7 @@ function SiglaCell({ sigla }: { sigla: Siglum[] }) {
   )
 }
 
-function createColumns(onToggle: (lvBase: number) => void, query: string): GridColDef<Row>[] {
+function createColumns(onToggle: (workId: string) => void, query: string): GridColDef<Row>[] {
   return [
   {
     field: 'lv',
@@ -209,14 +203,14 @@ function createColumns(onToggle: (lvBase: number) => void, query: string): GridC
         <Stack direction="row" sx={{ alignItems: 'center', height: '100%', pl: row.isPart ? 3.5 : 0 }}>
           {row.isPart ? (
             <SubdirectoryArrowRightIcon sx={{ fontSize: 16, mr: 0.5, color: 'text.disabled' }} />
-          ) : row.partCount > 0 && row.lvBase !== null ? (
+          ) : row.partCount > 0 ? (
             <IconButton
               size="small"
               aria-label={row.expanded ? 'Teile einklappen' : 'Teile ausklappen'}
               aria-expanded={row.expanded}
               onClick={(event) => {
                 event.stopPropagation()
-                onToggle(row.lvBase as number)
+                onToggle(row.id)
               }}
               sx={{ mr: 0.5, border: 1, borderColor: 'text.secondary', color: 'text.primary', width: 26, height: 26 }}
             >
@@ -299,7 +293,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
 
   const filtering = hasActiveFilters(filters)
 
-  // Von Hand auf- oder zugeklappte Gruppen (lvBase -> offen?). Ohne Eintrag
+  // Von Hand auf- oder zugeklappte Gruppen (Gesamtwerk -> offen?). Ohne Eintrag
   // gilt: bei aktiver Suche offen, sonst zu. Der Zustand liegt zusaetzlich auf
   // Modulebene, weil die Seite beim Wechsel zur Detailansicht und zurueck neu
   // gemountet wird und die Gruppen sonst jedes Mal zuklappen wuerden.
@@ -308,10 +302,10 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
 
   const rows = useMemo<Row[]>(() => {
     const matchedIds = new Set(filteredWorks.map((work) => work['@id']))
-    const matchedParts = new Map<number, Work[]>()
+    const matchedParts = new Map<string, Work[]>()
     for (const work of filteredWorks) {
-      if (!isBaseWork(work) && work.lvBase !== null) {
-        matchedParts.set(work.lvBase, [...(matchedParts.get(work.lvBase) ?? []), work])
+      if (work.isPartOf) {
+        matchedParts.set(work.isPartOf, [...(matchedParts.get(work.isPartOf) ?? []), work])
       }
     }
 
@@ -331,7 +325,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
         sigla,
         isPart: !isBaseWork(work),
         isMatch: filtering && matchedIds.has(work['@id']),
-        lvBase: work.lvBase,
+        isPartOf: work.isPartOf,
         partCount: 0,
         expanded: false,
         ...extra,
@@ -343,18 +337,11 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
     const baseRows = works
       .filter(
         (work) =>
-          isBaseWork(work) &&
-          (matchedIds.has(work['@id']) || (work.lvBase !== null && matchedParts.has(work.lvBase))),
+          isBaseWork(work) && (matchedIds.has(work['@id']) || matchedParts.has(work['@id'])),
       )
       .map((work) => {
-        const parts =
-          work.lvBase === null
-            ? []
-            : filtering
-              ? (matchedParts.get(work.lvBase) ?? [])
-              : (partsByBase.get(work.lvBase) ?? [])
-        const expanded =
-          work.lvBase === null ? false : (overrides.get(work.lvBase) ?? (filtering && parts.length > 0))
+        const parts = filtering ? (matchedParts.get(work['@id']) ?? []) : getParts(work)
+        const expanded = overrides.get(work['@id']) ?? (filtering && parts.length > 0)
         const row = toRow(work, {
           partCount: parts.length,
           expanded,
@@ -373,20 +360,17 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
 
     return baseRows.flatMap(({ parts, expanded, row }) => [
       row,
-      ...(expanded
-        ? [...parts]
-            .sort((a, b) => lvComparator(formatLvColumn(a), formatLvColumn(b)))
-            .map((part) => toRow(part, {}))
-        : []),
+      // Teile stehen bereits in Katalogreihenfolge (hasPart bzw. works).
+      ...(expanded ? parts.map((part) => toRow(part, {})) : []),
     ])
   }, [filteredWorks, filtering, overrides, sortModel])
 
   const toggleGroup = useCallback(
-    (lvBase: number) => {
-      const row = rows.find((candidate) => !candidate.isPart && candidate.lvBase === lvBase)
+    (workId: string) => {
+      const row = rows.find((candidate) => candidate.id === workId)
       setOverrides((current) => {
         const next = new Map(current)
-        next.set(lvBase, !(row?.expanded ?? false))
+        next.set(workId, !(row?.expanded ?? false))
         expandedOverrides.clear()
         next.forEach((value, key) => expandedOverrides.set(key, value))
         return next
@@ -401,11 +385,8 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
   // den Teil in seiner Teile-Tabelle hervorhebt und dorthin scrollt.
   const handleRowClick = (params: GridRowParams<Row>) => {
     const row = params.row
-    if (row.isPart) {
-      const base = row.lvBase !== null ? findBaseWork(row.lvBase) : undefined
-      if (base) {
-        navigate(`/werk/${workSlug(base)}`, { state: { focusPart: row.id } })
-      }
+    if (row.isPartOf) {
+      navigate(`/werk/${workSlug({ '@id': row.isPartOf })}`, { state: { focusPart: row.id } })
       return
     }
     navigate(`/werk/${workSlug({ '@id': row.id })}`)

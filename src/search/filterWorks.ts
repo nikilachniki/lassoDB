@@ -1,4 +1,5 @@
 import type { Work } from '../types'
+import { getExpressions } from '../worksData'
 
 export interface WorksFilters {
   query: string
@@ -67,11 +68,20 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
         [
           work.lv,
           work.lvAnh !== null ? `Anh. ${work.lvAnh}` : '',
-          ...work.titles,
+          work.preferredTitle ?? '',
+          ...work.variantTitles,
           ...work.textAuthors,
           ...work.textSources,
           ...work.prints,
           ...work.completeEditions,
+          // Fassungen gehoeren zum Werk: Wer nach ihrer LV-Nummer, ihrem Titel
+          // oder Druck sucht, soll das Werk finden.
+          ...getExpressions(work).flatMap((expression) => [
+            expression.lv,
+            expression.preferredTitle ?? '',
+            ...expression.variantTitles,
+            ...expression.prints,
+          ]),
         ].join(' '),
       )
       if (!haystack.includes(query)) {

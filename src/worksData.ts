@@ -1,10 +1,13 @@
 import entriesFile from './data/entries.json'
+import expressionsFile from './data/expressions.json'
 import manuscriptsFile from './data/manuscripts.json'
 import personsFile from './data/persons.json'
 import worksFile from './data/works.json'
 import type {
   CatalogueEntry,
   EntriesFile,
+  Expression,
+  ExpressionsFile,
   ManuscriptsFile,
   ManuscriptWitness,
   Person,
@@ -20,6 +23,7 @@ export const works = (worksFile as WorksFile).items
 const entries = (entriesFile as EntriesFile).items
 const manuscripts = (manuscriptsFile as ManuscriptsFile).items
 const persons = (personsFile as PersonsFile).items
+const expressions = (expressionsFile as ExpressionsFile).items
 
 // Ein Werk verweist per @id-Liste auf seine Eintraege (je ein Eintrag pro
 // Druck, in dem es erschienen ist) und auf seine Handschriften-Zeugnisse.
@@ -27,6 +31,8 @@ const persons = (personsFile as PersonsFile).items
 // alle Eintraege bzw. Zeugnisse zu suchen.
 const entryById = new Map(entries.map((entry) => [entry['@id'], entry]))
 const manuscriptById = new Map(manuscripts.map((manuscript) => [manuscript['@id'], manuscript]))
+const expressionById = new Map(expressions.map((expression) => [expression['@id'], expression]))
+const workById = new Map(works.map((work) => [work['@id'], work]))
 // Textdichter sind in Work/CatalogueEntry nur als Rohwert (String) verlinkt,
 // nicht per @id, daher der Schluessel ueber den exakten Namen statt einer ID.
 const personByName = new Map(persons.map((person) => [person.nameRaw, person]))
@@ -52,25 +58,20 @@ export function formatCatalogNumber(work: Pick<Work, 'lv' | 'lvAnh'>): string {
   return 'Ohne Katalognummer'
 }
 
-// Die LV-Nummer traegt die fachliche Gliederung eines mehrteiligen Werks:
-// "100" ist die Basis, "100-2" ein Teilsatz und "100 (I)" eine Fassung davon.
-// Nur die Basis (weder Teilsatz noch Fassung) steht fuer sich; Teile und
-// Fassungen gehoeren inhaltlich zu ihr und werden auf deren Detailseite mit
-// aufgelistet statt als eigener Tabelleneintrag anklickbar zu sein.
-export function isBaseWork(work: Pick<Work, 'lvPart' | 'lvVariant'>): boolean {
-  return work.lvPart === null && work.lvVariant === null
+// Ein mehrteiliges Werk besteht aus dem Gesamtwerk, etwa "100", und seinen
+// Teilen wie "100-2". Die Daten halten das ausdruecklich fest: ein Teil
+// verweist mit isPartOf auf das Gesamtwerk, das Gesamtwerk listet seine Teile
+// in hasPart. Fassungen wie "100 (I)" sind keine eigenen Werke, sondern
+// Expressions des Werks, siehe getExpressions.
+export function isBaseWork(work: Pick<Work, 'isPartOf'>): boolean {
+  return work.isPartOf === null
 }
 
-// Haupttitel eines Werks: der erste Eintrag in titles. Der Import traegt zuerst
-// die Titel der Drucke ein und erst danach die der Handschriften, der erste
-// Titel ist also der des (Erst-)Drucks, bei reinen Handschriften-Werken der der
-// ersten Handschrift. Alle weiteren Titel gelten als Varianten.
-export function mainTitle(work: Pick<Work, 'titles'>): string {
-  return work.titles[0] ?? ''
-}
-
-export function variantTitles(work: Pick<Work, 'titles'>): string[] {
-  return work.titles.slice(1)
+// Der bevorzugte Titel (preferredTitle) ist laut Datenmodell der des
+// fruehesten Drucks, bei reinen Handschriften-Werken der der ersten
+// Handschrift; alle weiteren Titel stehen in variantTitles.
+export function mainTitle(item: { preferredTitle: string | null }): string {
+  return item.preferredTitle ?? ''
 }
 
 export function workSlug(work: Pick<Work, '@id'>): string {
@@ -78,27 +79,31 @@ export function workSlug(work: Pick<Work, '@id'>): string {
 }
 
 export function findWorkBySlug(slug: string): Work | undefined {
-  const id = `work:${slug}`
-  return works.find((work) => work['@id'] === id)
+  return workById.get(`work:${slug}`)
 }
 
-// Weitere Teile/Fassungen desselben Werks: gleiche lvBase, alle ausser dem
-// Werk selbst. Sortiert nach Teilsatz- vor Fassungsnummer, wie im Katalog.
+// Fassungen waren frueher eigene Werke mit eigener Adresse, etwa
+// /werk/74-IV. Solche Links fuehren jetzt zum Werk, zu dem die Fassung gehoert.
+export function findWorkByExpressionSlug(slug: string): Work | undefined {
+  const expression = expressionById.get(`expression:${slug}`)
+  return expression ? workById.get(expression.realizationOf) : undefined
+}
+
+// Das Gesamtwerk eines Teils, fuer ein Gesamtwerk selbst undefined.
+export function findWholeWork(work: Pick<Work, 'isPartOf'>): Work | undefined {
+  return work.isPartOf ? workById.get(work.isPartOf) : undefined
+}
+
+// Die Teile eines Gesamtwerks in Katalogreihenfolge.
+export function getParts(work: Pick<Work, 'hasPart'>): Work[] {
+  return work.hasPart.map((id) => workById.get(id)).filter((part): part is Work => part !== undefined)
+}
+
+// Die uebrigen Werke derselben Gruppe: fuer ein Gesamtwerk seine Teile, fuer
+// einen Teil das Gesamtwerk und die anderen Teile.
 export function findRelatedParts(work: Work): Work[] {
-  if (work.lvBase === null) {
-    return []
-  }
-  return works
-    .filter((candidate) => candidate.lvBase === work.lvBase && candidate['@id'] !== work['@id'])
-    .sort((a, b) => (a.lvPart ?? 0) - (b.lvPart ?? 0) || (a.lvVariant ?? '').localeCompare(b.lvVariant ?? ''))
-}
-
-// Die Basis eines Teils/einer Fassung. In der Tabelle sind nur Basiswerke
-// anklickbar; ruft jemand die Detailseite eines Teils dennoch direkt auf
-// (z.B. per geteiltem Link), verweist diese Funktion auf das zugehoerige
-// Basiswerk, das die vollstaendige Uebersicht zeigt.
-export function findBaseWork(lvBase: number): Work | undefined {
-  return works.find((work) => work.lvBase === lvBase && isBaseWork(work))
+  const whole = findWholeWork(work) ?? work
+  return [whole, ...getParts(whole)].filter((candidate) => candidate['@id'] !== work['@id'])
 }
 
 // Die Eintraege eines Werks, chronologisch nach Erstdruck sortiert (Jahr,
@@ -117,6 +122,14 @@ export function getSortedEntries(work: Work): CatalogueEntry[] {
     }
     return (a.firstPrintNo ?? Infinity) - (b.firstPrintNo ?? Infinity)
   })
+}
+
+// Die Fassungen eines Werks, in der Reihenfolge der Teile, die sie betreffen
+// (so liefert sie der Import bereits).
+export function getExpressions(work: Work): Expression[] {
+  return work.expressions
+    .map((id) => expressionById.get(id))
+    .filter((expression): expression is Expression => expression !== undefined)
 }
 
 // Die Handschriften-Zeugnisse eines Werks, sortiert nach Ort und Bibliothek,

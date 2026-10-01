@@ -32,6 +32,7 @@ const FILES = [
   'entries.json',
   'manuscripts.json',
   'works.json',
+  'expressions.json',
   'prints.json',
   'persons.json',
   'meta.json',
