@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import { Link as RouterLink, useParams } from 'react-router-dom'
+import { useEffect, useRef, type ReactNode } from 'react'
+import { Link as RouterLink, useLocation, useParams } from 'react-router-dom'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -22,6 +22,7 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { authorOrSourceLabel, AuthorOrSourceText } from './AuthorOrSource'
 import type { CatalogueEntry, ManuscriptWitness, Work } from './types'
 import {
@@ -32,6 +33,8 @@ import {
   getManuscripts,
   getSortedEntries,
   isBaseWork,
+  mainTitle,
+  variantTitles,
   workSlug,
 } from './worksData'
 
@@ -48,8 +51,35 @@ function Fact({ label, value }: { label: string; value: ReactNode }) {
       >
         {label}
       </Typography>
-      <Typography variant="body2">{value}</Typography>
+      <Typography variant="body2" sx={{ minWidth: 0, overflowWrap: 'anywhere' }}>
+        {value}
+      </Typography>
     </Stack>
+  )
+}
+
+const URL_PATTERN = /(https?:\/\/[^\s<>"]+)/g
+
+function Linkified({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(URL_PATTERN).map((part, i) => {
+        if (i % 2 === 0) {
+          return part
+        }
+        // Satzzeichen am Ende gehören meist nicht zur URL
+        const url = part.replace(/[.,;:!?)\]]+$/, '')
+        const trailing = part.slice(url.length)
+        return (
+          <span key={i}>
+            <Link href={url} target="_blank" rel="noopener noreferrer">
+              {url}
+            </Link>
+            {trailing}
+          </span>
+        )
+      })}
+    </>
   )
 }
 
@@ -63,11 +93,19 @@ function partLabel(work: Work): string {
   return 'Basiswerk'
 }
 
-function RelatedPartsTable({ parts }: { parts: Work[] }) {
+// focusId: der Teil, ueber den man aus der Werktabelle hierher gekommen ist.
+// Teile haben keine eigene Detailseite, deshalb wird er hier markiert und in
+// den sichtbaren Bereich gescrollt.
+function RelatedPartsTable({ parts, focusId }: { parts: Work[]; focusId?: string }) {
+  const focusRef = useRef<HTMLTableRowElement>(null)
   const authorOrSourceHeader = authorOrSourceLabel(
     parts.some((part) => part.textAuthors.length > 0),
     parts.some((part) => part.textSources.length > 0),
   )
+
+  useEffect(() => {
+    focusRef.current?.scrollIntoView({ block: 'center' })
+  }, [focusId])
 
   return (
     <TableContainer>
@@ -84,9 +122,13 @@ function RelatedPartsTable({ parts }: { parts: Work[] }) {
         </TableHead>
         <TableBody>
           {parts.map((part) => (
-            <TableRow key={part['@id']}>
+            <TableRow
+              key={part['@id']}
+              selected={part['@id'] === focusId}
+              ref={part['@id'] === focusId ? focusRef : undefined}
+            >
               <TableCell>{part.lv}</TableCell>
-              <TableCell>{part.titles.join(' / ')}</TableCell>
+              <TableCell>{mainTitle(part)}</TableCell>
               <TableCell>{part.voiceCounts.join(', ')}</TableCell>
               <TableCell>{part.prints.join(', ')}</TableCell>
               <TableCell>
@@ -187,23 +229,31 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
       {manuscripts.map((manuscript) => (
         <Accordion key={manuscript['@id']} variant="outlined" disableGutters sx={{ '&:before': { display: 'none' } }}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
               {manuscript.rismSiglum &&
                 (manuscript.link ? (
-                  <Tooltip title="Im Online-Katalog öffnen">
+                  <Tooltip title={`${manuscript.rismSiglum} – im Online-Katalog öffnen`}>
                     <Chip
                       component="a"
                       href={manuscript.link}
                       target="_blank"
                       rel="noopener noreferrer"
                       clickable
+                      icon={<OpenInNewIcon />}
                       onClick={(event) => event.stopPropagation()}
                       label={manuscript.rismSiglum}
                       size="small"
+                      sx={{
+                        maxWidth: 96,
+                        flexShrink: 0,
+                        '& .MuiChip-icon': { order: 2, fontSize: 14, ml: -0.25, mr: 0.75 },
+                      }}
                     />
                   </Tooltip>
                 ) : (
-                  <Chip label={manuscript.rismSiglum} size="small" />
+                  <Tooltip title={manuscript.rismSiglum}>
+                    <Chip label={manuscript.rismSiglum} size="small" sx={{ maxWidth: 96, flexShrink: 0 }} />
+                  </Tooltip>
                 ))}
               <Typography variant="body2">{manuscriptSummary(manuscript)}</Typography>
             </Stack>
@@ -222,7 +272,7 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
               <Fact label="Quellenart" value={manuscript.sourceDescription ?? ''} />
               <Fact label="Bemerkung (Stück)" value={manuscript.note ?? ''} />
               <Fact label="Bemerkung (Quelle)" value={manuscript.sourceNote ?? ''} />
-              <Fact label="Literatur" value={manuscript.literature ?? ''} />
+              <Fact label="Literatur" value={manuscript.literature ? <Linkified text={manuscript.literature} /> : ''} />
             </Stack>
           </AccordionDetails>
         </Accordion>
@@ -233,6 +283,7 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
 
 export function WorkDetailPage() {
   const { slug } = useParams<{ slug: string }>()
+  const focusPart = (useLocation().state as { focusPart?: string } | null)?.focusPart
   const work = slug ? findWorkBySlug(slug) : undefined
 
   if (!work) {
@@ -273,10 +324,11 @@ export function WorkDetailPage() {
           {!isBaseWork(work) && <Chip label={partLabel(work)} size="small" variant="outlined" />}
         </Stack>
         <Typography variant="h4" component="h2" sx={{ fontWeight: 700, mb: 3 }}>
-          {work.titles.join(' / ')}
+          {mainTitle(work)}
         </Typography>
 
         <Stack spacing={1.5}>
+          <Fact label="Weitere Titel" value={variantTitles(work).join(' / ')} />
           <Fact label="Stimmen" value={work.voiceCounts.join(', ')} />
           <Fact label="Erstdruck" value={firstEntry?.firstPrint ?? ''} />
           <Fact
@@ -315,7 +367,7 @@ export function WorkDetailPage() {
               Weitere Teile dieses Werks
             </Typography>
             <Box sx={{ overflowX: 'auto' }}>
-              <RelatedPartsTable parts={relatedParts} />
+              <RelatedPartsTable parts={relatedParts} focusId={focusPart} />
             </Box>
           </>
         )}

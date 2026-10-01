@@ -61,6 +61,18 @@ export function isBaseWork(work: Pick<Work, 'lvPart' | 'lvVariant'>): boolean {
   return work.lvPart === null && work.lvVariant === null
 }
 
+// Haupttitel eines Werks: der erste Eintrag in titles. Der Import traegt zuerst
+// die Titel der Drucke ein und erst danach die der Handschriften, der erste
+// Titel ist also der des (Erst-)Drucks, bei reinen Handschriften-Werken der der
+// ersten Handschrift. Alle weiteren Titel gelten als Varianten.
+export function mainTitle(work: Pick<Work, 'titles'>): string {
+  return work.titles[0] ?? ''
+}
+
+export function variantTitles(work: Pick<Work, 'titles'>): string[] {
+  return work.titles.slice(1)
+}
+
 export function workSlug(work: Pick<Work, '@id'>): string {
   return work['@id'].replace(/^work:/, '')
 }

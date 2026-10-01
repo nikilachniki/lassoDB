@@ -1,4 +1,5 @@
 import Link from '@mui/material/Link'
+import { Highlight } from './search/Highlight'
 import { findPersonByName } from './worksData'
 
 // Kleines Badge-Icon fuer eine Normdaten-Verknuepfung (GND/VIAF), das direkt
@@ -58,7 +59,16 @@ export function authorOrSourceLabel(hasAuthors: boolean, hasSources: boolean): s
 // lassoDBData/docs/entscheidungen.md, Abschnitt 15. Gemeinsam genutzt von
 // der Werk-Detailseite und der Katalogtabelle, damit die Verknuepfung ueberall
 // gleich aussieht.
-export function AuthorOrSourceText({ authors, sources }: { authors: string[]; sources: string[] }) {
+// highlight: optionaler Suchbegriff, der in Namen und Provenienz markiert wird.
+export function AuthorOrSourceText({
+  authors,
+  sources,
+  highlight,
+}: {
+  authors: string[]
+  sources: string[]
+  highlight?: string
+}) {
   if (authors.length === 0 && sources.length === 0) {
     return null
   }
@@ -69,7 +79,7 @@ export function AuthorOrSourceText({ authors, sources }: { authors: string[]; so
         return (
           <span key={author}>
             {index > 0 && ', '}
-            {author}
+            <Highlight text={author} query={highlight} />
             {person?.gnd && (
               <AuthorityBadge label="GND" href={`https://d-nb.info/gnd/${person.gnd}`} color="#1a5fb4" />
             )}
@@ -80,7 +90,7 @@ export function AuthorOrSourceText({ authors, sources }: { authors: string[]; so
         )
       })}
       {authors.length > 0 && sources.length > 0 && ' / '}
-      {sources.join(', ')}
+      <Highlight text={sources.join(', ')} query={highlight} />
     </>
   )
 }
