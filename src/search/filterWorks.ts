@@ -8,6 +8,8 @@ export interface WorksFilters {
   voiceCounts: number[]
   prints: string
   completeEditions: string
+  genres: string[]
+  languages: string[]
 }
 
 export const defaultWorksFilters: WorksFilters = {
@@ -17,6 +19,8 @@ export const defaultWorksFilters: WorksFilters = {
   voiceCounts: [],
   prints: '',
   completeEditions: '',
+  genres: [],
+  languages: [],
 }
 
 export function hasActiveFilters(filters: WorksFilters): boolean {
@@ -26,7 +30,9 @@ export function hasActiveFilters(filters: WorksFilters): boolean {
     filters.textSources.trim() !== '' ||
     filters.voiceCounts.length > 0 ||
     filters.prints.trim() !== '' ||
-    filters.completeEditions.trim() !== ''
+    filters.completeEditions.trim() !== '' ||
+    filters.genres.length > 0 ||
+    filters.languages.length > 0
   )
 }
 
@@ -63,6 +69,15 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
     ) {
       return false
     }
+    if (filters.genres.length > 0 && !filters.genres.some((genre) => work.genres.includes(genre))) {
+      return false
+    }
+    if (
+      filters.languages.length > 0 &&
+      !filters.languages.some((language) => work.languages.includes(language))
+    ) {
+      return false
+    }
     if (query) {
       const haystack = normalize(
         [
@@ -74,6 +89,8 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
           ...work.textSources,
           ...work.prints,
           ...work.completeEditions,
+          ...work.genres,
+          ...work.languages,
           // Fassungen gehoeren zum Werk: Wer nach ihrer LV-Nummer, ihrem Titel
           // oder Druck sucht, soll das Werk finden.
           ...getExpressions(work).flatMap((expression) => [

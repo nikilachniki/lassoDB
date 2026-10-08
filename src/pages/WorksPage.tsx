@@ -49,6 +49,8 @@ interface Row {
   textAuthors: TextAuthorLabel[]
   textSources: string[]
   completeEditions: string
+  genres: string
+  languages: string
   siglaText: string
   sigla: Siglum[]
   isPart: boolean
@@ -221,11 +223,11 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
     minWidth: 220,
     renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.title} query={query} />,
   },
-  { field: 'voiceCounts', headerName: 'Stimmen', width: 110 },
+  { field: 'voiceCounts', headerName: 'Stimmen', width: 90 },
   {
     field: 'prints',
     headerName: 'Drucke',
-    width: 160,
+    width: 110,
     renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.prints} query={query} />,
   },
   {
@@ -243,10 +245,22 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
   {
     field: 'completeEditions',
     headerName: 'Gesamtausgabe',
-    width: 200,
+    width: 130,
     renderCell: (params: GridRenderCellParams<Row>) => (
       <Highlight text={params.row.completeEditions} query={query} />
     ),
+  },
+  {
+    field: 'genres',
+    headerName: 'Gattung',
+    width: 120,
+    renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.genres} query={query} />,
+  },
+  {
+    field: 'languages',
+    headerName: 'Sprache',
+    width: 100,
+    renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.languages} query={query} />,
   },
   {
     field: 'siglaText',
@@ -274,6 +288,15 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
   )
   const voiceCountOptions = useMemo(
     () => collectDistinct(works, (work) => work.voiceCounts).sort((a, b) => a - b),
+    [],
+  )
+
+  const genreOptions = useMemo(
+    () => collectDistinct(works, (work) => work.genres).sort((a, b) => a.localeCompare(b, 'de')),
+    [],
+  )
+  const languageOptions = useMemo(
+    () => collectDistinct(works, (work) => work.languages).sort((a, b) => a.localeCompare(b, 'de')),
     [],
   )
 
@@ -309,6 +332,8 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
         textAuthors: textAuthorLabels(work),
         textSources: work.textSources,
         completeEditions: work.completeEditions.join(', '),
+        genres: work.genres.join(', '),
+        languages: work.languages.join(', '),
         siglaText: sigla.map((entry) => entry.siglum).join(', '),
         sigla,
         isPart: !isBaseWork(work),
@@ -390,6 +415,8 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
         onFiltersChange={onFiltersChange}
         authorOptions={authorOptions}
         voiceCountOptions={voiceCountOptions}
+        genreOptions={genreOptions}
+        languageOptions={languageOptions}
         resultCount={filteredWorks.length}
         totalCount={works.length}
       />

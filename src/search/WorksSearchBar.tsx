@@ -17,7 +17,14 @@ import SearchIcon from '@mui/icons-material/Search'
 import { getPerson, textAuthorSearchNames } from '../worksData'
 import { defaultWorksFilters, hasActiveFilters, type WorksFilters } from './filterWorks'
 
-type FilterFieldKey = 'textAuthors' | 'textSources' | 'voiceCounts' | 'prints' | 'completeEditions'
+type FilterFieldKey =
+  | 'textAuthors'
+  | 'textSources'
+  | 'voiceCounts'
+  | 'prints'
+  | 'completeEditions'
+  | 'genres'
+  | 'languages'
 
 const FILTER_FIELD_ORDER: FilterFieldKey[] = [
   'textAuthors',
@@ -25,6 +32,8 @@ const FILTER_FIELD_ORDER: FilterFieldKey[] = [
   'voiceCounts',
   'prints',
   'completeEditions',
+  'genres',
+  'languages',
 ]
 
 const FILTER_FIELD_LABELS: Record<FilterFieldKey, string> = {
@@ -33,6 +42,8 @@ const FILTER_FIELD_LABELS: Record<FilterFieldKey, string> = {
   voiceCounts: 'Stimmen',
   prints: 'Drucke',
   completeEditions: 'Gesamtausgabe',
+  genres: 'Gattung',
+  languages: 'Sprache',
 }
 
 const TEXT_FIELD_KEYS: FilterFieldKey[] = ['textSources', 'prints', 'completeEditions']
@@ -58,6 +69,8 @@ interface WorksSearchBarProps {
   onFiltersChange: (filters: WorksFilters) => void
   authorOptions: string[]
   voiceCountOptions: number[]
+  genreOptions: string[]
+  languageOptions: string[]
   resultCount: number
   totalCount: number
 }
@@ -67,13 +80,21 @@ export function WorksSearchBar({
   onFiltersChange,
   authorOptions,
   voiceCountOptions,
+  genreOptions,
+  languageOptions,
 }: WorksSearchBarProps) {
   const [activeFields, setActiveFields] = useState<FilterFieldKey[]>(() =>
     FILTER_FIELD_ORDER.filter((field) => isFieldActive(filters, field)),
   )
   const [addMenuAnchor, setAddMenuAnchor] = useState<HTMLElement | null>(null)
   const activeFiltersPresent = hasActiveFilters(filters)
-  const availableFields = FILTER_FIELD_ORDER.filter((field) => !activeFields.includes(field))
+  // Gattung und Sprache sind in den Daten noch nicht durchgehend erfasst; ein
+  // Filter ohne einen einzigen Wert wuerde nur eine leere Auswahl zeigen.
+  const hasOptions = (field: FilterFieldKey) =>
+    (field !== 'genres' || genreOptions.length > 0) && (field !== 'languages' || languageOptions.length > 0)
+  const availableFields = FILTER_FIELD_ORDER.filter(
+    (field) => !activeFields.includes(field) && hasOptions(field),
+  )
 
   const setFilter = <K extends keyof WorksFilters>(key: K, value: WorksFilters[K]) =>
     onFiltersChange({ ...filters, [key]: value })
@@ -123,6 +144,19 @@ export function WorksSearchBar({
         />
       )
     }
+    if (field === 'genres' || field === 'languages') {
+      return (
+        <Autocomplete
+          multiple
+          size="small"
+          options={field === 'genres' ? genreOptions : languageOptions}
+          value={filters[field]}
+          onChange={(_, value) => setFilter(field, value)}
+          renderInput={(params) => <TextField {...params} placeholder="Alle" />}
+          sx={{ minWidth: 200 }}
+        />
+      )
+    }
     if (field === 'textSources') {
       return (
         <TextField
@@ -162,7 +196,7 @@ export function WorksSearchBar({
         <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
           <TextField
             size="small"
-            placeholder="Werke durchsuchen – Titel, LV-Nummer, Textdichter, Drucke, Gesamtausgabe …"
+            placeholder="Werke durchsuchen – Titel, LV-Nummer, Textdichter, Drucke, Gesamtausgabe, Gattung …"
             value={filters.query}
             onChange={(event) => setFilter('query', event.target.value)}
             slotProps={{

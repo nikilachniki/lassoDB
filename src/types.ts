@@ -25,6 +25,9 @@ export interface Work {
   uncertainTextAuthors: string[]
   textSources: string[]
   completeEditions: string[]
+  // Gattung und Sprache aus den Eintraegen, Rohwerte ohne Dubletten
+  genres: string[]
+  languages: string[]
   entries: string[]
   manuscripts: string[]
   // Fassungen des Werks, siehe Expression
@@ -53,6 +56,8 @@ export interface Expression {
   uncertainTextAuthors: string[]
   textSources: string[]
   completeEditions: string[]
+  genres: string[]
+  languages: string[]
   entries: string[]
 }
 
@@ -86,6 +91,8 @@ export interface CatalogueEntry {
   textSource: string | null
   completeEdition: string | null
   note: string | null
+  genre: string | null
+  language: string | null
 }
 
 export interface EntriesFile {
