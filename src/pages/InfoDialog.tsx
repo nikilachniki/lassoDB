@@ -4,11 +4,10 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
-import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import { ExternalLink } from '../components/ExternalLink.tsx'
 
 interface InfoDialogProps {
   open: boolean
@@ -38,7 +37,7 @@ export function InfoDialog({ open, onClose }: InfoDialogProps) {
       <DialogContent dividers>
         <Stack spacing={3}>
           <Box>
-            <Typography variant="subtitle1" component="h2" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="subtitle1" component="h2" sx={{ mb: 1 }}>
               Die Datenbank
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5 }}>
@@ -77,15 +76,9 @@ export function InfoDialog({ open, onClose }: InfoDialogProps) {
                 <Box component="span" sx={{ color: 'primary.main', fontWeight: 700 }}>
                   [2]
                 </Box>{' '}
-                <Link
-                  href="https://lasso-handschriften.badw.de/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.25 }}
-                >
+                <ExternalLink href="https://lasso-handschriften.badw.de/">
                   https://lasso-handschriften.badw.de/
-                  <OpenInNewIcon sx={{ fontSize: '0.9em' }} />
-                </Link>
+                </ExternalLink>
                 , bearb. und hrsg. von Tobias Apelt, Daniela von Aretin und Adelheid Schellmann
                 unter Mitarbeit von Alexander Heinzel und Bernhold Schmid.
               </Typography>
@@ -95,7 +88,7 @@ export function InfoDialog({ open, onClose }: InfoDialogProps) {
           <Divider />
 
           <Box>
-            <Typography variant="subtitle1" component="h2" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="subtitle1" component="h2" sx={{ mb: 1 }}>
               Das Digital Lab
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -113,45 +106,23 @@ export function InfoDialog({ open, onClose }: InfoDialogProps) {
               Wissenschaften und der Literatur Mainz sowie der Ludwig-Maximilians-Universität
               München.
             </Typography>
-            <Link
-              href="https://gfbm-online.de/laufende-editionsprojekte/digitallab/"
-              target="_blank"
-              rel="noopener noreferrer"
-              sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.25 }}
-            >
+            <ExternalLink href="https://gfbm-online.de/laufende-editionsprojekte/digitallab/">
               Mehr zum Digital Lab
-              <OpenInNewIcon sx={{ fontSize: '0.9em' }} />
-            </Link>
+            </ExternalLink>
           </Box>
 
           <Divider />
 
           <Box>
-            <Typography variant="subtitle1" component="h2" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="subtitle1" component="h2" sx={{ mb: 1 }}>
               Daten &amp; Quellcode
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Der vollständige Datenbestand samt Herkunftsnachweis steht im
               Repository{' '}
-              <Link
-                href="https://github.com/nikilachniki/lassoDBData"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.25 }}
-              >
-                lassoDBData
-                <OpenInNewIcon sx={{ fontSize: '0.9em' }} />
-              </Link>{' '}
+              <ExternalLink href="https://github.com/nikilachniki/lassoDBData">lassoDBData</ExternalLink>{' '}
               bereit. Die Anwendung selbst ist quelloffen unter MIT-Lizenz in{' '}
-              <Link
-                href="https://github.com/nikilachniki/lassoDB"
-                target="_blank"
-                rel="noopener noreferrer"
-                sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.25 }}
-              >
-                lassoDB
-                <OpenInNewIcon sx={{ fontSize: '0.9em' }} />
-              </Link>
+              <ExternalLink href="https://github.com/nikilachniki/lassoDB">lassoDB</ExternalLink>
               .
             </Typography>
           </Box>

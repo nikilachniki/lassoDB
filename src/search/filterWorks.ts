@@ -1,5 +1,5 @@
 import type { Work } from '../types'
-import { getExpressions } from '../worksData'
+import { getExpressions, textAuthorSearchNames } from '../worksData'
 
 export interface WorksFilters {
   query: string
@@ -70,7 +70,7 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
           work.lvAnh !== null ? `Anh. ${work.lvAnh}` : '',
           work.preferredTitle ?? '',
           ...work.variantTitles,
-          ...work.textAuthors,
+          ...work.textAuthors.flatMap(textAuthorSearchNames),
           ...work.textSources,
           ...work.prints,
           ...work.completeEditions,

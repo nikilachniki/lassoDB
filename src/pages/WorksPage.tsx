@@ -6,9 +6,7 @@ import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Popover from '@mui/material/Popover'
 import Stack from '@mui/material/Stack'
-import Tooltip from '@mui/material/Tooltip'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight'
 import {
   DataGrid,
@@ -17,13 +15,24 @@ import {
   type GridRowParams,
   type GridSortModel,
 } from '@mui/x-data-grid'
-import { AuthorOrSourceText } from './AuthorOrSource'
-import type { Work } from './types'
-import { getManuscripts, getParts, isBaseWork, mainTitle, workSlug, works } from './worksData'
-import { collectDistinct, filterWorks, hasActiveFilters, type WorksFilters } from './search/filterWorks'
-import { Highlight } from './search/Highlight'
-import { WorksGridToolbar } from './search/WorksGridToolbar'
-import { WorksSearchBar } from './search/WorksSearchBar'
+import { SiglumChip } from '../components/SiglumChip.tsx'
+import { AuthorOrSourceText } from '../helpers.tsx'
+import type { Work } from '../types.ts'
+import {
+  getManuscripts,
+  getParts,
+  getPerson,
+  isBaseWork,
+  mainTitle,
+  textAuthorLabels,
+  workSlug,
+  works,
+  type TextAuthorLabel,
+} from '../worksData.ts'
+import { collectDistinct, filterWorks, hasActiveFilters, type WorksFilters } from '../search/filterWorks.ts'
+import { Highlight } from '../search/Highlight.tsx'
+import { WorksGridToolbar } from '../search/WorksGridToolbar.tsx'
+import { WorksSearchBar } from '../search/WorksSearchBar.tsx'
 
 interface Siglum {
   siglum: string
@@ -37,7 +46,7 @@ interface Row {
   voiceCounts: string
   prints: string
   textAuthorOrSource: string
-  textAuthors: string[]
+  textAuthors: TextAuthorLabel[]
   textSources: string[]
   completeEditions: string
   siglaText: string
@@ -80,7 +89,9 @@ function formatLvColumn(work: Work): string {
 // Fuer diese Ausnahmefaelle werden beide Werte gemeinsam angezeigt, statt
 // eines davon stillschweigend zu verwerfen.
 function formatTextAuthorOrSource(work: Work): string {
-  const authors = work.textAuthors.join(', ')
+  const authors = textAuthorLabels(work)
+    .map((author) => author.name)
+    .join(', ')
   const sources = work.textSources.join(', ')
   if (authors && sources) {
     return `${authors} / ${sources}`
@@ -110,35 +121,9 @@ function manuscriptSigla(work: Work): Siglum[] {
     .sort((a, b) => a.siglum.localeCompare(b.siglum))
 }
 
-// Klickbare Sigel in der Uebersichtsspalte, wie im RISM-Sigel-Fact der
-// Detailansicht: ein Klick oeffnet den Online-Katalog in einem neuen Tab,
-// ohne den Zeilenklick der DataGrid (Navigation zur Werk-Detailseite)
-// auszuloesen.
+// Sigel in der Uebersichtsspalte, siehe SiglumChip.
 const VISIBLE_SIGLA = 2
 const SIGLUM_CHIP_MAX_WIDTH = 76
-
-function SiglumChip({ entry }: { entry: Siglum }) {
-  return (
-    <Tooltip title={entry.siglum}>
-      {entry.link ? (
-        <Chip
-          component="a"
-          href={entry.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          clickable
-          onClick={(event) => event.stopPropagation()}
-          size="small"
-          label={entry.siglum}
-          icon={<OpenInNewIcon />}
-          sx={{ maxWidth: SIGLUM_CHIP_MAX_WIDTH, '& .MuiChip-icon': { order: 2, fontSize: 14, ml: -0.25, mr: 0.75 } }}
-        />
-      ) : (
-        <Chip size="small" label={entry.siglum} sx={{ maxWidth: SIGLUM_CHIP_MAX_WIDTH }} />
-      )}
-    </Tooltip>
-  )
-}
 
 // Die ersten Sigel als Chips, weitere hinter einem "+N"-Chip mit Pfeil, der
 // ein Popover mit allen Sigeln oeffnet. stopPropagation verhindert, dass der
@@ -152,7 +137,7 @@ function SiglaCell({ sigla }: { sigla: Siglum[] }) {
   return (
     <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', height: '100%', minWidth: 0, overflow: 'hidden' }}>
       {sigla.slice(0, VISIBLE_SIGLA).map((entry) => (
-        <SiglumChip key={entry.siglum} entry={entry} />
+        <SiglumChip key={entry.siglum} siglum={entry.siglum} link={entry.link} maxWidth={SIGLUM_CHIP_MAX_WIDTH} />
       ))}
       {hidden > 0 && (
         <>
@@ -180,7 +165,7 @@ function SiglaCell({ sigla }: { sigla: Siglum[] }) {
           >
             <Stack direction="row" spacing={0.5} useFlexGap sx={{ p: 1.5, maxWidth: 320, flexWrap: 'wrap' }}>
               {sigla.map((entry) => (
-                <SiglumChip key={entry.siglum} entry={entry} />
+                <SiglumChip key={entry.siglum} siglum={entry.siglum} link={entry.link} maxWidth={SIGLUM_CHIP_MAX_WIDTH} />
               ))}
             </Stack>
           </Popover>
@@ -281,7 +266,10 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
   const navigate = useNavigate()
 
   const authorOptions = useMemo(
-    () => collectDistinct(works, (work) => work.textAuthors).sort((a, b) => a.localeCompare(b, 'de')),
+    () =>
+      collectDistinct(works, (work) => work.textAuthors).sort((a, b) =>
+        (getPerson(a)?.preferredName ?? a).localeCompare(getPerson(b)?.preferredName ?? b, 'de'),
+      ),
     [],
   )
   const voiceCountOptions = useMemo(
@@ -318,7 +306,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
         voiceCounts: work.voiceCounts.join(', '),
         prints: work.prints.join(', '),
         textAuthorOrSource: formatTextAuthorOrSource(work),
-        textAuthors: work.textAuthors,
+        textAuthors: textAuthorLabels(work),
         textSources: work.textSources,
         completeEditions: work.completeEditions.join(', '),
         siglaText: sigla.map((entry) => entry.siglum).join(', '),
@@ -438,7 +426,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
             // Der Balken ist ein innerer Schatten statt eines Rahmens, damit die
             // Zeilen nicht um dessen Breite verrutschen.
             '& .MuiDataGrid-row': { cursor: 'pointer' },
-            '& .lasso-row-match': { boxShadow: 'inset 4px 0 0 #f2c200' },
+            '& .lasso-row-match': { boxShadow: (theme) => `inset 4px 0 0 ${theme.palette.highlight.bar}` },
             // Kein Fokusrahmen um einzelne Zellen: die Tabelle wird zeilenweise
             // bedient, ein Rahmen um die angeklickte Zelle wirkt wie eine
             // Hervorhebung dieser einen Zelle.

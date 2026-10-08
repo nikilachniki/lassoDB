@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Autocomplete from '@mui/material/Autocomplete'
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import IconButton from '@mui/material/IconButton'
@@ -14,6 +14,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import CloseIcon from '@mui/icons-material/Close'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import SearchIcon from '@mui/icons-material/Search'
+import { getPerson, textAuthorSearchNames } from '../worksData'
 import { defaultWorksFilters, hasActiveFilters, type WorksFilters } from './filterWorks'
 
 type FilterFieldKey = 'textAuthors' | 'textSources' | 'voiceCounts' | 'prints' | 'completeEditions'
@@ -44,6 +45,13 @@ function isFieldActive(filters: WorksFilters, field: FilterFieldKey): boolean {
   const value = filters[field]
   return Array.isArray(value) ? value.length > 0 : value.trim() !== ''
 }
+
+// Die Optionen sind Personen-IDs. Angezeigt wird die festgelegte Schreibweise,
+// die Eingabe trifft aber auch die Varianten: "C.Marot" findet Clément Marot.
+const authorLabel = (id: string) => getPerson(id)?.preferredName ?? id
+const filterAuthorOptions = createFilterOptions<string>({
+  stringify: (id) => textAuthorSearchNames(id).join(' '),
+})
 
 interface WorksSearchBarProps {
   filters: WorksFilters
@@ -92,6 +100,8 @@ export function WorksSearchBar({
           multiple
           size="small"
           options={authorOptions}
+          getOptionLabel={authorLabel}
+          filterOptions={filterAuthorOptions}
           value={filters.textAuthors}
           onChange={(_, value) => setFilter('textAuthors', value)}
           renderInput={(params) => <TextField {...params} placeholder="Alle" />}

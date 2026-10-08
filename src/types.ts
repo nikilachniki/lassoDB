@@ -7,10 +7,6 @@ export interface Work {
   lv: string | null
   lvBase: number | null
   lvPart: number | null
-  // Nummer im LV-Anhang (Boetticher) fuer Werke, die nicht im Haupt-LV-Katalog
-  // stehen, sondern nur handschriftlich ueberliefert sind. lv und lvAnh
-  // schliessen sich gegenseitig aus: entweder das Werk hat eine reguläre
-  // LV-Nummer, oder es steht im Anhang, nie beides.
   lvAnh: number | null
   // Teil-Beziehung: ein Teil wie "100-2" verweist auf sein Gesamtwerk
   // ("work:100"), das Gesamtwerk listet seine Teile.
@@ -22,7 +18,11 @@ export interface Work {
   variantTitles: string[]
   voiceCounts: number[]
   prints: string[]
+  // Personen-IDs (person:...), nicht Rohwerte, siehe Person
   textAuthors: string[]
+  // Teilmenge von textAuthors, deren Zuschreibung in allen Eintraegen unsicher
+  // ist (Rohwert mit "?", etwa "Ludwig Helmbold?")
+  uncertainTextAuthors: string[]
   textSources: string[]
   completeEditions: string[]
   entries: string[]
@@ -37,11 +37,7 @@ export interface WorksFile {
   items: Work[]
 }
 
-// Eine Fassung im Sinne von FRBR (Expression): dasselbe Werk in abweichender
-// Gestalt, meist mit anderer Stimmenzahl in einem anderen Druck. Die Quelle
-// kennzeichnet sie mit einer roemischen Ziffer hinter der LV-Nummer, etwa
-// "193 (II)"; die Ziffer (pars) bezeichnet den Teil des Werks, den die Fassung
-// bringt. Siehe lassoDBData/docs/entscheidungen.md, Abschnitt 17.
+// Eine Werk-Fassung im Sinne von FRBR (Expression)
 export interface Expression {
   '@id': string
   '@type': 'Expression'
@@ -54,6 +50,7 @@ export interface Expression {
   voiceCounts: number[]
   prints: string[]
   textAuthors: string[]
+  uncertainTextAuthors: string[]
   textSources: string[]
   completeEditions: string[]
   entries: string[]
@@ -82,7 +79,10 @@ export interface CatalogueEntry {
   firstPrint: string | null
   firstPrintYear: number | null
   firstPrintNo: number | null
+  // Rohwert, wie ihn der Druck schreibt; die Person dazu in textAuthorPerson
   textAuthor: string | null
+  textAuthorPerson: string | null
+  textAuthorUncertain: boolean
   textSource: string | null
   completeEdition: string | null
   note: string | null
@@ -126,13 +126,14 @@ export interface ManuscriptsFile {
   items: ManuscriptWitness[]
 }
 
-// Ein Textdichter als Rohwert, siehe lassoDBData/docs/entscheidungen.md,
-// Abschnitt 8. gnd/viaf sind nur fuer einen Teil der Personen gesetzt, siehe
-// Abschnitt 15: eine manuell kuratierte, keine automatische Verknuepfung.
+// Ein Textdichter. Schreibvarianten mit kuratierter GND-Zuordnung sind zu
+// einer Person mit festgelegter Anzeigeform zusammengefuehrt
 export interface Person {
   '@id': string
   '@type': 'Person'
-  nameRaw: string
+  preferredName: string
+  // Abweichende Schreibweisen aus der Quelle, ohne preferredName
+  variantNames: string[]
   role: string
   gnd: string | null
   viaf: string | null

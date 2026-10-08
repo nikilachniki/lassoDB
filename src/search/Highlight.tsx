@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box'
+
 // Markiert jedes Vorkommen des Suchbegriffs im Text gelb, so wie die Suche
 // vergleicht (getrimmt, ohne Gross-/Kleinschreibung, siehe filterWorks).
 // Markiert wird nur der Text selbst, nie die ganze Zelle.
@@ -13,12 +15,13 @@ export function Highlight({ text, query }: { text: string; query?: string }) {
   while (index >= 0) {
     parts.push(text.slice(start, index))
     parts.push(
-      <mark
+      <Box
+        component="mark"
         key={index}
-        style={{ backgroundColor: 'rgba(255, 213, 0, 0.5)', color: 'inherit', padding: 0, borderRadius: 2 }}
+        sx={{ bgcolor: 'highlight.mark', color: 'inherit', p: 0, borderRadius: '2px' }}
       >
         {text.slice(index, index + needle.length)}
-      </mark>,
+      </Box>,
     )
     start = index + needle.length
     index = haystack.indexOf(needle, start)

@@ -18,13 +18,12 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
-import { authorOrSourceLabel, AuthorOrSourceText } from './AuthorOrSource'
-import type { CatalogueEntry, Expression, ManuscriptWitness, Work } from './types'
+import { SiglumChip } from '../components/SiglumChip.tsx'
+import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
+import type { CatalogueEntry, Expression, ManuscriptWitness, Work } from '../types.ts'
 import {
   findRelatedParts,
   findWholeWork,
@@ -33,11 +32,13 @@ import {
   formatCatalogNumber,
   getExpressions,
   getManuscripts,
+  entryTextAuthorLabels,
   getSortedEntries,
   isBaseWork,
   mainTitle,
+  textAuthorLabels,
   workSlug,
-} from './worksData'
+} from '../worksData.ts'
 
 function Fact({ label, value }: { label: string; value: ReactNode }) {
   if (!value) {
@@ -130,7 +131,7 @@ function RelatedPartsTable({ parts, focusId }: { parts: Work[]; focusId?: string
               <TableCell>{part.voiceCounts.join(', ')}</TableCell>
               <TableCell>{part.prints.join(', ')}</TableCell>
               <TableCell>
-                <AuthorOrSourceText authors={part.textAuthors} sources={part.textSources} />
+                <AuthorOrSourceText authors={textAuthorLabels(part)} sources={part.textSources} />
               </TableCell>
               <TableCell>{part.completeEditions.join(', ')}</TableCell>
             </TableRow>
@@ -172,7 +173,7 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
               <TableCell>{expression.voiceCounts.join(', ')}</TableCell>
               <TableCell>{expression.prints.join(', ')}</TableCell>
               <TableCell>
-                <AuthorOrSourceText authors={expression.textAuthors} sources={expression.textSources} />
+                <AuthorOrSourceText authors={textAuthorLabels(expression)} sources={expression.textSources} />
               </TableCell>
               <TableCell>{expression.completeEditions.join(', ')}</TableCell>
             </TableRow>
@@ -211,7 +212,7 @@ function EntriesTable({ entries }: { entries: CatalogueEntry[] }) {
               <TableCell>{entry.voices ?? ''}</TableCell>
               <TableCell>
                 <AuthorOrSourceText
-                  authors={entry.textAuthor ? [entry.textAuthor] : []}
+                  authors={entryTextAuthorLabels(entry)}
                   sources={entry.textSource ? [entry.textSource] : []}
                 />
               </TableCell>
@@ -267,34 +268,17 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
   return (
     <Stack spacing={1}>
       {manuscripts.map((manuscript) => (
-        <Accordion key={manuscript['@id']} variant="outlined" disableGutters sx={{ '&:before': { display: 'none' } }}>
+        <Accordion key={manuscript['@id']} variant="outlined" disableGutters>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
-              {manuscript.rismSiglum &&
-                (manuscript.link ? (
-                  <Tooltip title={`${manuscript.rismSiglum} – im Online-Katalog öffnen`}>
-                    <Chip
-                      component="a"
-                      href={manuscript.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      clickable
-                      icon={<OpenInNewIcon />}
-                      onClick={(event) => event.stopPropagation()}
-                      label={manuscript.rismSiglum}
-                      size="small"
-                      sx={{
-                        maxWidth: 96,
-                        flexShrink: 0,
-                        '& .MuiChip-icon': { order: 2, fontSize: 14, ml: -0.25, mr: 0.75 },
-                      }}
-                    />
-                  </Tooltip>
-                ) : (
-                  <Tooltip title={manuscript.rismSiglum}>
-                    <Chip label={manuscript.rismSiglum} size="small" sx={{ maxWidth: 96, flexShrink: 0 }} />
-                  </Tooltip>
-                ))}
+              {manuscript.rismSiglum && (
+                <SiglumChip
+                  siglum={manuscript.rismSiglum}
+                  link={manuscript.link}
+                  maxWidth={96}
+                  sx={{ flexShrink: 0 }}
+                />
+              )}
               <Typography variant="body2">{manuscriptSummary(manuscript)}</Typography>
             </Stack>
           </AccordionSummary>
@@ -370,7 +354,7 @@ export function WorkDetailPage() {
           <Chip label={formatCatalogNumber(work)} size="small" sx={{ fontWeight: 700 }} />
           {!isBaseWork(work) && <Chip label={partLabel(work)} size="small" variant="outlined" />}
         </Stack>
-        <Typography variant="h4" component="h2" sx={{ fontWeight: 700, mb: 3 }}>
+        <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
           {mainTitle(work)}
         </Typography>
 
@@ -380,7 +364,7 @@ export function WorkDetailPage() {
           <Fact label="Erstdruck" value={firstEntry?.firstPrint ?? ''} />
           <Fact
             label={authorOrSourceLabel(work.textAuthors.length > 0, work.textSources.length > 0)}
-            value={<AuthorOrSourceText authors={work.textAuthors} sources={work.textSources} />}
+            value={<AuthorOrSourceText authors={textAuthorLabels(work)} sources={work.textSources} />}
           />
           <Fact label="Gesamtausgabe" value={work.completeEditions.join(', ')} />
         </Stack>
@@ -388,7 +372,7 @@ export function WorkDetailPage() {
         {remainingEntries.length > 0 && (
           <>
             <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
               Weitere Drucke
             </Typography>
             <Box sx={{ overflowX: 'auto' }}>
@@ -400,7 +384,7 @@ export function WorkDetailPage() {
         {manuscriptWitnesses.length > 0 && (
           <>
             <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
               Handschriftliche Überlieferung
             </Typography>
             <ManuscriptsAccordion manuscripts={manuscriptWitnesses} />
@@ -410,7 +394,7 @@ export function WorkDetailPage() {
         {relatedParts.length > 0 && (
           <>
             <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
               Weitere Teile dieses Werks
             </Typography>
             <Box sx={{ overflowX: 'auto' }}>
@@ -422,7 +406,7 @@ export function WorkDetailPage() {
         {expressions.length > 0 && (
           <>
             <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ fontWeight: 700, mb: 1 }}>
+            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
               Fassungen
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>

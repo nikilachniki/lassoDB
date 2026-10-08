@@ -9,18 +9,13 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
-import { InfoDialog } from './InfoDialog'
-import { WorksPage } from './WorksPage'
-import { WorkDetailPage } from './WorkDetailPage'
-import { defaultWorksFilters, type WorksFilters } from './search/filterWorks'
+import { InfoDialog } from './InfoDialog.tsx'
+import { WorksPage } from './WorksPage.tsx'
+import { WorkDetailPage } from './WorkDetailPage.tsx'
+import { defaultWorksFilters, type WorksFilters } from '../search/filterWorks.ts'
 
 function App() {
   const [infoOpen, setInfoOpen] = useState(false)
-  // Lebt hier statt in WorksPage, damit die Sucheingaben erhalten bleiben,
-  // wenn man in eine Werk-Detailseite wechselt und per "Zurück" wieder
-  // zurückkommt. WorksPage haengt an der Route "/" und wird beim Wechsel
-  // zu "/werk/:slug" und zurueck jedes Mal neu gemountet; ein dort lokaler
-  // useState wuerde bei jedem Rueckweg auf die Ausgangswerte zurueckfallen.
   const [filters, setFilters] = useState<WorksFilters>(defaultWorksFilters)
 
   return (
@@ -50,7 +45,7 @@ function App() {
               />
             </Link>
             <Divider orientation="vertical" flexItem sx={{ borderColor: 'currentColor', opacity: 0.2 }} />
-            <Typography variant="h6" component="h1" sx={{ fontWeight: 700, lineHeight: 1.2, flexGrow: 1 }}>
+            <Typography variant="h6" component="h1" sx={{ lineHeight: 1.2, flexGrow: 1 }}>
               Orlando di Lasso | Werke
             </Typography>
             <Tooltip title="Informationen zum Projekt">
