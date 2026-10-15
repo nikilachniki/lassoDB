@@ -92,9 +92,7 @@ export function isBaseWork(work: Pick<Work, 'isPartOf'>): boolean {
   return work.isPartOf === null
 }
 
-// Der bevorzugte Titel (preferredTitle) ist der des
-// fruehesten Drucks, bei reinen Handschriften-Werken der der ersten
-// Handschrift; alle weiteren Titel stehen in variantTitles.
+// Der bevorzugte Titel (preferredTitle) ist der normalisierte Werktitel,
 export function mainTitle(item: { preferredTitle: string | null }): string {
   return item.preferredTitle ?? ''
 }

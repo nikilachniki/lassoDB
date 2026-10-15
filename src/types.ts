@@ -12,9 +12,9 @@ export interface Work {
   // ("work:100"), das Gesamtwerk listet seine Teile.
   isPartOf: string | null
   hasPart: string[]
-  // Titel des fruehesten Drucks (sonst der ersten Handschrift), dazu alle
-  // weiteren Titel als Varianten.
+  // Normalisierter Werktitel . Die abweichenden Drucktitel stehen in variantTitles.
   preferredTitle: string | null
+  preferredTitleBasis: TitleBasis
   variantTitles: string[]
   voiceCounts: number[]
   prints: string[]
@@ -35,6 +35,9 @@ export interface Work {
   entryCount: number
 }
 
+// Woher der preferredTitle stammt: normalisierter Titel oder frueheste Quelle
+export type TitleBasis = 'normalized' | 'earliestSource'
+
 export interface WorksFile {
   '@context': string
   items: Work[]
@@ -49,6 +52,7 @@ export interface Expression {
   pars: string
   realizationOf: string
   preferredTitle: string | null
+  preferredTitleBasis: TitleBasis
   variantTitles: string[]
   voiceCounts: number[]
   prints: string[]
@@ -77,8 +81,12 @@ export interface CatalogueEntry {
   lvBase: number | null
   lvPart: number | null
   lvVariant: string | null
+  // Titel in der Schreibung des Drucks (diplomatisch)
   title: string | null
   titleRaw: string | null
+  // Werktitel in normalisierter Schreibung, siehe Work.preferredTitle
+  normalizedTitle: string | null
+  normalizedTitleBasis: string | null
   voices: number | null
   voicesRaw?: string
   firstPrint: string | null
