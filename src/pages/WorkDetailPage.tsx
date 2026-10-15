@@ -8,7 +8,6 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
-import Divider from '@mui/material/Divider'
 import Link from '@mui/material/Link'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
@@ -196,51 +195,41 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
   )
 }
 
-function EntriesTable({ entries }: { entries: CatalogueEntry[] }) {
-  const hasNotes = entries.some((entry) => entry.note)
-  const hasGenres = entries.some((entry) => entry.genre)
-  const hasLanguages = entries.some((entry) => entry.language)
-  const authorOrSourceHeader = authorOrSourceLabel(
-    entries.some((entry) => entry.textAuthor),
-    entries.some((entry) => entry.textSource),
-  )
-
+// Die Drucke eines Werks, wie die Handschriften als aufklappbare Karten. Der
+// Titel steht in der Schreibung des jeweiligen Drucks, nicht normalisiert.
+function EntriesAccordion({ entries }: { entries: CatalogueEntry[] }) {
   return (
-    <TableContainer>
-      <Table size="small">
-        <TableHead>
-          <TableRow>
-            <TableCell>Druck</TableCell>
-            <TableCell>Titel</TableCell>
-            <TableCell>Stimmen</TableCell>
-            <TableCell>{authorOrSourceHeader}</TableCell>
-            <TableCell>Gesamtausgabe</TableCell>
-            {hasGenres && <TableCell>Gattung</TableCell>}
-            {hasLanguages && <TableCell>Sprache</TableCell>}
-            {hasNotes && <TableCell>Bemerkung</TableCell>}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {entries.map((entry) => (
-            <TableRow key={entry['@id']}>
-              <TableCell>{entry.firstPrint ?? '–'}</TableCell>
-              <TableCell>{entry.title ?? ''}</TableCell>
-              <TableCell>{entry.voices ?? ''}</TableCell>
-              <TableCell>
-                <AuthorOrSourceText
-                  authors={entryTextAuthorLabels(entry)}
-                  sources={entry.textSource ? [entry.textSource] : []}
+    <Stack spacing={1}>
+      {entries.map((entry) => {
+        const authors = entryTextAuthorLabels(entry)
+        const sources = entry.textSource ? [entry.textSource] : []
+        return (
+          <Accordion key={entry['@id']} variant="outlined" disableGutters>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
+                <Chip size="small" label={entry.firstPrint ?? '–'} sx={{ flexShrink: 0 }} />
+                <Typography variant="body2">{entry.title ?? ''}</Typography>
+              </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Stack spacing={1.5}>
+                <Fact label="Druck" value={entry.firstPrint ?? ''} />
+                <Fact label="Titel" value={entry.title ?? ''} />
+                <Fact label="Stimmen" value={entry.voices ?? ''} />
+                <Fact
+                  label={authorOrSourceLabel(authors.length > 0, sources.length > 0)}
+                  value={<AuthorOrSourceText authors={authors} sources={sources} />}
                 />
-              </TableCell>
-              <TableCell>{entry.completeEdition ?? ''}</TableCell>
-              {hasGenres && <TableCell>{entry.genre ?? ''}</TableCell>}
-              {hasLanguages && <TableCell>{entry.language ?? ''}</TableCell>}
-              {hasNotes && <TableCell>{entry.note ?? ''}</TableCell>}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                <Fact label="Gesamtausgabe" value={entry.completeEdition ?? ''} />
+                <Fact label="Gattung" value={entry.genre ?? ''} />
+                <Fact label="Sprache" value={entry.language ?? ''} />
+                <Fact label="Bemerkung" value={entry.note ?? ''} />
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+        )
+      })}
+    </Stack>
   )
 }
 
@@ -323,6 +312,42 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
   )
 }
 
+// Ein einklappbarer Abschnitt der Detailseite, standardmaessig geschlossen.
+// unmountOnExit, weil manche Werke hunderte Handschriften haben, die sonst
+// auch zugeklappt gerendert wuerden.
+function Section({
+  title,
+  count,
+  defaultExpanded = false,
+  children,
+}: {
+  title: string
+  count: number
+  defaultExpanded?: boolean
+  children: ReactNode
+}) {
+  return (
+    <Accordion
+      defaultExpanded={defaultExpanded}
+      disableGutters
+      elevation={0}
+      square
+      slotProps={{ transition: { unmountOnExit: true } }}
+      sx={{ '&::before': { display: 'none' }, borderTop: 1, borderColor: 'divider' }}
+    >
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0 }}>
+        <Typography variant="h6" component="h3">
+          {title}{' '}
+          <Typography component="span" color="text.secondary">
+            ({count})
+          </Typography>
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails sx={{ px: 0, pt: 0 }}>{children}</AccordionDetails>
+    </Accordion>
+  )
+}
+
 export function WorkDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const focusPart = (useLocation().state as { focusPart?: string } | null)?.focusPart
@@ -347,7 +372,8 @@ export function WorkDetailPage() {
 
   const baseWork = findWholeWork(work)
   const relatedParts = findRelatedParts(work)
-  const [firstEntry, ...remainingEntries] = getSortedEntries(work)
+  const entries = getSortedEntries(work)
+  const firstEntry = entries[0]
   const manuscriptWitnesses = getManuscripts(work)
   const expressions = getExpressions(work)
 
@@ -389,55 +415,45 @@ export function WorkDetailPage() {
           <Fact label="Gesamtausgabe" value={work.completeEditions.join(', ')} />
         </Stack>
 
-        {remainingEntries.length > 0 && (
-          <>
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
-              Weitere Drucke
-            </Typography>
-            <Box sx={{ overflowX: 'auto' }}>
-              <EntriesTable entries={remainingEntries} />
-            </Box>
-          </>
-        )}
+        <Box sx={{ mt: 3 }}>
+          {relatedParts.length > 0 && (
+            // Kommt man ueber einen Teil aus der Werktabelle, ist der Abschnitt
+            // offen, damit der markierte Teil sichtbar ist.
+            <Section
+              title="Weitere Teile dieses Werks"
+              count={relatedParts.length}
+              defaultExpanded={relatedParts.some((part) => part['@id'] === focusPart)}
+            >
+              <Box sx={{ overflowX: 'auto' }}>
+                <RelatedPartsTable parts={relatedParts} focusId={focusPart} />
+              </Box>
+            </Section>
+          )}
 
-        {manuscriptWitnesses.length > 0 && (
-          <>
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
-              Handschriftliche Überlieferung
-            </Typography>
-            <ManuscriptsAccordion manuscripts={manuscriptWitnesses} />
-          </>
-        )}
+          {entries.length > 0 && (
+            <Section title="Drucke" count={entries.length}>
+              <EntriesAccordion entries={entries} />
+            </Section>
+          )}
 
-        {relatedParts.length > 0 && (
-          <>
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
-              Weitere Teile dieses Werks
-            </Typography>
-            <Box sx={{ overflowX: 'auto' }}>
-              <RelatedPartsTable parts={relatedParts} focusId={focusPart} />
-            </Box>
-          </>
-        )}
+          {manuscriptWitnesses.length > 0 && (
+            <Section title="Handschriftliche Überlieferung" count={manuscriptWitnesses.length}>
+              <ManuscriptsAccordion manuscripts={manuscriptWitnesses} />
+            </Section>
+          )}
 
-        {expressions.length > 0 && (
-          <>
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
-              Fassungen
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              Einzelne Teile dieses Werks in abweichender Gestalt, meist mit anderer Stimmenzahl in
-              einem anderen Druck.
-            </Typography>
-            <Box sx={{ overflowX: 'auto' }}>
-              <ExpressionsTable expressions={expressions} />
-            </Box>
-          </>
-        )}
+          {expressions.length > 0 && (
+            <Section title="Fassungen" count={expressions.length}>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                Einzelne Teile dieses Werks in abweichender Gestalt, meist mit anderer Stimmenzahl in
+                einem anderen Druck.
+              </Typography>
+              <Box sx={{ overflowX: 'auto' }}>
+                <ExpressionsTable expressions={expressions} />
+              </Box>
+            </Section>
+          )}
+        </Box>
       </Paper>
     </Container>
   )
