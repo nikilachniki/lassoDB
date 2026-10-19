@@ -78,10 +78,24 @@ export const theme = createTheme(
       MuiDataGrid: {
         styleOverrides: {
           root: { border: 'none' },
+          // Kopfzeile deutlich abgesetzt: kraeftigere Markenfarbe als Grund,
+          // fette Beschriftung und eine Linie in Markenblau darunter.
           columnHeaders: ({ theme }) => ({
             backgroundColor: theme.vars
-              ? `rgba(${theme.vars.palette.primary.mainChannel} / 0.08)`
-              : alpha(theme.palette.primary.main, 0.08),
+              ? `rgba(${theme.vars.palette.primary.mainChannel} / 0.14)`
+              : alpha(theme.palette.primary.main, 0.14),
+            borderBottom: `2px solid ${brandBlue}`,
+          }),
+          columnHeaderTitle: ({ theme }) => ({
+            fontWeight: 700,
+            color: theme.palette.mode === 'dark' ? theme.palette.text.primary : brandNavy,
+          }),
+          row: ({ theme }) => ({
+            '&:hover': {
+              backgroundColor: theme.vars
+                ? `rgba(${theme.vars.palette.primary.mainChannel} / 0.08)`
+                : alpha(theme.palette.primary.main, 0.08),
+            },
           }),
           footerContainer: { minHeight: 40 },
         },

@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Chip from '@mui/material/Chip'
 import IconButton from '@mui/material/IconButton'
@@ -124,7 +125,7 @@ function manuscriptSigla(work: Work): Siglum[] {
 }
 
 // Sigel in der Uebersichtsspalte, siehe SiglumChip.
-const VISIBLE_SIGLA = 2
+const VISIBLE_SIGLA = 1
 const SIGLUM_CHIP_MAX_WIDTH = 76
 
 // Die ersten Sigel als Chips, weitere hinter einem "+N"-Chip mit Pfeil, der
@@ -182,7 +183,7 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
   {
     field: 'lv',
     headerName: 'LV',
-    width: 140,
+    width: 105,
     sortComparator: lvComparator,
     renderCell: (params: GridRenderCellParams<Row>) => {
       const row = params.row
@@ -219,21 +220,34 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
   {
     field: 'title',
     headerName: 'Titel',
+    // Titel und Textdichter teilen sich den freien Platz, die uebrigen Spalten
+    // sind fest und knapp, damit die Tabelle in die Fensterbreite passt.
+    // Abgeschnittene Titel stehen vollstaendig im Tooltip.
     flex: 1,
-    minWidth: 220,
-    renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.title} query={query} />,
+    minWidth: 160,
+    maxWidth: 300,
+    renderCell: (params: GridRenderCellParams<Row>) => (
+      <Box
+        component="span"
+        title={params.row.title}
+        sx={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+      >
+        <Highlight text={params.row.title} query={query} />
+      </Box>
+    ),
   },
-  { field: 'voiceCounts', headerName: 'Stimmen', width: 90 },
+  { field: 'voiceCounts', headerName: 'Stimmen', width: 80 },
   {
     field: 'prints',
     headerName: 'Drucke',
-    width: 110,
+    width: 95,
     renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.prints} query={query} />,
   },
   {
     field: 'textAuthorOrSource',
     headerName: 'Textdichter / Textprovenienz',
-    width: 260,
+    flex: 1,
+    minWidth: 140,
     // Der Zellwert (textAuthorOrSource) bleibt die reine Zeichenkette, damit
     // Sortierung, Filter und CSV/Druck-Export unveraendert darauf arbeiten;
     // nur die Darstellung zeigt zusaetzlich die GND/VIAF-Badges an, siehe
@@ -253,19 +267,19 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
   {
     field: 'genres',
     headerName: 'Gattung',
-    width: 120,
+    width: 95,
     renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.genres} query={query} />,
   },
   {
     field: 'languages',
     headerName: 'Sprache',
-    width: 100,
+    width: 85,
     renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.languages} query={query} />,
   },
   {
     field: 'siglaText',
     headerName: 'Handschriften',
-    width: 200,
+    minWidth: 170,
     renderCell: (params: GridRenderCellParams<Row>) => <SiglaCell sigla={params.row.sigla} />,
   },
   ]
@@ -434,7 +448,9 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
           pageSizeOptions={[25, 50, 100]}
           density="compact"
           disableRowSelectionOnClick
-          getRowClassName={(params) => (params.row.isMatch ? 'lasso-row-match' : '')}
+          getRowClassName={(params) =>
+            [params.row.isPart ? 'lasso-row-part' : '', params.row.isMatch ? 'lasso-row-match' : ''].join(' ')
+          }
           onRowClick={handleRowClick}
           sx={{
             flex: 1,
@@ -453,6 +469,9 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
             // Der Balken ist ein innerer Schatten statt eines Rahmens, damit die
             // Zeilen nicht um dessen Breite verrutschen.
             '& .MuiDataGrid-row': { cursor: 'pointer' },
+            // Ausgeklappte Teile leicht hinterlegt, damit sie sich als Gruppe
+            // von den Basiswerken abheben.
+            '& .lasso-row-part:not(:hover)': { bgcolor: 'action.hover' },
             '& .lasso-row-match': { boxShadow: (theme) => `inset 4px 0 0 ${theme.palette.highlight.bar}` },
             // Kein Fokusrahmen um einzelne Zellen: die Tabelle wird zeilenweise
             // bedient, ein Rahmen um die angeklickte Zelle wirkt wie eine
