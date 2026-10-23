@@ -2,6 +2,7 @@ import entriesFile from './data/entries.json'
 import expressionsFile from './data/expressions.json'
 import manuscriptsFile from './data/manuscripts.json'
 import personsFile from './data/persons.json'
+import printsFile from './data/prints.json'
 import worksFile from './data/works.json'
 import type {
   CatalogueEntry,
@@ -12,6 +13,8 @@ import type {
   ManuscriptWitness,
   Person,
   PersonsFile,
+  Print,
+  PrintsFile,
   Work,
   WorksFile,
 } from './types'
@@ -23,6 +26,7 @@ const entries = (entriesFile as EntriesFile).items
 const manuscripts = (manuscriptsFile as ManuscriptsFile).items
 const persons = (personsFile as PersonsFile).items
 const expressions = (expressionsFile as ExpressionsFile).items
+export const prints = (printsFile as PrintsFile).items
 
 // Ein Werk verweist per @id-Liste auf seine Eintraege (je ein Eintrag pro
 // Druck, in dem es erschienen ist) und auf seine Handschriften-Zeugnisse.
@@ -33,6 +37,30 @@ const manuscriptById = new Map(manuscripts.map((manuscript) => [manuscript['@id'
 const expressionById = new Map(expressions.map((expression) => [expression['@id'], expression]))
 const workById = new Map(works.map((work) => [work['@id'], work]))
 const personById = new Map(persons.map((person) => [person['@id'], person]))
+const printBySiglum = new Map(prints.map((print) => [print.siglum, print]))
+
+// Rueckverweis Eintrag -> Werk fuer die Druck-Detailseite. Eintraege einer
+// Fassung stehen nicht in work.entries, sondern in der Fassung; sie gehoeren
+// zum Werk, dessen Fassung sie sind.
+const workByEntryId = new Map<string, Work>()
+for (const work of works) {
+  work.entries.forEach((id) => workByEntryId.set(id, work))
+}
+for (const expression of expressions) {
+  const work = workById.get(expression.realizationOf)
+  if (work) {
+    expression.entries.forEach((id) => workByEntryId.set(id, work))
+  }
+}
+
+// Die Eintraege je Druck (Sigel), damit die Detailseite nicht jedes Mal alle
+// Eintraege durchsucht.
+const entriesBySiglum = new Map<string, CatalogueEntry[]>()
+for (const entry of entries) {
+  if (entry.firstPrint) {
+    entriesBySiglum.set(entry.firstPrint, [...(entriesBySiglum.get(entry.firstPrint) ?? []), entry])
+  }
+}
 
 export function getPerson(id: string): Person | undefined {
   return personById.get(id)
@@ -163,4 +191,38 @@ export function getManuscripts(work: Work): ManuscriptWitness[] {
       (a.library ?? '').localeCompare(b.library ?? '') ||
       (a.shelfmark ?? '').localeCompare(b.shelfmark ?? ''),
   )
+}
+
+// Sigel wie "1575-3/I" enthalten einen Schraegstrich und werden deshalb fuer
+// die Adresse kodiert.
+export function printPath(siglum: string): string {
+  return `/druck/${encodeURIComponent(siglum)}`
+}
+
+export function findPrintBySiglum(siglum: string): Print | undefined {
+  return printBySiglum.get(siglum)
+}
+
+// Erscheinungsjahr eines Drucks. Bei Sigeln ohne Jahresangabe in prints.json
+// (etwa "1575-3/I") steht das Jahr vorn im Sigel.
+export function printYear(siglum: string): number | null {
+  const year = printBySiglum.get(siglum)?.year
+  if (year != null) {
+    return year
+  }
+  const match = siglum.match(/^(\d{4})/)
+  return match ? Number(match[1]) : null
+}
+
+// Ein Eintrag des Drucks zusammen mit dem Werk, zu dem er gehoert
+export interface PrintContent {
+  entry: CatalogueEntry
+  work: Work | undefined
+}
+
+// Die Werke eines Drucks in LV-Reihenfolge
+export function getPrintContents(print: Print): PrintContent[] {
+  return (entriesBySiglum.get(print.siglum) ?? [])
+    .map((entry) => ({ entry, work: workByEntryId.get(entry['@id']) }))
+    .sort((a, b) => (a.entry.lv ?? '').localeCompare(b.entry.lv ?? '', 'de', { numeric: true }))
 }

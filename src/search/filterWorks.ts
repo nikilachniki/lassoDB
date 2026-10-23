@@ -1,38 +1,54 @@
 import type { Work } from '../types'
-import { getExpressions, textAuthorSearchNames } from '../worksData'
+import { getExpressions, getManuscripts, printYear, textAuthorSearchNames } from '../worksData'
+import { inYearRange, matchesLv } from './filterFields'
 
 export interface WorksFilters {
   query: string
+  lv: string
+  title: string
   textAuthors: string[]
   textSources: string
   voiceCounts: number[]
   prints: string
+  yearFrom: string
+  yearTo: string
   completeEditions: string
   genres: string[]
   languages: string[]
+  manuscripts: string
 }
 
 export const defaultWorksFilters: WorksFilters = {
   query: '',
+  lv: '',
+  title: '',
   textAuthors: [],
   textSources: '',
   voiceCounts: [],
   prints: '',
+  yearFrom: '',
+  yearTo: '',
   completeEditions: '',
   genres: [],
   languages: [],
+  manuscripts: '',
 }
 
 export function hasActiveFilters(filters: WorksFilters): boolean {
   return (
     filters.query.trim() !== '' ||
+    filters.lv.trim() !== '' ||
+    filters.title.trim() !== '' ||
     filters.textAuthors.length > 0 ||
     filters.textSources.trim() !== '' ||
     filters.voiceCounts.length > 0 ||
     filters.prints.trim() !== '' ||
+    filters.yearFrom !== '' ||
+    filters.yearTo !== '' ||
     filters.completeEditions.trim() !== '' ||
     filters.genres.length > 0 ||
-    filters.languages.length > 0
+    filters.languages.length > 0 ||
+    filters.manuscripts.trim() !== ''
   )
 }
 
@@ -43,8 +59,23 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
   const textSources = normalize(filters.textSources)
   const prints = normalize(filters.prints)
   const completeEditions = normalize(filters.completeEditions)
+  const title = normalize(filters.title)
+  const manuscripts = normalize(filters.manuscripts)
 
   return works.filter((work) => {
+    // Fassungen gehoeren zum Werk, ihre Nummern, Titel und Drucke zaehlen mit.
+    const expressions = getExpressions(work)
+    if (filters.lv.trim() && ![work, ...expressions].some((item) => matchesLv(item, filters.lv))) {
+      return false
+    }
+    if (
+      title &&
+      ![work.preferredTitle ?? '', ...work.variantTitles, ...expressions.flatMap((e) => [e.preferredTitle ?? '', ...e.variantTitles])].some(
+        (value) => normalize(value).includes(title),
+      )
+    ) {
+      return false
+    }
     if (
       filters.textAuthors.length > 0 &&
       !filters.textAuthors.some((author) => work.textAuthors.includes(author))
@@ -61,6 +92,20 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
       return false
     }
     if (prints && !work.prints.some((value) => normalize(value).includes(prints))) {
+      return false
+    }
+    if (
+      (filters.yearFrom || filters.yearTo) &&
+      ![...work.prints, ...expressions.flatMap((expression) => expression.prints)].some((siglum) =>
+        inYearRange(printYear(siglum), filters.yearFrom, filters.yearTo),
+      )
+    ) {
+      return false
+    }
+    if (
+      manuscripts &&
+      !getManuscripts(work).some((manuscript) => normalize(manuscript.rismSiglum ?? '').includes(manuscripts))
+    ) {
       return false
     }
     if (
@@ -93,7 +138,7 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
           ...work.languages,
           // Fassungen gehoeren zum Werk: Wer nach ihrer LV-Nummer, ihrem Titel
           // oder Druck sucht, soll das Werk finden.
-          ...getExpressions(work).flatMap((expression) => [
+          ...expressions.flatMap((expression) => [
             expression.lv,
             expression.preferredTitle ?? '',
             ...expression.variantTitles,

@@ -108,6 +108,23 @@ export interface EntriesFile {
   items: CatalogueEntry[]
 }
 
+// Ein Druck, identifiziert ueber das Sigel aus dem LV-Katalog (etwa "1555-1",
+// Jahr und laufende Nummer). Die Eintraege verweisen per firstPrint auf das Sigel.
+export interface Print {
+  '@id': string
+  '@type': 'Print'
+  siglum: string
+  year: number | null
+  no: number | null
+  rism: string | null
+  entryCount: number
+}
+
+export interface PrintsFile {
+  '@context': string
+  items: Print[]
+}
+
 // Ein Zeugnis entspricht einem Lasso-Stueck in einer Handschrift, nicht dem
 // Werk selbst. Dieselbe Komposition kann in mehreren Handschriften
 // ueberliefert sein, und eine Handschrift kann mehrere Stuecke enthalten.

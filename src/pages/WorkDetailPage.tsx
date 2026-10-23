@@ -20,6 +20,9 @@ import TableRow from '@mui/material/TableRow'
 import Typography from '@mui/material/Typography'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { BackButton } from '../components/BackButton.tsx'
+import { Fact } from '../components/Fact.tsx'
+import { PrintLinks } from '../components/PrintLinks.tsx'
 import { SiglumChip } from '../components/SiglumChip.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
 import type { CatalogueEntry, Expression, ManuscriptWitness, Work } from '../types.ts'
@@ -38,26 +41,6 @@ import {
   textAuthorLabels,
   workSlug,
 } from '../worksData.ts'
-
-function Fact({ label, value }: { label: string; value: ReactNode }) {
-  if (!value) {
-    return null
-  }
-  return (
-    <Stack direction="row" spacing={2}>
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        sx={{ width: 180, flexShrink: 0 }}
-      >
-        {label}
-      </Typography>
-      <Typography variant="body2" sx={{ minWidth: 0, overflowWrap: 'anywhere' }}>
-        {value}
-      </Typography>
-    </Stack>
-  )
-}
 
 const URL_PATTERN = /(https?:\/\/[^\s<>"]+)/g
 
@@ -132,7 +115,9 @@ function RelatedPartsTable({ parts, focusId }: { parts: Work[]; focusId?: string
               <TableCell>{part.lv}</TableCell>
               <TableCell>{mainTitle(part)}</TableCell>
               <TableCell>{part.voiceCounts.join(', ')}</TableCell>
-              <TableCell>{part.prints.join(', ')}</TableCell>
+              <TableCell>
+                <PrintLinks sigla={part.prints} />
+              </TableCell>
               <TableCell>
                 <AuthorOrSourceText authors={textAuthorLabels(part)} sources={part.textSources} />
               </TableCell>
@@ -180,7 +165,9 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
               <TableCell sx={{ whiteSpace: 'nowrap' }}>{expression.lv}</TableCell>
               <TableCell>{mainTitle(expression)}</TableCell>
               <TableCell>{expression.voiceCounts.join(', ')}</TableCell>
-              <TableCell>{expression.prints.join(', ')}</TableCell>
+              <TableCell>
+                <PrintLinks sigla={expression.prints} />
+              </TableCell>
               <TableCell>
                 <AuthorOrSourceText authors={textAuthorLabels(expression)} sources={expression.textSources} />
               </TableCell>
@@ -213,7 +200,7 @@ function EntriesAccordion({ entries }: { entries: CatalogueEntry[] }) {
             </AccordionSummary>
             <AccordionDetails>
               <Stack spacing={1.5}>
-                <Fact label="Druck" value={entry.firstPrint ?? ''} />
+                <Fact label="Druck" value={entry.firstPrint ? <PrintLinks sigla={[entry.firstPrint]} /> : ''} />
                 <Fact label="Titel" value={entry.title ?? ''} />
                 <Fact label="Stimmen" value={entry.voices ?? ''} />
                 <Fact
@@ -379,9 +366,7 @@ export function WorkDetailPage() {
 
   return (
     <Container maxWidth="md" sx={{ py: { xs: 2, sm: 3 }, overflowY: 'auto', flex: 1, minHeight: 0 }}>
-      <Button component={RouterLink} to="/" startIcon={<ArrowBackIcon />} sx={{ mb: 2 }}>
-        Zurück zur Übersicht
-      </Button>
+      <BackButton overviewPath="/" />
 
       {baseWork && (
         <Alert severity="info" sx={{ mb: 2 }}>
@@ -407,7 +392,10 @@ export function WorkDetailPage() {
           <Fact label="Gattung" value={work.genres.join(', ')} />
           <Fact label="Sprache" value={work.languages.join(', ')} />
           <Fact label="Stimmen" value={work.voiceCounts.join(', ')} />
-          <Fact label="Erstdruck" value={firstEntry?.firstPrint ?? ''} />
+          <Fact
+            label="Erstdruck"
+            value={firstEntry?.firstPrint ? <PrintLinks sigla={[firstEntry.firstPrint]} /> : ''}
+          />
           <Fact
             label={authorOrSourceLabel(work.textAuthors.length > 0, work.textSources.length > 0)}
             value={<AuthorOrSourceText authors={textAuthorLabels(work)} sources={work.textSources} />}

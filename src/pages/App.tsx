@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { HashRouter, Link as RouterLink, Route, Routes, useLocation } from 'react-router-dom'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Box from '@mui/material/Box'
@@ -8,15 +8,39 @@ import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
 import { InfoDialog } from './InfoDialog.tsx'
+import { PrintDetailPage } from './PrintDetailPage.tsx'
+import { PrintsPage } from './PrintsPage.tsx'
 import { WorksPage } from './WorksPage.tsx'
 import { WorkDetailPage } from './WorkDetailPage.tsx'
+import { defaultPrintsFilters, type PrintsFilters } from '../search/filterPrints.ts'
 import { defaultWorksFilters, type WorksFilters } from '../search/filterWorks.ts'
+
+// Hauptbereiche Werke und Drucke. Die Detailseiten zaehlen zu ihrem Bereich.
+function MainNav() {
+  const { pathname } = useLocation()
+  const section = pathname.startsWith('/druck') ? 'drucke' : 'werke'
+  return (
+    <Tabs
+      value={section}
+      textColor="inherit"
+      sx={{ minHeight: 40, '& .MuiTab-root': { minHeight: 40, minWidth: 0, px: 1.5 } }}
+    >
+      <Tab label="Werke" value="werke" component={RouterLink} to="/" />
+      <Tab label="Drucke" value="drucke" component={RouterLink} to="/drucke" />
+    </Tabs>
+  )
+}
 
 function App() {
   const [infoOpen, setInfoOpen] = useState(false)
   const [filters, setFilters] = useState<WorksFilters>(defaultWorksFilters)
+  // Wie die Werkfilter hier gehalten, damit die Suche beim Wechsel zur
+  // Detailseite und zurueck erhalten bleibt.
+  const [printsFilters, setPrintsFilters] = useState<PrintsFilters>(defaultPrintsFilters)
 
   return (
     <HashRouter>
@@ -45,9 +69,16 @@ function App() {
               />
             </Link>
             <Divider orientation="vertical" flexItem sx={{ borderColor: 'currentColor', opacity: 0.2 }} />
-            <Typography variant="h6" component="h1" sx={{ lineHeight: 1.2, flexGrow: 1 }}>
-              Orlando di Lasso | Werke
+            <Typography
+              variant="h6"
+              component="h1"
+              sx={{ lineHeight: 1.2, display: { xs: 'none', sm: 'block' } }}
+            >
+              Orlando di Lasso
             </Typography>
+            <Box sx={{ flexGrow: 1 }}>
+              <MainNav />
+            </Box>
             <Tooltip title="Informationen zum Projekt">
               <IconButton
                 color="inherit"
@@ -64,6 +95,8 @@ function App() {
         <Routes>
           <Route path="/" element={<WorksPage filters={filters} onFiltersChange={setFilters} />} />
           <Route path="/werk/:slug" element={<WorkDetailPage />} />
+          <Route path="/drucke" element={<PrintsPage filters={printsFilters} onFiltersChange={setPrintsFilters} />} />
+          <Route path="/druck/:siglum" element={<PrintDetailPage />} />
         </Routes>
       </Box>
     </HashRouter>
