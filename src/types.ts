@@ -145,7 +145,9 @@ export interface Print {
   // Verweise auf andere Verzeichnisse. Neu ein Feld je Verzeichnis
   // ({ RISM: "1581 a [L 924", Boetticher: "1581 e" }), im aelteren Datenstand
   // eine Liste ("Boetticher 1555 a"); siehe printReferences in worksData.
-  references: string[] | Record<string, string>
+  // Werte mit undefined, weil TypeScript beim Import der JSON-Datei jedem
+  // Druck die Verzeichnisse der uebrigen als optionale Felder zuschreibt.
+  references: string[] | Record<string, string | undefined>
   // Link auf RISM Online, ermittelt aus der RISM-Nummer im Verzeichnis.
   // Ein Indiz, keine bestaetigte Zuordnung wie rism.
   rismCatalogue?: string | null

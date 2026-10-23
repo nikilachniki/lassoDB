@@ -338,7 +338,9 @@ function allPrintReferences(print: Print): PrintReference[] {
   if (Array.isArray(print.references)) {
     return print.references.map((value) => ({ catalogue: null, value }))
   }
-  return Object.entries(print.references ?? {}).map(([catalogue, value]) => ({ catalogue, value }))
+  return Object.entries(print.references ?? {})
+    .filter((pair): pair is [string, string] => typeof pair[1] === 'string')
+    .map(([catalogue, value]) => ({ catalogue, value }))
 }
 
 // Die Verweise ausser RISM, das gesondert steht (printRism)
