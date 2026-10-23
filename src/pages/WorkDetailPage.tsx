@@ -420,7 +420,7 @@ export function WorkDetailPage() {
             // Kommt man ueber einen Teil aus der Werktabelle, ist der Abschnitt
             // offen, damit der markierte Teil sichtbar ist.
             <Section
-              title="Weitere Teile dieses Werks"
+              title={baseWork ? 'Weitere Teile dieses Werks' : 'Teile dieses Werks'}
               count={relatedParts.length}
               defaultExpanded={relatedParts.some((part) => part['@id'] === focusPart)}
             >
