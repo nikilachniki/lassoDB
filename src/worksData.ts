@@ -322,3 +322,47 @@ export function getWorkPrints(work: Work): WorkInPrint[] {
 export function workPrintSigla(work: Work): string[] {
   return getWorkPrints(work).map((item) => item.siglum)
 }
+
+// Ein Verweis auf ein anderes Verzeichnis, etwa Boetticher "1581 e"
+export interface PrintReference {
+  catalogue: string | null
+  value: string
+}
+
+const isRismReference = (reference: PrintReference) =>
+  reference.catalogue === 'RISM' || (reference.catalogue === null && reference.value.startsWith('RISM '))
+
+// Die Verweise eines Drucks in einheitlicher Form, fuer beide Datenstaende
+// (Liste oder ein Feld je Verzeichnis, siehe Print.references)
+function allPrintReferences(print: Print): PrintReference[] {
+  if (Array.isArray(print.references)) {
+    return print.references.map((value) => ({ catalogue: null, value }))
+  }
+  return Object.entries(print.references ?? {}).map(([catalogue, value]) => ({ catalogue, value }))
+}
+
+// Die Verweise ausser RISM, das gesondert steht (printRism)
+export function printReferences(print: Print): PrintReference[] {
+  return allPrintReferences(print).filter((reference) => !isRismReference(reference))
+}
+
+// RISM-Angabe eines Drucks. Eine bestaetigte Zuordnung (rism) geht dem Link
+// aus dem Druckeverzeichnis (rismCatalogue) vor.
+export interface PrintRismInfo {
+  url: string | null
+  confirmed: boolean
+  // Reihennummer bzw. Verweis, etwa "A/I L 757" oder "1555 c [L 757"
+  label: string | null
+}
+
+export function printRism(print: Print): PrintRismInfo | null {
+  const reference = allPrintReferences(print).find(isRismReference)
+  const referenceLabel = reference ? reference.value.replace(/^RISM\s+/, '') : null
+  const confirmedUrl = print.rism?.startsWith('http') ? print.rism : null
+  const label = print.rismSeries.join('; ') || referenceLabel
+  const url = confirmedUrl ?? print.rismCatalogue ?? null
+  if (!url && !label) {
+    return null
+  }
+  return { url, confirmed: confirmedUrl !== null, label }
+}

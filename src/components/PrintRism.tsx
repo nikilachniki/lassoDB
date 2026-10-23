@@ -1,20 +1,69 @@
+import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
+import Tooltip from '@mui/material/Tooltip'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import type { Print } from '../types.ts'
+import { printRism } from '../worksData.ts'
 
-// RISM-Angabe eines Drucks: die Reihennummern (etwa "A/I L 955"), verlinkt
-// auf RISM Online, wenn die Kennung eine Adresse ist. Ohne bestaetigte
-// Zuordnung (lassoDBData, docs/entscheidungen.md, Abschnitt 25) leer.
-export function PrintRism({ print }: { print: Print }) {
-  const label = print.rismSeries.join('; ') || print.rism
-  if (!label) {
+// Abzeichen "RISM", das den Druck in RISM Online oeffnet, im Stil der
+// GND/VIAF-Badges der Textdichter. Steht ueberall, wo ein Druck erscheint,
+// damit der Weg zur Quelle immer sichtbar ist. Ohne Link nichts.
+// stopPropagation verhindert, dass der Klick zugleich die umgebende Zeile
+// bzw. das Akkordeon ausloest.
+export function RismBadge({ print }: { print: Print }) {
+  const rism = printRism(print)
+  if (!rism?.url) {
     return null
   }
-  if (print.rism?.startsWith('http')) {
-    return (
-      <Link href={print.rism} target="_blank" rel="noopener noreferrer" onClick={(event) => event.stopPropagation()}>
-        {print.rismSeries.join('; ') || 'RISM Online'}
+  const basis = rism.confirmed ? '' : ' (laut Druckeverzeichnis)'
+  return (
+    <Tooltip title={`RISM ${rism.label ?? ''}${basis} – in RISM Online öffnen`.replace('  ', ' ')}>
+      <Link
+        href={rism.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="In RISM Online öffnen"
+        onClick={(event) => event.stopPropagation()}
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 0.25,
+          px: 0.75,
+          height: 20,
+          borderRadius: 0.75,
+          fontSize: '0.7rem',
+          fontWeight: 700,
+          lineHeight: 1,
+          color: '#fff',
+          backgroundColor: 'authority.rism',
+          textDecoration: 'none',
+          verticalAlign: 'middle',
+          flexShrink: 0,
+          '&:hover': { filter: 'brightness(1.15)' },
+        }}
+      >
+        RISM
+        <OpenInNewIcon sx={{ fontSize: 12 }} />
       </Link>
-    )
+    </Tooltip>
+  )
+}
+
+// RISM-Angabe als Wert der Detailseiten: Abzeichen und Nummer
+export function PrintRism({ print }: { print: Print }) {
+  const rism = printRism(print)
+  if (!rism) {
+    return null
   }
-  return <>{label}</>
+  return (
+    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+      <RismBadge print={print} />
+      {rism.label}
+      {rism.url && !rism.confirmed && (
+        <Box component="span" sx={{ color: 'text.secondary' }}>
+          (laut Druckeverzeichnis, noch nicht bestätigt)
+        </Box>
+      )}
+    </Box>
+  )
 }

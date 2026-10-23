@@ -13,15 +13,16 @@ const brandBlueLight = '#7c93cf'
 
 // Eigene Paletteneintraege fuer Farben, die keine MUI-Rolle haben, aber an
 // mehreren Stellen gleich aussehen muessen: das Gelb der Suchtreffer (Markierung
-// im Text und Balken an der Trefferzeile) und die Normdaten-Badges.
+// im Text und Balken an der Trefferzeile) und die Normdaten-Badges (GND,
+// VIAF, RISM).
 declare module '@mui/material/styles' {
   interface Palette {
     highlight: { mark: string; bar: string }
-    authority: { gnd: string; viaf: string }
+    authority: { gnd: string; viaf: string; rism: string }
   }
   interface PaletteOptions {
     highlight?: { mark: string; bar: string }
-    authority?: { gnd: string; viaf: string }
+    authority?: { gnd: string; viaf: string; rism: string }
   }
 }
 
@@ -33,7 +34,7 @@ export const theme = createTheme(
           primary: { main: brandBlue, dark: brandNavy, light: brandBlueLight },
           background: { default: '#F5F6FA' },
           highlight: { mark: 'rgba(255, 213, 0, 0.5)', bar: '#f2c200' },
-          authority: { gnd: '#1a5fb4', viaf: '#26a269' },
+          authority: { gnd: '#1a5fb4', viaf: '#26a269', rism: '#9b2335' },
         },
       },
       dark: {
@@ -42,7 +43,7 @@ export const theme = createTheme(
           // Auf dunklem Grund wuerde das halbtransparente Gelb den hellen Text
           // ueberstrahlen, daher schwaecher.
           highlight: { mark: 'rgba(255, 213, 0, 0.35)', bar: '#f2c200' },
-          authority: { gnd: '#1a5fb4', viaf: '#26a269' },
+          authority: { gnd: '#1a5fb4', viaf: '#26a269', rism: '#9b2335' },
         },
       },
     },

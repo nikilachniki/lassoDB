@@ -138,6 +138,21 @@ export interface Print {
   rism: string | null
   // Nummern in den RISM-Reihen, etwa "A/I L 955"
   rismSeries: string[]
+  // Angaben aus dem Druckeverzeichnis (lassoDBData, entscheidungen.md,
+  // Abschnitt 26), diplomatisch uebernommen.
+  // Ueberschrift unter der Sigle, etwa "Nachdruck von 1555-1"
+  description: string | null
+  // Verweise auf andere Verzeichnisse. Neu ein Feld je Verzeichnis
+  // ({ RISM: "1581 a [L 924", Boetticher: "1581 e" }), im aelteren Datenstand
+  // eine Liste ("Boetticher 1555 a"); siehe printReferences in worksData.
+  references: string[] | Record<string, string>
+  // Link auf RISM Online, ermittelt aus der RISM-Nummer im Verzeichnis.
+  // Ein Indiz, keine bestaetigte Zuordnung wie rism.
+  rismCatalogue?: string | null
+  // Titelblatt, Zeilenwechsel als "|", Zusaetze des Verzeichnisses in ⟨⟩
+  title: string | null
+  // Stimmbuecher, durch ";" getrennt, oder "Chorbuch"
+  partbooks: string | null
   // Werke mit Erstdruck in diesem Druck (Eintraege)
   entryCount: number
   // Alle Werke in diesem Druck laut Register

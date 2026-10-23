@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createFilterOptions } from '@mui/material/Autocomplete'
+import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Paper from '@mui/material/Paper'
 import { DataGrid, type GridColDef, type GridRenderCellParams, type GridRowParams } from '@mui/x-data-grid'
@@ -8,11 +9,16 @@ import { FilterBar, type FilterField } from '../search/FilterBar.tsx'
 import { multiField, textField, yearRangeField } from '../search/filterFields.tsx'
 import { defaultPrintsFilters, filterPrints, printSummaries, type PrintsFilters } from '../search/filterPrints.ts'
 import { Highlight } from '../search/Highlight.tsx'
-import { getPerson, printPath, textAuthorSearchNames } from '../worksData.ts'
+import { RismBadge } from '../components/PrintRism.tsx'
+import type { Print } from '../types.ts'
+import { getPerson, printPath, printRism, textAuthorSearchNames } from '../worksData.ts'
 
 interface Row {
   id: string
   siglum: string
+  description: string
+  print: Print
+  // RISM-Nummer als Text, fuer Sortierung und Export; angezeigt wird das Abzeichen
   rism: string
   workCount: number
   firstPrintCount: number
@@ -25,7 +31,7 @@ interface Row {
 // damit die Drucke chronologisch und nach laufender Nummer stehen.
 const siglumComparator = (a: string, b: string) => a.localeCompare(b, 'de', { numeric: true })
 
-const hasRism = printSummaries.some((summary) => summary.print.rismSeries.length > 0)
+const hasRism = printSummaries.some((summary) => printRism(summary.print)?.url)
 
 function collect<T>(pick: (summary: (typeof printSummaries)[number]) => T[]): T[] {
   return Array.from(new Set(printSummaries.flatMap(pick)))
@@ -44,6 +50,9 @@ const languageOptions = collect((summary) => summary.languages).sort((a, b) => a
 const fields: FilterField<PrintsFilters>[] = [
   textField('siglum', 'Sigel', 'z. B. 1555-1', 140),
   yearRangeField('yearFrom', 'yearTo', 'Jahr'),
+  textField('description', 'Beschreibung', 'z. B. Nachdruck', 180),
+  textField('printTitle', 'Drucktitel', 'z. B. Madrigali', 200),
+  textField('references', 'Verweis', 'z. B. Boetticher 1567', 200),
   textField('lv', 'Enthält LV-Nummer', 'z. B. 100 oder 100-2', 150),
   textField('title', 'Enthält Titel', 'z. B. Passio', 200),
   multiField(
@@ -65,12 +74,36 @@ const fields: FilterField<PrintsFilters>[] = [
 ]
 
 function createColumns(query: string): GridColDef<Row>[] {
-  const highlighted = (field: 'siglum' | 'rism' | 'genres' | 'languages') => ({
+  const highlighted = (field: 'siglum' | 'description' | 'genres' | 'languages') => ({
     renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row[field]} query={query} />,
   })
   return [
     { field: 'siglum', headerName: 'Sigel', width: 120, sortComparator: siglumComparator, ...highlighted('siglum') },
-    ...(hasRism ? [{ field: 'rism', headerName: 'RISM', width: 140, ...highlighted('rism') }] : []),
+    {
+      field: 'description',
+      headerName: 'Beschreibung',
+      flex: 2,
+      minWidth: 220,
+      renderCell: (params: GridRenderCellParams<Row>) => (
+        <Box
+          component="span"
+          title={params.row.description}
+          sx={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        >
+          <Highlight text={params.row.description} query={query} />
+        </Box>
+      ),
+    },
+    ...(hasRism
+      ? [
+          {
+            field: 'rism',
+            headerName: 'RISM',
+            width: 80,
+            renderCell: (params: GridRenderCellParams<Row>) => <RismBadge print={params.row.print} />,
+          },
+        ]
+      : []),
     { field: 'workCount', headerName: 'Werke', type: 'number', width: 80 },
     {
       field: 'firstPrintCount',
@@ -98,7 +131,9 @@ export function PrintsPage({ filters, onFiltersChange }: PrintsPageProps) {
       filterPrints(printSummaries, filters).map((summary) => ({
         id: summary.print['@id'],
         siglum: summary.print.siglum,
-        rism: summary.print.rismSeries.join('; '),
+        description: summary.print.description ?? '',
+        print: summary.print,
+        rism: printRism(summary.print)?.label ?? '',
         workCount: summary.contents.length,
         firstPrintCount: summary.print.entryCount,
         voiceCounts: summary.voiceCounts.join(', '),
@@ -120,7 +155,7 @@ export function PrintsPage({ filters, onFiltersChange }: PrintsPageProps) {
         onFiltersChange={onFiltersChange}
         defaultFilters={defaultPrintsFilters}
         fields={fields}
-        placeholder={`Drucke durchsuchen – Sigel, Jahr, Gattung, Sprache${hasRism ? ', RISM' : ''} …`}
+        placeholder="Drucke durchsuchen – Sigel, Jahr, Beschreibung, Titel, Verweise, Gattung …"
       />
       <Paper variant="outlined" sx={{ flex: 1, minHeight: 0, display: 'flex' }}>
         <DataGrid

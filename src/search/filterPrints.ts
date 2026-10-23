@@ -1,5 +1,13 @@
 import type { Print } from '../types'
-import { getParts, getPrintContents, printYear, prints, type WorkInPrint } from '../worksData'
+import {
+  getParts,
+  getPrintContents,
+  printReferences,
+  printRism,
+  printYear,
+  prints,
+  type WorkInPrint,
+} from '../worksData'
 import { inYearRange, matchesLv } from './filterFields'
 
 // Ein Druck mit den zusammengefassten Angaben seiner Werke, Grundlage fuer
@@ -38,6 +46,9 @@ export const printSummaries: PrintSummary[] = prints.map((print) => {
 export interface PrintsFilters {
   query: string
   siglum: string
+  description: string
+  printTitle: string
+  references: string
   yearFrom: string
   yearTo: string
   lv: string
@@ -51,6 +62,9 @@ export interface PrintsFilters {
 export const defaultPrintsFilters: PrintsFilters = {
   query: '',
   siglum: '',
+  description: '',
+  printTitle: '',
+  references: '',
   yearFrom: '',
   yearTo: '',
   lv: '',
@@ -63,12 +77,27 @@ export const defaultPrintsFilters: PrintsFilters = {
 
 const normalize = (value: string) => value.trim().toLocaleLowerCase('de-DE')
 
+// Titelblaetter sind diplomatisch wiedergegeben: Zeilenwechsel "|", Trennstrich
+// "=" und kombinierende Zeichen (m̄, uͤ). Fuer die Suche fallen sie weg, damit
+// "primo libro" auch ueber einen Zeilenwechsel hinweg trifft.
+const normalizeTitle = (value: string) =>
+  normalize(
+    value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/=\s*\|\s*/g, '')
+      .replace(/\s*\|\s*/g, ' '),
+  )
+
 // Die Listenfilter (Textdichter, Stimmen, Gattung, Sprache) treffen einen
 // Druck, wenn mindestens eines seiner Werke passt, wie bei den Werken.
 export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters): PrintSummary[] {
   const query = normalize(filters.query)
   const siglum = normalize(filters.siglum)
   const title = normalize(filters.title)
+  const description = normalize(filters.description)
+  const printTitle = normalize(filters.printTitle)
+  const references = normalize(filters.references)
   const anyOf = <T>(selected: T[], values: T[]) =>
     selected.length === 0 || selected.some((value) => values.includes(value))
 
@@ -77,6 +106,20 @@ export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters):
       return false
     }
     if (!inYearRange(summary.year, filters.yearFrom, filters.yearTo)) {
+      return false
+    }
+    if (description && !normalize(summary.print.description ?? '').includes(description)) {
+      return false
+    }
+    if (printTitle && !normalizeTitle(summary.print.title ?? '').includes(normalizeTitle(filters.printTitle))) {
+      return false
+    }
+    if (
+      references &&
+      ![...printReferences(summary.print), { catalogue: 'RISM', value: printRism(summary.print)?.label ?? '' }].some(
+        (reference) => normalize(`${reference.catalogue ?? ''} ${reference.value}`).includes(references),
+      )
+    ) {
       return false
     }
     // Das Register fuehrt Gesamtwerke; "100-2" soll den Druck trotzdem finden,
@@ -112,7 +155,11 @@ export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters):
         [
           summary.print.siglum,
           summary.year ?? '',
-          ...summary.print.rismSeries,
+          printRism(summary.print)?.label ?? '',
+          summary.print.description ?? '',
+          normalizeTitle(summary.print.title ?? ''),
+          summary.print.partbooks ?? '',
+          ...printReferences(summary.print).map((reference) => `${reference.catalogue ?? ''} ${reference.value}`),
           ...summary.genres,
           ...summary.languages,
         ].join(' '),

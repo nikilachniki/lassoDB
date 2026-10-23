@@ -22,7 +22,7 @@ export function PrintChip({
   const navigate = useNavigate()
   const print = findPrintBySiglum(siglum)
   const year = print?.dateApproximate ? formatPrintYear(print) : ''
-  const tooltip = [siglum, firstPrint ? 'Erstdruck' : '', year].filter(Boolean).join(' – ')
+  const tooltip = [siglum, firstPrint ? 'Erstdruck' : '', year, print?.description ?? ''].filter(Boolean).join(' – ')
   return (
     <Tooltip title={tooltip}>
       <Chip

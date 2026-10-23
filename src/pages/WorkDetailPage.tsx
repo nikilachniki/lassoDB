@@ -22,9 +22,11 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { BackButton } from '../components/BackButton.tsx'
 import { Fact } from '../components/Fact.tsx'
+import { Section } from '../components/Section.tsx'
 import { PrintChip } from '../components/PrintChip.tsx'
 import { PrintLinks } from '../components/PrintLinks.tsx'
-import { PrintRism } from '../components/PrintRism.tsx'
+import { PrintRism, RismBadge } from '../components/PrintRism.tsx'
+import { PrintTitlePage, TextWithPrintLinks } from '../components/PrintText.tsx'
 import { SiglumChip } from '../components/SiglumChip.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
 import type { Expression, ManuscriptWitness, Work } from '../types.ts'
@@ -39,6 +41,7 @@ import {
   entryTextAuthorLabels,
   getSortedEntries,
   getWorkPrints,
+  printRism,
   isBaseWork,
   mainTitle,
   textAuthorLabels,
@@ -186,10 +189,18 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
   )
 }
 
-// Kurzangabe in der geschlossenen Zeile eines Drucks: der Zusatz, bei
-// Erstdrucken der Titel in der Schreibung des Drucks.
-function workPrintSummary(item: WorkInPrint): string {
-  return [item.note ?? '', item.entries[0]?.title ?? ''].filter(Boolean).join(' · ')
+// Kurzangabe in der geschlossenen Zeile eines Drucks: Beschreibung aus dem
+// Druckeverzeichnis (etwa "Nachdruck von 1555-1", Sigel verlinkt) und Zusatz,
+// bei Erstdrucken der Titel in der Schreibung des Drucks.
+function WorkPrintSummary({ item }: { item: WorkInPrint }) {
+  const rest = [item.note ?? '', item.entries[0]?.title ?? ''].filter(Boolean)
+  return (
+    <Typography variant="body2">
+      {item.print?.description && <TextWithPrintLinks text={item.print.description} />}
+      {item.print?.description && rest.length > 0 && ' · '}
+      {rest.join(' · ')}
+    </Typography>
+  )
 }
 
 // Alle Drucke eines Werks, wie die Handschriften als aufklappbare Karten.
@@ -203,37 +214,75 @@ function PrintsAccordion({ items }: { items: WorkInPrint[] }) {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
               <PrintChip siglum={item.siglum} firstPrint={item.entries.length > 0} sx={{ flexShrink: 0 }} />
-              <Typography variant="body2">{workPrintSummary(item)}</Typography>
+              {item.print && <RismBadge print={item.print} />}
+              <WorkPrintSummary item={item} />
             </Stack>
           </AccordionSummary>
           <AccordionDetails>
-            <Stack spacing={1.5}>
-              <Fact label="Druck" value={<PrintLinks sigla={[item.siglum]} />} />
-              <Fact label="Zusatz" value={item.note ?? ''} />
-              <Fact
-                label="RISM"
-                value={item.print && (item.print.rism || item.print.rismSeries.length > 0) ? <PrintRism print={item.print} /> : ''}
-              />
-              {item.entries.map((entry) => {
-                const authors = entryTextAuthorLabels(entry)
-                const sources = entry.textSource ? [entry.textSource] : []
-                return (
-                  <Stack key={entry['@id']} spacing={1.5}>
-                    <Fact label="Erstdruck" value={entry.lv && entry.lv !== item.work.lv ? `ja, Fassung LV ${entry.lv}` : 'ja'} />
-                    <Fact label="Titel im Druck" value={entry.title ?? ''} />
-                    <Fact label="Stimmen" value={entry.voices ?? ''} />
-                    <Fact
-                      label={authorOrSourceLabel(authors.length > 0, sources.length > 0)}
-                      value={<AuthorOrSourceText authors={authors} sources={sources} />}
-                    />
-                    <Fact label="Gesamtausgabe" value={entry.completeEdition ?? ''} />
-                    <Fact label="Gattung" value={entry.genre ?? ''} />
-                    <Fact label="Sprache" value={entry.language ?? ''} />
-                    <Fact label="Bemerkung" value={entry.note ?? ''} />
-                  </Stack>
-                )
-              })}
-            </Stack>
+            {/* Breit zweispaltig wie auf der Druckseite: links die Angaben,
+                rechts das Titelblatt; schmal untereinander. */}
+            <Box
+              sx={{
+                display: 'grid',
+                gap: { xs: 2, md: 3 },
+                gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: item.print?.title ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)' },
+                alignItems: 'start',
+              }}
+            >
+              <Stack spacing={1.5}>
+                <Fact
+                  label="Stimmbücher"
+                  labelWidth={130}
+                  value={item.print?.partbooks ?? ''}
+                />
+                <Fact label="Zusatz" labelWidth={130} value={item.note ?? ''} />
+                <Fact
+                  label="RISM"
+                  labelWidth={130}
+                  value={item.print && printRism(item.print) ? <PrintRism print={item.print} /> : ''}
+                />
+                {item.entries.map((entry) => {
+                  // Die Werkangaben oben sind aus den Erstdrucken zusammengefasst;
+                  // hier steht deshalb nur, was im Druck davon abweicht.
+                  const work = item.work
+                  const differs = <T,>(value: T | null, workValues: T[]) =>
+                    value !== null && value !== '' && !(workValues.length === 1 && workValues[0] === value)
+                  // Textdichter ueber die Person verglichen, nicht ueber die Schreibung
+                  // ("Petrarca" im Druck, "Francesco Petrarca" am Werk)
+                  const sameAuthor = entry.textAuthorPerson
+                    ? !differs(entry.textAuthorPerson, work.textAuthors)
+                    : !entry.textAuthor && !differs(entry.textSource, work.textSources)
+                  const authors = sameAuthor ? [] : entryTextAuthorLabels(entry)
+                  const sources = !sameAuthor && entry.textSource ? [entry.textSource] : []
+                  const facts = [
+                    { label: 'Titel im Druck', value: differs(entry.title, [mainTitle(work)]) ? entry.title : null },
+                    { label: 'Stimmen', value: differs(entry.voices, work.voiceCounts) ? entry.voices : null },
+                    {
+                      label: authorOrSourceLabel(authors.length > 0, sources.length > 0),
+                      value: authors.length + sources.length > 0 ? <AuthorOrSourceText authors={authors} sources={sources} /> : null,
+                    },
+                    { label: 'Gesamtausgabe', value: differs(entry.completeEdition, work.completeEditions) ? entry.completeEdition : null },
+                    { label: 'Gattung', value: differs(entry.genre, work.genres) ? entry.genre : null },
+                    { label: 'Sprache', value: differs(entry.language, work.languages) ? entry.language : null },
+                    { label: 'Bemerkung', value: entry.note },
+                  ].filter((fact) => fact.value !== null && fact.value !== '')
+                  if (facts.length === 0) {
+                    return null
+                  }
+                  return (
+                    <Stack key={entry['@id']} spacing={1.5} sx={{ pt: 1.5, borderTop: 1, borderColor: 'divider' }}>
+                      <Typography variant="overline" color="text.secondary" sx={{ lineHeight: 1 }}>
+                        {entry.lv && entry.lv !== work.lv ? `Im Erstdruck abweichend, Fassung LV ${entry.lv}` : 'Im Erstdruck abweichend'}
+                      </Typography>
+                      {facts.map((fact) => (
+                        <Fact key={fact.label} label={fact.label} labelWidth={130} value={fact.value} />
+                      ))}
+                    </Stack>
+                  )
+                })}
+              </Stack>
+              {item.print?.title && <PrintTitlePage title={item.print.title} />}
+            </Box>
           </AccordionDetails>
         </Accordion>
       ))}
@@ -320,42 +369,6 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
   )
 }
 
-// Ein einklappbarer Abschnitt der Detailseite, standardmaessig geschlossen.
-// unmountOnExit, weil manche Werke hunderte Handschriften haben, die sonst
-// auch zugeklappt gerendert wuerden.
-function Section({
-  title,
-  count,
-  defaultExpanded = false,
-  children,
-}: {
-  title: string
-  count: number
-  defaultExpanded?: boolean
-  children: ReactNode
-}) {
-  return (
-    <Accordion
-      defaultExpanded={defaultExpanded}
-      disableGutters
-      elevation={0}
-      square
-      slotProps={{ transition: { unmountOnExit: true } }}
-      sx={{ '&::before': { display: 'none' }, borderTop: 1, borderColor: 'divider' }}
-    >
-      <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0 }}>
-        <Typography variant="h6" component="h3">
-          {title}{' '}
-          <Typography component="span" color="text.secondary">
-            ({count})
-          </Typography>
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails sx={{ px: 0, pt: 0 }}>{children}</AccordionDetails>
-    </Accordion>
-  )
-}
-
 export function WorkDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const focusPart = (useLocation().state as { focusPart?: string } | null)?.focusPart
@@ -409,21 +422,36 @@ export function WorkDetailPage() {
           {mainTitle(work)}
         </Typography>
 
-        <Stack spacing={1.5}>
-          <Fact label="Weitere Titel" value={work.variantTitles.join(' / ')} />
-          <Fact label="Gattung" value={work.genres.join(', ')} />
-          <Fact label="Sprache" value={work.languages.join(', ')} />
-          <Fact label="Stimmen" value={work.voiceCounts.join(', ')} />
+        {/* Wie auf der Druckseite: breit in zwei Spalten, schmal untereinander.
+            Die weiteren Titel koennen lang sein und laufen ueber beide Spalten. */}
+        <Box
+          sx={{
+            display: 'grid',
+            columnGap: 4,
+            rowGap: 1.5,
+            gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' },
+          }}
+        >
+          {work.variantTitles.length > 0 && (
+            <Box sx={{ gridColumn: '1 / -1' }}>
+              <Fact label="Weitere Titel" labelWidth={130} value={work.variantTitles.join(' / ')} />
+            </Box>
+          )}
+          <Fact label="Gattung" labelWidth={130} value={work.genres.join(', ')} />
+          <Fact label="Sprache" labelWidth={130} value={work.languages.join(', ')} />
+          <Fact label="Stimmen" labelWidth={130} value={work.voiceCounts.join(', ')} />
           <Fact
             label="Erstdruck"
+            labelWidth={130}
             value={firstEntry?.firstPrint ? <PrintLinks sigla={[firstEntry.firstPrint]} /> : ''}
           />
           <Fact
             label={authorOrSourceLabel(work.textAuthors.length > 0, work.textSources.length > 0)}
+            labelWidth={130}
             value={<AuthorOrSourceText authors={textAuthorLabels(work)} sources={work.textSources} />}
           />
-          <Fact label="Gesamtausgabe" value={work.completeEditions.join(', ')} />
-        </Stack>
+          <Fact label="Gesamtausgabe" labelWidth={130} value={work.completeEditions.join(', ')} />
+        </Box>
 
         <Box sx={{ mt: 3 }}>
           {relatedParts.length > 0 && (

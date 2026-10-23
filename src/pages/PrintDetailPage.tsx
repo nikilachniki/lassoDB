@@ -15,7 +15,9 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { BackButton } from '../components/BackButton.tsx'
 import { Fact } from '../components/Fact.tsx'
-import { PrintRism } from '../components/PrintRism.tsx'
+import { PrintRism, RismBadge } from '../components/PrintRism.tsx'
+import { PrintReferences, PrintTitlePage, TextWithPrintLinks } from '../components/PrintText.tsx'
+import { Section } from '../components/Section.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
 import {
   findPrintBySiglum,
@@ -23,6 +25,8 @@ import {
   formatPrintYear,
   getPrintContents,
   mainTitle,
+  printReferences,
+  printRism,
   textAuthorLabels,
   workSlug,
   type WorkInPrint,
@@ -128,6 +132,10 @@ export function PrintDetailPage() {
   }
 
   const contents = getPrintContents(print)
+  const references = printReferences(print)
+  // Werke, die hier (ganz oder mit einem Teil) zuerst erschienen; entryCount
+  // zaehlt dagegen Eintraege, also Teile einzeln.
+  const firstPrintCount = contents.filter((content) => content.entries.length > 0).length
 
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 2, sm: 3 }, overflowY: 'auto', flex: 1, minHeight: 0 }}>
@@ -137,27 +145,60 @@ export function PrintDetailPage() {
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
           <Chip label="Druck" size="small" sx={{ fontWeight: 700 }} />
           {print.part && <Chip label={`Band ${print.part}`} size="small" variant="outlined" />}
+          <RismBadge print={print} />
         </Stack>
-        <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
+        <Typography variant="h4" component="h2">
           {print.siglum}
         </Typography>
-
-        <Stack spacing={1.5}>
-          <Fact label="Jahr" value={formatPrintYear(print)} />
-          <Fact label="RISM" value={print.rism || print.rismSeries.length > 0 ? <PrintRism print={print} /> : ''} />
-          <Fact label="Werke" value={contents.length} />
-          <Fact label="davon Erstdrucke" value={print.entryCount} />
-        </Stack>
-
-        <Typography variant="h6" component="h3" sx={{ mt: 3, mb: 1 }}>
-          Enthaltene Werke{' '}
-          <Typography component="span" color="text.secondary">
-            ({contents.length})
+        {print.description && (
+          <Typography variant="subtitle1" component="p" color="text.secondary" sx={{ fontWeight: 400, mt: 0.5 }}>
+            <TextWithPrintLinks text={print.description} />
           </Typography>
-        </Typography>
-        <Box sx={{ overflowX: 'auto' }}>
-          <PrintContentsTable contents={contents} />
+        )}
+
+        {/* Die Angaben breit in zwei Spalten, schmal untereinander. Leere
+            Angaben fallen weg, die uebrigen ruecken auf. */}
+        <Box
+          sx={{
+            mt: 3,
+            mb: 3,
+            display: 'grid',
+            columnGap: 4,
+            rowGap: 1.5,
+            gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: 'repeat(2, minmax(0, 1fr))' },
+          }}
+        >
+          <Fact label="Jahr" labelWidth={120} value={formatPrintYear(print)} />
+          <Fact
+            label="Werke"
+            labelWidth={120}
+            value={firstPrintCount > 0 ? `${contents.length}, davon ${firstPrintCount} im Erstdruck` : contents.length}
+          />
+          <Fact label="Stimmbücher" labelWidth={120} value={print.partbooks ?? ''} />
+          <Fact label="RISM" labelWidth={120} value={printRism(print) ? <PrintRism print={print} /> : ''} />
         </Box>
+
+        {print.title && (
+          // Als einziger Abschnitt offen: das Titelblatt ist die Hauptangabe des Drucks
+          <Section title="Titelblatt" defaultExpanded>
+            <Box sx={{ maxWidth: 640, mx: 'auto' }}>
+              <PrintTitlePage title={print.title} />
+            </Box>
+          </Section>
+        )}
+
+        <Section title="Enthaltene Werke" count={contents.length}>
+          <Box sx={{ overflowX: 'auto' }}>
+            <PrintContentsTable contents={contents} />
+          </Box>
+        </Section>
+
+        {references.length > 0 && (
+          // Die uebrigen Verzeichnisse sind zweitrangig, deshalb zuletzt.
+          <Section title="Weitere Verweise" count={references.length}>
+            <PrintReferences references={references} />
+          </Section>
+        )}
       </Paper>
     </Container>
   )
