@@ -22,10 +22,12 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { BackButton } from '../components/BackButton.tsx'
 import { Fact } from '../components/Fact.tsx'
+import { PrintChip } from '../components/PrintChip.tsx'
 import { PrintLinks } from '../components/PrintLinks.tsx'
+import { PrintRism } from '../components/PrintRism.tsx'
 import { SiglumChip } from '../components/SiglumChip.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
-import type { CatalogueEntry, Expression, ManuscriptWitness, Work } from '../types.ts'
+import type { Expression, ManuscriptWitness, Work } from '../types.ts'
 import {
   findRelatedParts,
   findWholeWork,
@@ -36,10 +38,12 @@ import {
   getManuscripts,
   entryTextAuthorLabels,
   getSortedEntries,
+  getWorkPrints,
   isBaseWork,
   mainTitle,
   textAuthorLabels,
   workSlug,
+  type WorkInPrint,
 } from '../worksData.ts'
 
 const URL_PATTERN = /(https?:\/\/[^\s<>"]+)/g
@@ -182,40 +186,57 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
   )
 }
 
-// Die Drucke eines Werks, wie die Handschriften als aufklappbare Karten. Der
-// Titel steht in der Schreibung des jeweiligen Drucks, nicht normalisiert.
-function EntriesAccordion({ entries }: { entries: CatalogueEntry[] }) {
+// Kurzangabe in der geschlossenen Zeile eines Drucks: der Zusatz, bei
+// Erstdrucken der Titel in der Schreibung des Drucks.
+function workPrintSummary(item: WorkInPrint): string {
+  return [item.note ?? '', item.entries[0]?.title ?? ''].filter(Boolean).join(' · ')
+}
+
+// Alle Drucke eines Werks, wie die Handschriften als aufklappbare Karten.
+// Erstdrucke tragen die Angaben des LV-Katalogs (Titel in der Schreibung des
+// Drucks, Stimmen, Textdichter ...), Nachdrucke nur die des Registers.
+function PrintsAccordion({ items }: { items: WorkInPrint[] }) {
   return (
     <Stack spacing={1}>
-      {entries.map((entry) => {
-        const authors = entryTextAuthorLabels(entry)
-        const sources = entry.textSource ? [entry.textSource] : []
-        return (
-          <Accordion key={entry['@id']} variant="outlined" disableGutters>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
-                <Chip size="small" label={entry.firstPrint ?? '–'} sx={{ flexShrink: 0 }} />
-                <Typography variant="body2">{entry.title ?? ''}</Typography>
-              </Stack>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack spacing={1.5}>
-                <Fact label="Druck" value={entry.firstPrint ? <PrintLinks sigla={[entry.firstPrint]} /> : ''} />
-                <Fact label="Titel" value={entry.title ?? ''} />
-                <Fact label="Stimmen" value={entry.voices ?? ''} />
-                <Fact
-                  label={authorOrSourceLabel(authors.length > 0, sources.length > 0)}
-                  value={<AuthorOrSourceText authors={authors} sources={sources} />}
-                />
-                <Fact label="Gesamtausgabe" value={entry.completeEdition ?? ''} />
-                <Fact label="Gattung" value={entry.genre ?? ''} />
-                <Fact label="Sprache" value={entry.language ?? ''} />
-                <Fact label="Bemerkung" value={entry.note ?? ''} />
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
-        )
-      })}
+      {items.map((item) => (
+        <Accordion key={item.siglum} variant="outlined" disableGutters>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
+              <PrintChip siglum={item.siglum} firstPrint={item.entries.length > 0} sx={{ flexShrink: 0 }} />
+              <Typography variant="body2">{workPrintSummary(item)}</Typography>
+            </Stack>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Stack spacing={1.5}>
+              <Fact label="Druck" value={<PrintLinks sigla={[item.siglum]} />} />
+              <Fact label="Zusatz" value={item.note ?? ''} />
+              <Fact
+                label="RISM"
+                value={item.print && (item.print.rism || item.print.rismSeries.length > 0) ? <PrintRism print={item.print} /> : ''}
+              />
+              {item.entries.map((entry) => {
+                const authors = entryTextAuthorLabels(entry)
+                const sources = entry.textSource ? [entry.textSource] : []
+                return (
+                  <Stack key={entry['@id']} spacing={1.5}>
+                    <Fact label="Erstdruck" value={entry.lv && entry.lv !== item.work.lv ? `ja, Fassung LV ${entry.lv}` : 'ja'} />
+                    <Fact label="Titel im Druck" value={entry.title ?? ''} />
+                    <Fact label="Stimmen" value={entry.voices ?? ''} />
+                    <Fact
+                      label={authorOrSourceLabel(authors.length > 0, sources.length > 0)}
+                      value={<AuthorOrSourceText authors={authors} sources={sources} />}
+                    />
+                    <Fact label="Gesamtausgabe" value={entry.completeEdition ?? ''} />
+                    <Fact label="Gattung" value={entry.genre ?? ''} />
+                    <Fact label="Sprache" value={entry.language ?? ''} />
+                    <Fact label="Bemerkung" value={entry.note ?? ''} />
+                  </Stack>
+                )
+              })}
+            </Stack>
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </Stack>
   )
 }
@@ -361,6 +382,7 @@ export function WorkDetailPage() {
   const relatedParts = findRelatedParts(work)
   const entries = getSortedEntries(work)
   const firstEntry = entries[0]
+  const workPrints = getWorkPrints(work)
   const manuscriptWitnesses = getManuscripts(work)
   const expressions = getExpressions(work)
 
@@ -418,9 +440,15 @@ export function WorkDetailPage() {
             </Section>
           )}
 
-          {entries.length > 0 && (
-            <Section title="Drucke" count={entries.length}>
-              <EntriesAccordion entries={entries} />
+          {workPrints.length > 0 && (
+            <Section title="Drucke" count={workPrints.length}>
+              {baseWork && (
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  Das Druckregister führt Teile nicht einzeln. Hier steht nur der Erstdruck dieses
+                  Teils, alle Drucke des Gesamtwerks stehen beim Basiswerk.
+                </Typography>
+              )}
+              <PrintsAccordion items={workPrints} />
             </Section>
           )}
 

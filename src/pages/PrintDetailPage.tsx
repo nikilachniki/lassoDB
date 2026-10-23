@@ -11,37 +11,40 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
+import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { BackButton } from '../components/BackButton.tsx'
 import { Fact } from '../components/Fact.tsx'
+import { PrintRism } from '../components/PrintRism.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
 import {
-  entryTextAuthorLabels,
   findPrintBySiglum,
+  formatCatalogNumber,
+  formatPrintYear,
   getPrintContents,
   mainTitle,
+  textAuthorLabels,
   workSlug,
-  type PrintContent,
+  type WorkInPrint,
 } from '../worksData.ts'
 
-// Die Werke eines Drucks. Titel, Stimmen und Textdichter stehen wie im Druck
-// selbst (Eintrag), nicht normalisiert; ein Klick fuehrt zum Werk.
-function PrintContentsTable({ contents }: { contents: PrintContent[] }) {
+// Die Werke eines Drucks in der Reihenfolge der Stuecke. Die Angaben stammen
+// vom Werk, weil Nachdrucke keine eigenen Eintraege haben; der Titel in der
+// Schreibung des Drucks steht, wo bekannt, im Tooltip. Ein Klick fuehrt zum Werk.
+function PrintContentsTable({ contents }: { contents: WorkInPrint[] }) {
   const navigate = useNavigate()
-  const entries = contents.map(({ entry }) => entry)
+  const works = contents.map(({ work }) => work)
   const authorOrSourceHeader = authorOrSourceLabel(
-    entries.some((entry) => entry.textAuthor),
-    entries.some((entry) => entry.textSource),
+    works.some((work) => work.textAuthors.length > 0),
+    works.some((work) => work.textSources.length > 0),
   )
-  const hasGenres = entries.some((entry) => entry.genre)
-  const hasLanguages = entries.some((entry) => entry.language)
-  const hasNotes = entries.some((entry) => entry.note)
+  const hasPieces = contents.some((content) => content.piece)
+  const hasNotes = contents.some((content) => content.note)
+  const hasGenres = works.some((work) => work.genres.length > 0)
+  const hasLanguages = works.some((work) => work.languages.length > 0)
 
   // Teile haben keine eigene Detailseite, siehe WorksPage.handleRowClick.
-  const openWork = ({ work }: PrintContent) => {
-    if (!work) {
-      return
-    }
+  const openWork = ({ work }: WorkInPrint) => {
     if (work.isPartOf) {
       navigate(`/werk/${workSlug({ '@id': work.isPartOf })}`, { state: { focusPart: work['@id'] } })
       return
@@ -54,42 +57,52 @@ function PrintContentsTable({ contents }: { contents: PrintContent[] }) {
       <Table size="small">
         <TableHead>
           <TableRow>
+            {hasPieces && <TableCell>Stück</TableCell>}
             <TableCell>LV</TableCell>
-            <TableCell>Titel im Druck</TableCell>
+            <TableCell>Titel</TableCell>
             <TableCell>Stimmen</TableCell>
             <TableCell>{authorOrSourceHeader}</TableCell>
             <TableCell>Gesamtausgabe</TableCell>
             {hasGenres && <TableCell>Gattung</TableCell>}
             {hasLanguages && <TableCell>Sprache</TableCell>}
-            {hasNotes && <TableCell>Bemerkung</TableCell>}
+            {hasNotes && <TableCell>Zusatz</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
           {contents.map((content) => {
-            const { entry, work } = content
-            const workTitle = work ? mainTitle(work) : ''
+            const { work, entries } = content
+            const printTitles = entries
+              .map((entry) => entry.title)
+              .filter((title): title is string => Boolean(title) && title !== mainTitle(work))
             return (
               <TableRow
-                key={entry['@id']}
-                hover={Boolean(work)}
+                key={`${work['@id']}|${content.siglum}`}
+                hover
                 onClick={() => openWork(content)}
-                sx={{ cursor: work ? 'pointer' : undefined }}
+                sx={{ cursor: 'pointer' }}
               >
-                <TableCell sx={{ whiteSpace: 'nowrap' }}>{entry.lv}</TableCell>
-                <TableCell title={workTitle && workTitle !== entry.title ? `Werktitel: ${workTitle}` : undefined}>
-                  {entry.title ?? workTitle}
+                {hasPieces && <TableCell sx={{ whiteSpace: 'nowrap' }}>{content.piece}</TableCell>}
+                <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                  {work.lv ?? formatCatalogNumber(work)}
+                  {entries.length > 0 && (
+                    <Tooltip title="Erstdruck: das Werk oder ein Teil davon erschien hier zum ersten Mal">
+                      <Chip label="Erstdruck" size="small" variant="outlined" sx={{ ml: 1 }} />
+                    </Tooltip>
+                  )}
                 </TableCell>
-                <TableCell>{entry.voices ?? entry.voicesRaw}</TableCell>
+                <TableCell
+                  title={printTitles.length > 0 ? `Im Druck: ${printTitles.join(' / ')}` : undefined}
+                >
+                  {mainTitle(work)}
+                </TableCell>
+                <TableCell>{work.voiceCounts.join(', ')}</TableCell>
                 <TableCell>
-                  <AuthorOrSourceText
-                    authors={entryTextAuthorLabels(entry)}
-                    sources={entry.textSource ? [entry.textSource] : []}
-                  />
+                  <AuthorOrSourceText authors={textAuthorLabels(work)} sources={work.textSources} />
                 </TableCell>
-                <TableCell>{entry.completeEdition}</TableCell>
-                {hasGenres && <TableCell>{entry.genre}</TableCell>}
-                {hasLanguages && <TableCell>{entry.language}</TableCell>}
-                {hasNotes && <TableCell>{entry.note}</TableCell>}
+                <TableCell>{work.completeEditions.join(', ')}</TableCell>
+                {hasGenres && <TableCell>{work.genres.join(', ')}</TableCell>}
+                {hasLanguages && <TableCell>{work.languages.join(', ')}</TableCell>}
+                {hasNotes && <TableCell>{content.note}</TableCell>}
               </TableRow>
             )
           })}
@@ -123,15 +136,17 @@ export function PrintDetailPage() {
       <Paper variant="outlined" sx={{ p: { xs: 2, sm: 3 } }}>
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
           <Chip label="Druck" size="small" sx={{ fontWeight: 700 }} />
+          {print.part && <Chip label={`Band ${print.part}`} size="small" variant="outlined" />}
         </Stack>
         <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
           {print.siglum}
         </Typography>
 
         <Stack spacing={1.5}>
-          <Fact label="Jahr" value={print.year ?? ''} />
-          <Fact label="Nummer" value={print.no ?? ''} />
-          <Fact label="RISM" value={print.rism ?? ''} />
+          <Fact label="Jahr" value={formatPrintYear(print)} />
+          <Fact label="RISM" value={print.rism || print.rismSeries.length > 0 ? <PrintRism print={print} /> : ''} />
+          <Fact label="Werke" value={contents.length} />
+          <Fact label="davon Erstdrucke" value={print.entryCount} />
         </Stack>
 
         <Typography variant="h6" component="h3" sx={{ mt: 3, mb: 1 }}>

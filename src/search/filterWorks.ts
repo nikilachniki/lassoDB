@@ -1,5 +1,5 @@
 import type { Work } from '../types'
-import { getExpressions, getManuscripts, printYear, textAuthorSearchNames } from '../worksData'
+import { getExpressions, getManuscripts, printYear, textAuthorSearchNames, workPrintSigla } from '../worksData'
 import { inYearRange, matchesLv } from './filterFields'
 
 export interface WorksFilters {
@@ -65,6 +65,8 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
   return works.filter((work) => {
     // Fassungen gehoeren zum Werk, ihre Nummern, Titel und Drucke zaehlen mit.
     const expressions = getExpressions(work)
+    // Alle Drucke, auch Nachdrucke und die Erstdrucke der Fassungen
+    const printSigla = workPrintSigla(work)
     if (filters.lv.trim() && ![work, ...expressions].some((item) => matchesLv(item, filters.lv))) {
       return false
     }
@@ -91,12 +93,12 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
     ) {
       return false
     }
-    if (prints && !work.prints.some((value) => normalize(value).includes(prints))) {
+    if (prints && !printSigla.some((value) => normalize(value).includes(prints))) {
       return false
     }
     if (
       (filters.yearFrom || filters.yearTo) &&
-      ![...work.prints, ...expressions.flatMap((expression) => expression.prints)].some((siglum) =>
+      !printSigla.some((siglum) =>
         inYearRange(printYear(siglum), filters.yearFrom, filters.yearTo),
       )
     ) {
@@ -132,17 +134,16 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
           ...work.variantTitles,
           ...work.textAuthors.flatMap(textAuthorSearchNames),
           ...work.textSources,
-          ...work.prints,
+          ...printSigla,
           ...work.completeEditions,
           ...work.genres,
           ...work.languages,
-          // Fassungen gehoeren zum Werk: Wer nach ihrer LV-Nummer, ihrem Titel
-          // oder Druck sucht, soll das Werk finden.
+          // Fassungen gehoeren zum Werk: Wer nach ihrer LV-Nummer oder ihrem Titel
+          // sucht, soll das Werk finden. Ihre Drucke stehen schon in printSigla.
           ...expressions.flatMap((expression) => [
             expression.lv,
             expression.preferredTitle ?? '',
             ...expression.variantTitles,
-            ...expression.prints,
           ]),
         ].join(' '),
       )

@@ -17,7 +17,11 @@ export interface Work {
   preferredTitleBasis: TitleBasis
   variantTitles: string[]
   voiceCounts: number[]
+  // Sigel der Erstdrucke, aus den Eintraegen
   prints: string[]
+  // Alle Drucke, in denen das Werk steht, auch Nachdrucke, chronologisch.
+  // Das Register fuehrt nur Grundnummern, Teile haben deshalb keine eigenen.
+  printAppearances: PrintAppearance[]
   // Personen-IDs (person:...), nicht Rohwerte, siehe Person
   textAuthors: string[]
   // Teilmenge von textAuthors, deren Zuschreibung in allen Eintraegen unsicher
@@ -33,6 +37,14 @@ export interface Work {
   // Fassungen des Werks, siehe Expression
   expressions: string[]
   entryCount: number
+}
+
+// Ein Werk in einem Druck laut Gesamtregister: Stuecknummer im Druck und
+// ein Zusatz wie "nur II." oder "Vers 8"
+export interface PrintAppearance {
+  inPrint: string
+  piece: string | null
+  note?: string
 }
 
 // Woher der preferredTitle stammt: normalisierter Titel oder frueheste Quelle
@@ -108,16 +120,28 @@ export interface EntriesFile {
   items: CatalogueEntry[]
 }
 
-// Ein Druck, identifiziert ueber das Sigel aus dem LV-Katalog (etwa "1555-1",
-// Jahr und laufende Nummer). Die Eintraege verweisen per firstPrint auf das Sigel.
+// Ein Druck, identifiziert ueber das Sigel aus dem Druckeverzeichnis (etwa
+// "1555-1", Jahr und laufende Nummer, bei mehrbaendigen Drucken mit Band wie
+// "1575-3/I"). Die Eintraege verweisen per firstPrint auf das Sigel, die Werke
+// per printAppearances auf die @id.
 export interface Print {
   '@id': string
   '@type': 'Print'
   siglum: string
   year: number | null
   no: number | null
+  // Band bei mehrbaendigen Drucken, roemisch
+  part: string | null
+  // Datierung im Register mit "ca."
+  dateApproximate: boolean
+  // RISM-Kennung (URI), nur bei bestaetigter Zuordnung
   rism: string | null
+  // Nummern in den RISM-Reihen, etwa "A/I L 955"
+  rismSeries: string[]
+  // Werke mit Erstdruck in diesem Druck (Eintraege)
   entryCount: number
+  // Alle Werke in diesem Druck laut Register
+  workCount: number
 }
 
 export interface PrintsFile {

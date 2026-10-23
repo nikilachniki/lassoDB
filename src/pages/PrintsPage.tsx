@@ -15,6 +15,7 @@ interface Row {
   siglum: string
   rism: string
   workCount: number
+  firstPrintCount: number
   voiceCounts: string
   genres: string
   languages: string
@@ -24,7 +25,7 @@ interface Row {
 // damit die Drucke chronologisch und nach laufender Nummer stehen.
 const siglumComparator = (a: string, b: string) => a.localeCompare(b, 'de', { numeric: true })
 
-const hasRism = printSummaries.some((summary) => summary.print.rism)
+const hasRism = printSummaries.some((summary) => summary.print.rismSeries.length > 0)
 
 function collect<T>(pick: (summary: (typeof printSummaries)[number]) => T[]): T[] {
   return Array.from(new Set(printSummaries.flatMap(pick)))
@@ -71,6 +72,13 @@ function createColumns(query: string): GridColDef<Row>[] {
     { field: 'siglum', headerName: 'Sigel', width: 120, sortComparator: siglumComparator, ...highlighted('siglum') },
     ...(hasRism ? [{ field: 'rism', headerName: 'RISM', width: 140, ...highlighted('rism') }] : []),
     { field: 'workCount', headerName: 'Werke', type: 'number', width: 80 },
+    {
+      field: 'firstPrintCount',
+      headerName: 'Erstdrucke',
+      description: 'Werke, die in diesem Druck zum ersten Mal erschienen sind',
+      type: 'number',
+      width: 100,
+    },
     { field: 'voiceCounts', headerName: 'Stimmen', width: 110 },
     { field: 'genres', headerName: 'Gattung', flex: 1, minWidth: 140, ...highlighted('genres') },
     { field: 'languages', headerName: 'Sprache', flex: 1, minWidth: 120, ...highlighted('languages') },
@@ -90,8 +98,9 @@ export function PrintsPage({ filters, onFiltersChange }: PrintsPageProps) {
       filterPrints(printSummaries, filters).map((summary) => ({
         id: summary.print['@id'],
         siglum: summary.print.siglum,
-        rism: summary.print.rism ?? '',
-        workCount: summary.entries.length,
+        rism: summary.print.rismSeries.join('; '),
+        workCount: summary.contents.length,
+        firstPrintCount: summary.print.entryCount,
         voiceCounts: summary.voiceCounts.join(', '),
         genres: summary.genres.join(', '),
         languages: summary.languages.join(', '),

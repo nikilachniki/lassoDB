@@ -53,12 +53,54 @@ for (const expression of expressions) {
   }
 }
 
-// Die Eintraege je Druck (Sigel), damit die Detailseite nicht jedes Mal alle
-// Eintraege durchsucht.
-const entriesBySiglum = new Map<string, CatalogueEntry[]>()
-for (const entry of entries) {
-  if (entry.firstPrint) {
-    entriesBySiglum.set(entry.firstPrint, [...(entriesBySiglum.get(entry.firstPrint) ?? []), entry])
+// Sigel chronologisch vergleichen: "1555-2" vor "1555-10", Baende in Folge
+export function comparePrintSigla(a: string, b: string): number {
+  return a.localeCompare(b, 'de', { numeric: true })
+}
+
+// Ein Werk in einem Druck. piece und note stammen aus dem Gesamtregister
+// (printAppearances), entries sind die Eintraege des LV-Katalogs, fuer die
+// dieser Druck der Erstdruck ist. Ein Druck kann beides liefern oder nur eins
+// davon: Nachdrucke haben keine Eintraege, und das Register fuehrt Teile
+// nicht eigens, sondern unter der Grundnummer.
+export interface WorkInPrint {
+  work: Work
+  siglum: string
+  print: Print | undefined
+  piece: string | null
+  note: string | null
+  entries: CatalogueEntry[]
+}
+
+// Fuer jeden Druck die enthaltenen Werke, einmal beim Laden aufgebaut. Ein
+// Eintrag eines Teils haengt am Gesamtwerk, wenn dieses laut Register im
+// Druck steht, sonst bildet er mit seinem Teil eine eigene Zeile.
+const contentsBySiglum = new Map<string, WorkInPrint[]>()
+{
+  const byKey = new Map<string, WorkInPrint>()
+  const add = (work: Work, siglum: string, piece: string | null, note: string | null) => {
+    const key = `${work['@id']}|${siglum}`
+    let content = byKey.get(key)
+    if (!content) {
+      content = { work, siglum, print: printBySiglum.get(siglum), piece, note, entries: [] }
+      byKey.set(key, content)
+      contentsBySiglum.set(siglum, [...(contentsBySiglum.get(siglum) ?? []), content])
+    }
+    return content
+  }
+  for (const work of works) {
+    for (const appearance of work.printAppearances) {
+      add(work, appearance.inPrint.replace(/^print:/, ''), appearance.piece, appearance.note ?? null)
+    }
+  }
+  for (const entry of entries) {
+    const owner = workByEntryId.get(entry['@id'])
+    if (!entry.firstPrint || !owner) {
+      continue
+    }
+    const whole = owner.isPartOf ? workById.get(owner.isPartOf) : undefined
+    const target = (whole && byKey.get(`${whole['@id']}|${entry.firstPrint}`)) ?? add(owner, entry.firstPrint, null, null)
+    target.entries.push(entry)
   }
 }
 
@@ -214,15 +256,69 @@ export function printYear(siglum: string): number | null {
   return match ? Number(match[1]) : null
 }
 
-// Ein Eintrag des Drucks zusammen mit dem Werk, zu dem er gehoert
-export interface PrintContent {
-  entry: CatalogueEntry
-  work: Work | undefined
+// Jahr eines Drucks zur Anzeige, mit "ca." bei unsicherer Datierung
+export function formatPrintYear(print: Print): string {
+  const year = printYear(print.siglum)
+  if (year === null) {
+    return ''
+  }
+  return print.dateApproximate ? `ca. ${year}` : String(year)
 }
 
-// Die Werke eines Drucks in LV-Reihenfolge
-export function getPrintContents(print: Print): PrintContent[] {
-  return (entriesBySiglum.get(print.siglum) ?? [])
-    .map((entry) => ({ entry, work: workByEntryId.get(entry['@id']) }))
-    .sort((a, b) => (a.entry.lv ?? '').localeCompare(b.entry.lv ?? '', 'de', { numeric: true }))
+// Stuecknummern wie "12", "III/1" oder "12 und 13" numerisch vergleichen,
+// Werke ohne Stuecknummer ans Ende, dort nach LV.
+function compareWorksInPrint(a: WorkInPrint, b: WorkInPrint): number {
+  if (a.piece !== b.piece) {
+    if (a.piece === null) {
+      return 1
+    }
+    if (b.piece === null) {
+      return -1
+    }
+    const byPiece = a.piece.localeCompare(b.piece, 'de', { numeric: true })
+    if (byPiece !== 0) {
+      return byPiece
+    }
+  }
+  return (a.work.lv ?? '').localeCompare(b.work.lv ?? '', 'de', { numeric: true })
+}
+
+// Die Werke eines Drucks in der Reihenfolge der Stuecke
+export function getPrintContents(print: Print): WorkInPrint[] {
+  return [...(contentsBySiglum.get(print.siglum) ?? [])].sort(compareWorksInPrint)
+}
+
+// Alle Drucke eines Werks, chronologisch: die Nachweise des Registers und die
+// Erstdrucke seiner Eintraege und Fassungen. Anders als auf der Druckseite
+// zaehlen hier nur die eigenen Eintraege, nicht die der Teile.
+export function getWorkPrints(work: Work): WorkInPrint[] {
+  const bySiglum = new Map<string, WorkInPrint>()
+  const add = (siglum: string, piece: string | null, note: string | null) => {
+    let item = bySiglum.get(siglum)
+    if (!item) {
+      item = { work, siglum, print: printBySiglum.get(siglum), piece, note, entries: [] }
+      bySiglum.set(siglum, item)
+    }
+    return item
+  }
+  for (const appearance of work.printAppearances) {
+    add(appearance.inPrint.replace(/^print:/, ''), appearance.piece, appearance.note ?? null)
+  }
+  const ownEntries = [
+    ...work.entries,
+    ...getExpressions(work).flatMap((expression) => expression.entries),
+  ]
+    .map((id) => entryById.get(id))
+    .filter((entry): entry is CatalogueEntry => entry !== undefined)
+  for (const entry of ownEntries) {
+    if (entry.firstPrint) {
+      add(entry.firstPrint, null, null).entries.push(entry)
+    }
+  }
+  return Array.from(bySiglum.values()).sort((a, b) => comparePrintSigla(a.siglum, b.siglum))
+}
+
+// Die Sigel aller Drucke eines Werks, fuer Uebersicht und Suche
+export function workPrintSigla(work: Work): string[] {
+  return getWorkPrints(work).map((item) => item.siglum)
 }

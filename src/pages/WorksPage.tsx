@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
@@ -16,6 +16,7 @@ import {
   type GridRowParams,
   type GridSortModel,
 } from '@mui/x-data-grid'
+import { PrintChip } from '../components/PrintChip.tsx'
 import { SiglumChip } from '../components/SiglumChip.tsx'
 import { AuthorOrSourceText } from '../helpers.tsx'
 import type { Work } from '../types.ts'
@@ -26,6 +27,7 @@ import {
   isBaseWork,
   mainTitle,
   textAuthorLabels,
+  workPrintSigla,
   workSlug,
   works,
   type TextAuthorLabel,
@@ -40,12 +42,18 @@ interface Siglum {
   link: string | null
 }
 
+interface PrintSiglum {
+  siglum: string
+  firstPrint: boolean
+}
+
 interface Row {
   id: string
   lv: string
   title: string
   voiceCounts: string
   prints: string
+  printSigla: PrintSiglum[]
   textAuthorOrSource: string
   textAuthors: TextAuthorLabel[]
   textSources: string[]
@@ -124,14 +132,21 @@ function manuscriptSigla(work: Work): Siglum[] {
     .sort((a, b) => a.siglum.localeCompare(b.siglum))
 }
 
-// Sigel in der Uebersichtsspalte, siehe SiglumChip.
+// Sigel in den Uebersichtsspalten, siehe SiglumChip und PrintChip.
 const VISIBLE_SIGLA = 1
 const SIGLUM_CHIP_MAX_WIDTH = 76
 
 // Die ersten Sigel als Chips, weitere hinter einem "+N"-Chip mit Pfeil, der
 // ein Popover mit allen Sigeln oeffnet. stopPropagation verhindert, dass der
 // Klick die Zeilennavigation der DataGrid zur Detailseite ausloest.
-function SiglaCell({ sigla }: { sigla: Siglum[] }) {
+// Gemeinsam fuer Drucke und Handschriften, renderChip zeichnet den Chip.
+function SiglaCell<T extends { siglum: string }>({
+  sigla,
+  renderChip,
+}: {
+  sigla: T[]
+  renderChip: (entry: T) => ReactNode
+}) {
   const [anchor, setAnchor] = useState<HTMLElement | null>(null)
   if (sigla.length === 0) {
     return null
@@ -140,7 +155,7 @@ function SiglaCell({ sigla }: { sigla: Siglum[] }) {
   return (
     <Stack direction="row" spacing={0.5} sx={{ alignItems: 'center', height: '100%', minWidth: 0, overflow: 'hidden' }}>
       {sigla.slice(0, VISIBLE_SIGLA).map((entry) => (
-        <SiglumChip key={entry.siglum} siglum={entry.siglum} link={entry.link} maxWidth={SIGLUM_CHIP_MAX_WIDTH} />
+        <span key={entry.siglum}>{renderChip(entry)}</span>
       ))}
       {hidden > 0 && (
         <>
@@ -168,7 +183,7 @@ function SiglaCell({ sigla }: { sigla: Siglum[] }) {
           >
             <Stack direction="row" spacing={0.5} useFlexGap sx={{ p: 1.5, maxWidth: 320, flexWrap: 'wrap' }}>
               {sigla.map((entry) => (
-                <SiglumChip key={entry.siglum} siglum={entry.siglum} link={entry.link} maxWidth={SIGLUM_CHIP_MAX_WIDTH} />
+                <span key={entry.siglum}>{renderChip(entry)}</span>
               ))}
             </Stack>
           </Popover>
@@ -240,8 +255,17 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
   {
     field: 'prints',
     headerName: 'Drucke',
-    width: 95,
-    renderCell: (params: GridRenderCellParams<Row>) => <Highlight text={params.row.prints} query={query} />,
+    minWidth: 150,
+    // Wie bei den Handschriften: der Zellwert bleibt die Sigel-Liste als Text
+    // (Sortierung, Export), angezeigt werden Chips, siehe PrintChip.
+    renderCell: (params: GridRenderCellParams<Row>) => (
+      <SiglaCell
+        sigla={params.row.printSigla}
+        renderChip={(entry) => (
+          <PrintChip siglum={entry.siglum} firstPrint={entry.firstPrint} maxWidth={SIGLUM_CHIP_MAX_WIDTH} />
+        )}
+      />
+    ),
   },
   {
     field: 'textAuthorOrSource',
@@ -280,7 +304,14 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
     field: 'siglaText',
     headerName: 'Handschriften',
     minWidth: 170,
-    renderCell: (params: GridRenderCellParams<Row>) => <SiglaCell sigla={params.row.sigla} />,
+    renderCell: (params: GridRenderCellParams<Row>) => (
+      <SiglaCell
+        sigla={params.row.sigla}
+        renderChip={(entry) => (
+          <SiglumChip siglum={entry.siglum} link={entry.link} maxWidth={SIGLUM_CHIP_MAX_WIDTH} />
+        )}
+      />
+    ),
   },
   ]
 }
@@ -336,12 +367,14 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
 
     const toRow = (work: Work, extra: Partial<Row>): Row => {
       const sigla = manuscriptSigla(work)
+      const printSigla = workPrintSigla(work)
       return {
         id: work['@id'],
         lv: formatLvColumn(work),
         title: mainTitle(work),
         voiceCounts: work.voiceCounts.join(', '),
-        prints: work.prints.join(', '),
+        prints: printSigla.join(', '),
+        printSigla: printSigla.map((siglum) => ({ siglum, firstPrint: work.prints.includes(siglum) })),
         textAuthorOrSource: formatTextAuthorOrSource(work),
         textAuthors: textAuthorLabels(work),
         textSources: work.textSources,

@@ -1,34 +1,37 @@
-import type { CatalogueEntry, Print } from '../types'
-import { getPrintContents, printYear, prints } from '../worksData'
+import type { Print } from '../types'
+import { getParts, getPrintContents, printYear, prints, type WorkInPrint } from '../worksData'
 import { inYearRange, matchesLv } from './filterFields'
 
-// Ein Druck mit den zusammengefassten Angaben seiner Eintraege, Grundlage fuer
+// Ein Druck mit den zusammengefassten Angaben seiner Werke, Grundlage fuer
 // Tabelle und Filter der Druckuebersicht.
 export interface PrintSummary {
   print: Print
   year: number | null
-  entries: CatalogueEntry[]
+  contents: WorkInPrint[]
   voiceCounts: number[]
   textAuthors: string[]
   genres: string[]
   languages: string[]
 }
 
-function distinct<T>(values: (T | null)[]): T[] {
-  return Array.from(new Set(values.filter((value): value is T => value !== null)))
+function distinct<T>(values: T[]): T[] {
+  return Array.from(new Set(values))
 }
 
 // Einmal beim Laden aufgebaut, die Daten aendern sich zur Laufzeit nicht.
+// Die Angaben kommen vom Werk, nicht vom Eintrag, weil Nachdrucke keine
+// eigenen Eintraege haben.
 export const printSummaries: PrintSummary[] = prints.map((print) => {
-  const entries = getPrintContents(print).map(({ entry }) => entry)
+  const contents = getPrintContents(print)
+  const works = contents.map(({ work }) => work)
   return {
     print,
     year: printYear(print.siglum),
-    entries,
-    voiceCounts: distinct(entries.map((entry) => entry.voices)).sort((a, b) => a - b),
-    textAuthors: distinct(entries.map((entry) => entry.textAuthorPerson)),
-    genres: distinct(entries.map((entry) => entry.genre)).sort((a, b) => a.localeCompare(b, 'de')),
-    languages: distinct(entries.map((entry) => entry.language)).sort((a, b) => a.localeCompare(b, 'de')),
+    contents,
+    voiceCounts: distinct(works.flatMap((work) => work.voiceCounts)).sort((a, b) => a - b),
+    textAuthors: distinct(works.flatMap((work) => work.textAuthors)),
+    genres: distinct(works.flatMap((work) => work.genres)).sort((a, b) => a.localeCompare(b, 'de')),
+    languages: distinct(works.flatMap((work) => work.languages)).sort((a, b) => a.localeCompare(b, 'de')),
   }
 })
 
@@ -76,13 +79,22 @@ export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters):
     if (!inYearRange(summary.year, filters.yearFrom, filters.yearTo)) {
       return false
     }
-    if (filters.lv.trim() && !summary.entries.some((entry) => matchesLv(entry, filters.lv))) {
+    // Das Register fuehrt Gesamtwerke; "100-2" soll den Druck trotzdem finden,
+    // wenn LV 100 darin steht.
+    if (
+      filters.lv.trim() &&
+      !summary.contents.some(({ work }) => [work, ...getParts(work)].some((item) => matchesLv(item, filters.lv)))
+    ) {
       return false
     }
     if (
       title &&
-      !summary.entries.some((entry) =>
-        [entry.title ?? '', entry.normalizedTitle ?? ''].some((value) => normalize(value).includes(title)),
+      !summary.contents.some(({ work, entries }) =>
+        [
+          work.preferredTitle ?? '',
+          ...work.variantTitles,
+          ...entries.map((entry) => entry.title ?? ''),
+        ].some((value) => normalize(value).includes(title)),
       )
     ) {
       return false
@@ -100,7 +112,7 @@ export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters):
         [
           summary.print.siglum,
           summary.year ?? '',
-          summary.print.rism ?? '',
+          ...summary.print.rismSeries,
           ...summary.genres,
           ...summary.languages,
         ].join(' '),
