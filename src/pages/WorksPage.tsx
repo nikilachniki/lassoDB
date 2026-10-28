@@ -33,7 +33,7 @@ import {
   works,
   type TextAuthorLabel,
 } from '../worksData.ts'
-import { collectDistinct, filterWorks, hasActiveFilters, type WorksFilters } from '../search/filterWorks.ts'
+import { collectDistinct, hasActiveFilters, searchWorks, type WorksFilters } from '../search/filterWorks.ts'
 import { Highlight } from '../search/Highlight.tsx'
 import { WorksGridToolbar } from '../search/WorksGridToolbar.tsx'
 import { WorksSearchBar } from '../search/WorksSearchBar.tsx'
@@ -360,7 +360,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
     [],
   )
 
-  const filteredWorks = useMemo(() => filterWorks(works, filters), [filters])
+  const { works: filteredWorks, scores } = useMemo(() => searchWorks(works, filters), [filters])
 
   const filtering = hasActiveFilters(filters)
 
@@ -369,7 +369,9 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
   // Modulebene, weil die Seite beim Wechsel zur Detailansicht und zurueck neu
   // gemountet wird und die Gruppen sonst jedes Mal zuklappen wuerden.
   const [overrides, setOverrides] = useState(() => new Map(expandedOverrides))
-  const [sortModel, setSortModel] = useState<GridSortModel>([{ field: 'lv', sort: 'asc' }])
+  // Ohne gewaehlte Spalte: bei aktiver Volltextsuche nach Relevanz, sonst
+  // nach LV. Ein dritter Klick auf eine Spaltenkopf kehrt dorthin zurueck.
+  const [sortModel, setSortModel] = useState<GridSortModel>([])
 
   const rows = useMemo<Row[]>(() => {
     const matchedIds = new Set(filteredWorks.map((work) => work['@id']))
@@ -427,11 +429,18 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
 
     // Sortiert wird nur auf Ebene der Basiswerke (sortingMode="server"), damit
     // die Teile immer direkt unter ihrem Basiswerk stehen bleiben.
+    // Ein Basiswerk zaehlt mit dem besten Treffer unter sich und seinen Teilen.
     const sort = sortModel[0]
     if (sort?.sort) {
       const direction = sort.sort === 'desc' ? -1 : 1
       const field = sort.field as keyof Row
       baseRows.sort((a, b) => direction * lvComparator(String(a.row[field] ?? ''), String(b.row[field] ?? '')))
+    } else if (scores.size > 0) {
+      const score = ({ row, parts }: (typeof baseRows)[number]) =>
+        Math.max(scores.get(row.id) ?? 0, ...parts.map((part) => scores.get(part['@id']) ?? 0))
+      baseRows.sort((a, b) => score(b) - score(a) || lvComparator(a.row.lv, b.row.lv))
+    } else {
+      baseRows.sort((a, b) => lvComparator(a.row.lv, b.row.lv))
     }
 
     return baseRows.flatMap(({ parts, expanded, row }) => [
@@ -439,7 +448,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
       // Teile stehen bereits in Katalogreihenfolge (hasPart bzw. works).
       ...(expanded ? parts.map((part) => toRow(part, {})) : []),
     ])
-  }, [filteredWorks, filtering, overrides, sortModel])
+  }, [filteredWorks, scores, filtering, overrides, sortModel])
 
   const toggleGroup = useCallback(
     (workId: string) => {

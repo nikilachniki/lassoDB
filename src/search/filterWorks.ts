@@ -1,6 +1,7 @@
 import type { Work } from '../types'
 import { getExpressions, getManuscripts, printYear, textAuthorSearchNames, workPrintSigla } from '../worksData'
 import { inYearRange, matchesLv } from './filterFields'
+import { indexDocument, parseQuery, scoreDocument, type SearchDocument } from './textSearch'
 
 export interface WorksFilters {
   query: string
@@ -54,15 +55,67 @@ export function hasActiveFilters(filters: WorksFilters): boolean {
 
 const normalize = (value: string) => value.trim().toLocaleLowerCase('de-DE')
 
-export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
-  const query = normalize(filters.query)
+// Suchindex je Werk, beim ersten Suchen aufgebaut; die Daten aendern sich zur
+// Laufzeit nicht. Titel zaehlen am meisten, die Titel der Handschriften
+// mit, weil nur sie oft die Zaehlung tragen ("1. Psalmus poenitentialis").
+// Fassungen gehoeren zum Werk: wer nach ihrer LV-Nummer oder ihrem Titel
+// sucht, soll das Werk finden. Ihre Drucke stehen schon in workPrintSigla.
+const titleDocuments = new Map<string, SearchDocument>()
+const fullDocuments = new Map<string, SearchDocument>()
+
+function titleFields(work: Work) {
+  const expressions = getExpressions(work)
+  return [
+    { text: work.preferredTitle ?? '', weight: 3, numbers: true },
+    ...work.variantTitles.map((text) => ({ text, weight: 2, numbers: true })),
+    ...expressions.flatMap((expression) =>
+      [expression.preferredTitle ?? '', ...expression.variantTitles].map((text) => ({ text, weight: 2, numbers: true })),
+    ),
+  ]
+}
+
+function titleDocument(work: Work): SearchDocument {
+  let document = titleDocuments.get(work['@id'])
+  if (!document) {
+    document = indexDocument(titleFields(work))
+    titleDocuments.set(work['@id'], document)
+  }
+  return document
+}
+
+function fullDocument(work: Work): SearchDocument {
+  let document = fullDocuments.get(work['@id'])
+  if (!document) {
+    document = indexDocument([
+      { text: work.lv ?? '' },
+      { text: work.lvAnh !== null ? `Anh. ${work.lvAnh}` : '' },
+      ...titleFields(work),
+      ...getManuscripts(work).map((manuscript) => ({ text: manuscript.title ?? '', weight: 1.5, numbers: true })),
+      ...work.textAuthors.flatMap(textAuthorSearchNames).map((text) => ({ text, weight: 1.5 })),
+      ...work.textSources.map((text) => ({ text })),
+      ...workPrintSigla(work).map((text) => ({ text })),
+      ...work.completeEditions.map((text) => ({ text })),
+      ...work.genres.map((text) => ({ text })),
+      ...work.languages.map((text) => ({ text })),
+      ...getExpressions(work).map((expression) => ({ text: expression.lv ?? '' })),
+    ])
+    fullDocuments.set(work['@id'], document)
+  }
+  return document
+}
+
+// Die passenden Werke und die Punktzahl der Volltextsuche je Werk (@id), nach
+// der die Tabelle bei aktiver Suche sortiert. Ohne Suchbegriff ist sie leer.
+export function searchWorks(works: Work[], filters: WorksFilters): { works: Work[]; scores: Map<string, number> } {
+  const query = parseQuery(filters.query)
   const textSources = normalize(filters.textSources)
   const prints = normalize(filters.prints)
   const completeEditions = normalize(filters.completeEditions)
-  const title = normalize(filters.title)
+  const title = parseQuery(filters.title)
   const manuscripts = normalize(filters.manuscripts)
+  const scores = new Map<string, number>()
 
-  return works.filter((work) => {
+  const result = works.filter((work) => {
     // Fassungen gehoeren zum Werk, ihre Nummern, Titel und Drucke zaehlen mit.
     const expressions = getExpressions(work)
     // Alle Drucke, auch Nachdrucke und die Erstdrucke der Fassungen
@@ -70,12 +123,7 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
     if (filters.lv.trim() && ![work, ...expressions].some((item) => matchesLv(item, filters.lv))) {
       return false
     }
-    if (
-      title &&
-      ![work.preferredTitle ?? '', ...work.variantTitles, ...expressions.flatMap((e) => [e.preferredTitle ?? '', ...e.variantTitles])].some(
-        (value) => normalize(value).includes(title),
-      )
-    ) {
+    if (title && scoreDocument(titleDocument(work), title) === 0) {
       return false
     }
     if (
@@ -126,33 +174,15 @@ export function filterWorks(works: Work[], filters: WorksFilters): Work[] {
       return false
     }
     if (query) {
-      const haystack = normalize(
-        [
-          work.lv,
-          work.lvAnh !== null ? `Anh. ${work.lvAnh}` : '',
-          work.preferredTitle ?? '',
-          ...work.variantTitles,
-          ...work.textAuthors.flatMap(textAuthorSearchNames),
-          ...work.textSources,
-          ...printSigla,
-          ...work.completeEditions,
-          ...work.genres,
-          ...work.languages,
-          // Fassungen gehoeren zum Werk: Wer nach ihrer LV-Nummer oder ihrem Titel
-          // sucht, soll das Werk finden. Ihre Drucke stehen schon in printSigla.
-          ...expressions.flatMap((expression) => [
-            expression.lv,
-            expression.preferredTitle ?? '',
-            ...expression.variantTitles,
-          ]),
-        ].join(' '),
-      )
-      if (!haystack.includes(query)) {
+      const score = scoreDocument(fullDocument(work), query)
+      if (score === 0) {
         return false
       }
+      scores.set(work['@id'], score)
     }
     return true
   })
+  return { works: result, scores }
 }
 
 export function collectDistinct<T>(works: Work[], pick: (work: Work) => T[]): T[] {

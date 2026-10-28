@@ -9,6 +9,7 @@ import {
   type WorkInPrint,
 } from '../worksData'
 import { inYearRange, matchesLv } from './filterFields'
+import { indexDocument, parseQuery, scoreDocument, type SearchDocument } from './textSearch'
 
 // Ein Druck mit den zusammengefassten Angaben seiner Werke, Grundlage fuer
 // Tabelle und Filter der Druckuebersicht.
@@ -77,41 +78,89 @@ export const defaultPrintsFilters: PrintsFilters = {
 
 const normalize = (value: string) => value.trim().toLocaleLowerCase('de-DE')
 
-// Titelblaetter sind diplomatisch wiedergegeben: Zeilenwechsel "|", Trennstrich
-// "=" und kombinierende Zeichen (m̄, uͤ). Fuer die Suche fallen sie weg, damit
+// Suchindizes je Druck, beim ersten Suchen aufgebaut. Die Zeilenwechsel der
+// diplomatischen Titelblaetter ("|", "=|") gleicht fold aus, damit
 // "primo libro" auch ueber einen Zeilenwechsel hinweg trifft.
-const normalizeTitle = (value: string) =>
-  normalize(
-    value
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/=\s*\|\s*/g, '')
-      .replace(/\s*\|\s*/g, ' '),
+const documents = new Map<string, SearchDocument>()
+
+function cachedDocument(key: string, build: () => SearchDocument): SearchDocument {
+  let document = documents.get(key)
+  if (!document) {
+    document = build()
+    documents.set(key, document)
+  }
+  return document
+}
+
+function fullDocument(summary: PrintSummary): SearchDocument {
+  return cachedDocument(`full|${summary.print.siglum}`, () =>
+    indexDocument([
+      { text: summary.print.siglum, weight: 3 },
+      { text: String(summary.year ?? '') },
+      { text: printRism(summary.print)?.label ?? '' },
+      { text: summary.print.description ?? '', weight: 2 },
+      { text: summary.print.title ?? '', weight: 2, numbers: true },
+      { text: summary.print.partbooks ?? '' },
+      ...printReferences(summary.print).map((reference) => ({ text: `${reference.catalogue ?? ''} ${reference.value}` })),
+      ...summary.genres.map((text) => ({ text })),
+      ...summary.languages.map((text) => ({ text })),
+    ]),
   )
+}
+
+// Titel der enthaltenen Werke, auch in der Schreibung des Drucks
+function worksTitleDocument(summary: PrintSummary): SearchDocument {
+  return cachedDocument(`works|${summary.print.siglum}`, () =>
+    indexDocument(
+      summary.contents.flatMap(({ work, entries }) =>
+        [work.preferredTitle ?? '', ...work.variantTitles, ...entries.map((entry) => entry.title ?? '')].map((text) => ({
+          text,
+          numbers: true,
+        })),
+      ),
+    ),
+  )
+}
+
+const matches = (document: SearchDocument, query: ReturnType<typeof parseQuery>) =>
+  !query || scoreDocument(document, query) > 0
 
 // Die Listenfilter (Textdichter, Stimmen, Gattung, Sprache) treffen einen
-// Druck, wenn mindestens eines seiner Werke passt, wie bei den Werken.
+// Druck, wenn mindestens eines seiner Werke passt, wie bei den Werken. Bei
+// aktiver Volltextsuche nach Relevanz sortiert, sonst in der Reihenfolge der
+// Eingabe (nach Sigel).
 export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters): PrintSummary[] {
-  const query = normalize(filters.query)
+  const query = parseQuery(filters.query)
   const siglum = normalize(filters.siglum)
-  const title = normalize(filters.title)
-  const description = normalize(filters.description)
-  const printTitle = normalize(filters.printTitle)
+  const title = parseQuery(filters.title)
+  const description = parseQuery(filters.description)
+  const printTitle = parseQuery(filters.printTitle)
   const references = normalize(filters.references)
+  const scores = new Map<string, number>()
   const anyOf = <T>(selected: T[], values: T[]) =>
     selected.length === 0 || selected.some((value) => values.includes(value))
 
-  return summaries.filter((summary) => {
+  const result = summaries.filter((summary) => {
     if (siglum && !normalize(summary.print.siglum).includes(siglum)) {
       return false
     }
     if (!inYearRange(summary.year, filters.yearFrom, filters.yearTo)) {
       return false
     }
-    if (description && !normalize(summary.print.description ?? '').includes(description)) {
+    if (
+      !matches(
+        cachedDocument(`description|${summary.print.siglum}`, () => indexDocument([{ text: summary.print.description ?? '' }])),
+        description,
+      )
+    ) {
       return false
     }
-    if (printTitle && !normalizeTitle(summary.print.title ?? '').includes(normalizeTitle(filters.printTitle))) {
+    if (
+      !matches(
+        cachedDocument(`title|${summary.print.siglum}`, () => indexDocument([{ text: summary.print.title ?? '', numbers: true }])),
+        printTitle,
+      )
+    ) {
       return false
     }
     if (
@@ -130,16 +179,7 @@ export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters):
     ) {
       return false
     }
-    if (
-      title &&
-      !summary.contents.some(({ work, entries }) =>
-        [
-          work.preferredTitle ?? '',
-          ...work.variantTitles,
-          ...entries.map((entry) => entry.title ?? ''),
-        ].some((value) => normalize(value).includes(title)),
-      )
-    ) {
+    if (!matches(worksTitleDocument(summary), title)) {
       return false
     }
     if (
@@ -151,23 +191,17 @@ export function filterPrints(summaries: PrintSummary[], filters: PrintsFilters):
       return false
     }
     if (query) {
-      const haystack = normalize(
-        [
-          summary.print.siglum,
-          summary.year ?? '',
-          printRism(summary.print)?.label ?? '',
-          summary.print.description ?? '',
-          normalizeTitle(summary.print.title ?? ''),
-          summary.print.partbooks ?? '',
-          ...printReferences(summary.print).map((reference) => `${reference.catalogue ?? ''} ${reference.value}`),
-          ...summary.genres,
-          ...summary.languages,
-        ].join(' '),
-      )
-      if (!haystack.includes(query)) {
+      const score = scoreDocument(fullDocument(summary), query)
+      if (score === 0) {
         return false
       }
+      scores.set(summary.print.siglum, score)
     }
     return true
   })
+  if (scores.size > 0) {
+    // sort ist stabil: gleich gute Treffer bleiben nach Sigel geordnet
+    result.sort((a, b) => (scores.get(b.print.siglum) ?? 0) - (scores.get(a.print.siglum) ?? 0))
+  }
+  return result
 }

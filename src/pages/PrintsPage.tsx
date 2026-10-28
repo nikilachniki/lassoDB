@@ -161,8 +161,9 @@ export function PrintsPage({ filters, onFiltersChange }: PrintsPageProps) {
         <DataGrid
           rows={rows}
           columns={columns}
+          // Ohne gewaehlte Spalte bleibt die Reihenfolge von filterPrints: nach
+          // Relevanz bei aktiver Suche, sonst nach Sigel.
           initialState={{
-            sorting: { sortModel: [{ field: 'siglum', sort: 'asc' }] },
             pagination: { paginationModel: { pageSize: 100 } },
           }}
           pageSizeOptions={[25, 50, 100]}

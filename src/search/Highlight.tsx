@@ -1,30 +1,34 @@
+import { useMemo } from 'react'
 import Box from '@mui/material/Box'
+import { parseQuery, termMatchesWord } from './textSearch'
 
-// Markiert jedes Vorkommen des Suchbegriffs im Text gelb, so wie die Suche
-// vergleicht (getrimmt, ohne Gross-/Kleinschreibung, siehe filterWorks).
-// Markiert wird nur der Text selbst, nie die ganze Zelle.
+const WORD = /[\p{L}\p{N}\p{M}]+/gu
+
+// Markiert jedes Wort des Texts gelb, das ein Suchwort trifft, nach denselben
+// Regeln wie die Suche (Wortanfang, Schreibvarianten, Zahlen, Tippfehler,
+// siehe textSearch). Markiert wird das ganze Wort, nie die ganze Zelle.
 export function Highlight({ text, query }: { text: string; query?: string }) {
-  const needle = query?.trim().toLocaleLowerCase('de-DE') ?? ''
-  if (!needle) {
+  const parsed = useMemo(() => parseQuery(query ?? ''), [query])
+  if (!parsed || !text) {
     return <>{text}</>
   }
-  const haystack = text.toLocaleLowerCase('de-DE')
   const parts: React.ReactNode[] = []
   let start = 0
-  let index = haystack.indexOf(needle)
-  while (index >= 0) {
-    parts.push(text.slice(start, index))
+  for (const match of text.matchAll(WORD)) {
+    if (!termMatchesWord(parsed, match[0])) {
+      continue
+    }
+    parts.push(text.slice(start, match.index))
     parts.push(
       <Box
         component="mark"
-        key={index}
+        key={match.index}
         sx={{ bgcolor: 'highlight.mark', color: 'inherit', p: 0, borderRadius: '2px' }}
       >
-        {text.slice(index, index + needle.length)}
+        {match[0]}
       </Box>,
     )
-    start = index + needle.length
-    index = haystack.indexOf(needle, start)
+    start = match.index + match[0].length
   }
   parts.push(text.slice(start))
   return <>{parts}</>
