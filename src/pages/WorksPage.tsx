@@ -18,8 +18,9 @@ import {
 } from '@mui/x-data-grid'
 import { PrintChip } from '../components/PrintChip.tsx'
 import { SiglumChip } from '../components/SiglumChip.tsx'
+import { EARLIEST_SOURCE_HINT } from '../components/WorkTitle.tsx'
 import { AuthorOrSourceText } from '../helpers.tsx'
-import type { Work } from '../types.ts'
+import type { TitleBasis, Work } from '../types.ts'
 import {
   getManuscripts,
   getParts,
@@ -51,6 +52,7 @@ interface Row {
   id: string
   lv: string
   title: string
+  titleBasis: TitleBasis
   voiceCounts: string
   prints: string
   printSigla: PrintSiglum[]
@@ -234,18 +236,31 @@ function createColumns(onToggle: (workId: string) => void, query: string): GridC
   },
   {
     field: 'title',
-    headerName: 'Titel',
+    headerName: 'Werktitel',
     // Titel und Textdichter teilen sich den freien Platz, die uebrigen Spalten
     // sind fest und knapp, damit die Tabelle in die Fensterbreite passt.
-    // Abgeschnittene Titel stehen vollstaendig im Tooltip.
+    // Abgeschnittene Titel stehen vollstaendig im Tooltip. Titel nach der
+    // fruehesten Quelle kursiv, wie WorkTitle (das MUI-Tooltip dort wuerde mit
+    // dem title-Attribut kollidieren).
     flex: 1,
     minWidth: 160,
     maxWidth: 300,
     renderCell: (params: GridRenderCellParams<Row>) => (
       <Box
         component="span"
-        title={params.row.title}
-        sx={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        title={
+          params.row.titleBasis === 'earliestSource'
+            ? `${params.row.title}
+${EARLIEST_SOURCE_HINT}`
+            : params.row.title
+        }
+        sx={{
+          display: 'block',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          fontStyle: params.row.titleBasis === 'earliestSource' ? 'italic' : undefined,
+        }}
       >
         <Highlight text={params.row.title} query={query} />
       </Box>
@@ -372,6 +387,7 @@ export function WorksPage({ filters, onFiltersChange }: WorksPageProps) {
         id: work['@id'],
         lv: formatLvColumn(work),
         title: mainTitle(work),
+        titleBasis: work.preferredTitleBasis,
         voiceCounts: work.voiceCounts.join(', '),
         prints: printSigla.join(', '),
         printSigla: printSigla.map((siglum) => ({ siglum, firstPrint: work.prints.includes(siglum) })),

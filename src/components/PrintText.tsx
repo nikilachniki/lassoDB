@@ -1,28 +1,20 @@
 import { Fragment } from 'react'
-import { Link as RouterLink } from 'react-router-dom'
 import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import { findPrintBySiglum, printPath, type PrintReference } from '../worksData.ts'
+import { findPrintBySiglum, type PrintReference } from '../worksData.ts'
+import { PrintChip } from './PrintChip.tsx'
 
 // Anzeige der Angaben aus dem Druckeverzeichnis, siehe Print.
 
 const SIGLUM_PATTERN = /(\d{4}-\d+(?:\/[IVX]+)?)/g
 
 // Text mit Drucksigeln, etwa "Nachdruck von 1557-2 (über 1559-1)": jedes
-// bekannte Sigel wird zum Link auf seinen Druck.
+// bekannte Sigel wird zum Chip, der zu seinem Druck fuehrt, wie ueberall sonst.
 export function TextWithPrintLinks({ text }: { text: string }) {
   return (
     <>
       {text.split(SIGLUM_PATTERN).map((part, index) =>
         index % 2 === 1 && findPrintBySiglum(part) ? (
-          <Link
-            key={index}
-            component={RouterLink}
-            to={printPath(part)}
-            onClick={(event) => event.stopPropagation()}
-          >
-            {part}
-          </Link>
+          <PrintChip key={index} siglum={part} firstPrint={false} sx={{ verticalAlign: 'middle', mx: 0.25 }} />
         ) : (
           <Fragment key={index}>{part}</Fragment>
         ),

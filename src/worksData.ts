@@ -129,16 +129,6 @@ export function textAuthorLabels(
   })
 }
 
-// Textdichter eines einzelnen Drucks: der Rohwert, wie ihn der Druck schreibt,
-// damit die Tabelle der Drucke die Quelle wiedergibt.
-export function entryTextAuthorLabels(entry: CatalogueEntry): TextAuthorLabel[] {
-  if (!entry.textAuthor) {
-    return []
-  }
-  const person = entry.textAuthorPerson ? personById.get(entry.textAuthorPerson) : undefined
-  return [{ name: entry.textAuthor, person }]
-}
-
 // Alle Namen eines Textdichters
 export function textAuthorSearchNames(id: string): string[] {
   const person = personById.get(id)

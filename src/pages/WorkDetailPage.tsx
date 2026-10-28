@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from 'react'
-import { Navigate, Link as RouterLink, useLocation, useParams } from 'react-router-dom'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { Navigate, Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
@@ -8,7 +8,7 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
-import Link from '@mui/material/Link'
+import IconButton from '@mui/material/IconButton'
 import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Table from '@mui/material/Table'
@@ -24,10 +24,12 @@ import { BackButton } from '../components/BackButton.tsx'
 import { Fact } from '../components/Fact.tsx'
 import { Section } from '../components/Section.tsx'
 import { PrintChip } from '../components/PrintChip.tsx'
-import { PrintLinks } from '../components/PrintLinks.tsx'
-import { PrintRism, RismBadge } from '../components/PrintRism.tsx'
+import { PrintChips } from '../components/PrintChips.tsx'
+import { RismBadge } from '../components/PrintRism.tsx'
 import { PrintTitlePage, TextWithPrintLinks } from '../components/PrintText.tsx'
 import { SiglumChip } from '../components/SiglumChip.tsx'
+import { ExternalChip } from '../components/ExternalChip.tsx'
+import { WorkTitle } from '../components/WorkTitle.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
 import type { Expression, ManuscriptWitness, Work } from '../types.ts'
 import {
@@ -38,18 +40,25 @@ import {
   formatCatalogNumber,
   getExpressions,
   getManuscripts,
-  entryTextAuthorLabels,
   getSortedEntries,
   getWorkPrints,
-  printRism,
   isBaseWork,
   mainTitle,
+  printPath,
   textAuthorLabels,
   workSlug,
   type WorkInPrint,
 } from '../worksData.ts'
 
 const URL_PATTERN = /(https?:\/\/[^\s<>"]+)/g
+
+function hostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return url
+  }
+}
 
 function Linkified({ text }: { text: string }) {
   return (
@@ -61,11 +70,10 @@ function Linkified({ text }: { text: string }) {
         // Satzzeichen am Ende gehören meist nicht zur URL
         const url = part.replace(/[.,;:!?)\]]+$/, '')
         const trailing = part.slice(url.length)
+        // Als Chip mit dem Host als Beschriftung; die volle Adresse im Tooltip
         return (
           <span key={i}>
-            <Link href={url} target="_blank" rel="noopener noreferrer">
-              {url}
-            </Link>
+            <ExternalChip label={hostname(url)} href={url} tooltip={url} sx={{ verticalAlign: 'middle' }} />
             {trailing}
           </span>
         )
@@ -103,7 +111,7 @@ function RelatedPartsTable({ parts, focusId }: { parts: Work[]; focusId?: string
         <TableHead>
           <TableRow>
             <TableCell>LV</TableCell>
-            <TableCell>Titel</TableCell>
+            <TableCell>Werktitel</TableCell>
             <TableCell>Stimmen</TableCell>
             <TableCell>Drucke</TableCell>
             <TableCell>{authorOrSourceHeader}</TableCell>
@@ -120,10 +128,12 @@ function RelatedPartsTable({ parts, focusId }: { parts: Work[]; focusId?: string
               ref={part['@id'] === focusId ? focusRef : undefined}
             >
               <TableCell>{part.lv}</TableCell>
-              <TableCell>{mainTitle(part)}</TableCell>
+              <TableCell>
+                <WorkTitle basis={part.preferredTitleBasis}>{mainTitle(part)}</WorkTitle>
+              </TableCell>
               <TableCell>{part.voiceCounts.join(', ')}</TableCell>
               <TableCell>
-                <PrintLinks sigla={part.prints} />
+                <PrintChips sigla={part.prints} />
               </TableCell>
               <TableCell>
                 <AuthorOrSourceText authors={textAuthorLabels(part)} sources={part.textSources} />
@@ -156,7 +166,7 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
           <TableRow>
             <TableCell>Teil</TableCell>
             <TableCell>LV</TableCell>
-            <TableCell>Titel</TableCell>
+            <TableCell>Werktitel</TableCell>
             <TableCell>Stimmen</TableCell>
             <TableCell>Druck</TableCell>
             <TableCell>{authorOrSourceHeader}</TableCell>
@@ -170,10 +180,12 @@ function ExpressionsTable({ expressions }: { expressions: Expression[] }) {
             <TableRow key={expression['@id']}>
               <TableCell>{expression.pars}</TableCell>
               <TableCell sx={{ whiteSpace: 'nowrap' }}>{expression.lv}</TableCell>
-              <TableCell>{mainTitle(expression)}</TableCell>
+              <TableCell>
+                <WorkTitle basis={expression.preferredTitleBasis}>{mainTitle(expression)}</WorkTitle>
+              </TableCell>
               <TableCell>{expression.voiceCounts.join(', ')}</TableCell>
               <TableCell>
-                <PrintLinks sigla={expression.prints} />
+                <PrintChips sigla={expression.prints} />
               </TableCell>
               <TableCell>
                 <AuthorOrSourceText authors={textAuthorLabels(expression)} sources={expression.textSources} />
@@ -203,88 +215,58 @@ function WorkPrintSummary({ item }: { item: WorkInPrint }) {
   )
 }
 
-// Alle Drucke eines Werks, wie die Handschriften als aufklappbare Karten.
-// Erstdrucke tragen die Angaben des LV-Katalogs (Titel in der Schreibung des
-// Drucks, Stimmen, Textdichter ...), Nachdrucke nur die des Registers.
+// Ein Druck eines Werks als Karte: in der Kopfzeile Sigel, RISM und
+// Kurzangabe, aufgeklappt nur das Titelblatt in voller Breite. Ein Klick auf
+// die Zeile fuehrt wie in den Tabellen zur Detailseite des Drucks, aufgeklappt
+// wird nur ueber den Pfeil. Drucke ohne Titelblatt haben keinen Pfeil.
+function PrintCard({ item }: { item: WorkInPrint }) {
+  const navigate = useNavigate()
+  const [expanded, setExpanded] = useState(false)
+  const title = item.print?.title
+  const open = item.print ? () => navigate(printPath(item.siglum)) : undefined
+  return (
+    <Accordion variant="outlined" disableGutters expanded={expanded}>
+      <AccordionSummary
+        onClick={open}
+        expandIcon={
+          title ? (
+            <IconButton
+              size="small"
+              aria-label={expanded ? 'Titelblatt zuklappen' : 'Titelblatt aufklappen'}
+              onClick={(event) => {
+                event.stopPropagation()
+                setExpanded(!expanded)
+              }}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          ) : undefined
+        }
+        sx={{
+          cursor: open ? 'pointer' : 'default',
+          '&:hover': open ? { bgcolor: 'action.hover' } : undefined,
+        }}
+      >
+        <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
+          <PrintChip siglum={item.siglum} firstPrint={item.entries.length > 0} sx={{ flexShrink: 0 }} />
+          {item.print && <RismBadge print={item.print} />}
+          <WorkPrintSummary item={item} />
+        </Stack>
+      </AccordionSummary>
+      {title && (
+        <AccordionDetails>
+          <PrintTitlePage title={title} />
+        </AccordionDetails>
+      )}
+    </Accordion>
+  )
+}
+
 function PrintsAccordion({ items }: { items: WorkInPrint[] }) {
   return (
     <Stack spacing={1}>
       {items.map((item) => (
-        <Accordion key={item.siglum} variant="outlined" disableGutters>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
-              <PrintChip siglum={item.siglum} firstPrint={item.entries.length > 0} sx={{ flexShrink: 0 }} />
-              {item.print && <RismBadge print={item.print} />}
-              <WorkPrintSummary item={item} />
-            </Stack>
-          </AccordionSummary>
-          <AccordionDetails>
-            {/* Breit zweispaltig wie auf der Druckseite: links die Angaben,
-                rechts das Titelblatt; schmal untereinander. */}
-            <Box
-              sx={{
-                display: 'grid',
-                gap: { xs: 2, md: 3 },
-                gridTemplateColumns: { xs: 'minmax(0, 1fr)', md: item.print?.title ? 'minmax(0, 1fr) minmax(0, 1fr)' : 'minmax(0, 1fr)' },
-                alignItems: 'start',
-              }}
-            >
-              <Stack spacing={1.5}>
-                <Fact
-                  label="Stimmbücher"
-                  labelWidth={130}
-                  value={item.print?.partbooks ?? ''}
-                />
-                <Fact label="Zusatz" labelWidth={130} value={item.note ?? ''} />
-                <Fact
-                  label="RISM"
-                  labelWidth={130}
-                  value={item.print && printRism(item.print) ? <PrintRism print={item.print} /> : ''}
-                />
-                {item.entries.map((entry) => {
-                  // Die Werkangaben oben sind aus den Erstdrucken zusammengefasst;
-                  // hier steht deshalb nur, was im Druck davon abweicht.
-                  const work = item.work
-                  const differs = <T,>(value: T | null, workValues: T[]) =>
-                    value !== null && value !== '' && !(workValues.length === 1 && workValues[0] === value)
-                  // Textdichter ueber die Person verglichen, nicht ueber die Schreibung
-                  // ("Petrarca" im Druck, "Francesco Petrarca" am Werk)
-                  const sameAuthor = entry.textAuthorPerson
-                    ? !differs(entry.textAuthorPerson, work.textAuthors)
-                    : !entry.textAuthor && !differs(entry.textSource, work.textSources)
-                  const authors = sameAuthor ? [] : entryTextAuthorLabels(entry)
-                  const sources = !sameAuthor && entry.textSource ? [entry.textSource] : []
-                  const facts = [
-                    { label: 'Titel im Druck', value: differs(entry.title, [mainTitle(work)]) ? entry.title : null },
-                    { label: 'Stimmen', value: differs(entry.voices, work.voiceCounts) ? entry.voices : null },
-                    {
-                      label: authorOrSourceLabel(authors.length > 0, sources.length > 0),
-                      value: authors.length + sources.length > 0 ? <AuthorOrSourceText authors={authors} sources={sources} /> : null,
-                    },
-                    { label: 'Gesamtausgabe', value: differs(entry.completeEdition, work.completeEditions) ? entry.completeEdition : null },
-                    { label: 'Gattung', value: differs(entry.genre, work.genres) ? entry.genre : null },
-                    { label: 'Sprache', value: differs(entry.language, work.languages) ? entry.language : null },
-                    { label: 'Bemerkung', value: entry.note },
-                  ].filter((fact) => fact.value !== null && fact.value !== '')
-                  if (facts.length === 0) {
-                    return null
-                  }
-                  return (
-                    <Stack key={entry['@id']} spacing={1.5} sx={{ pt: 1.5, borderTop: 1, borderColor: 'divider' }}>
-                      <Typography variant="overline" color="text.secondary" sx={{ lineHeight: 1 }}>
-                        {entry.lv && entry.lv !== work.lv ? `Im Erstdruck abweichend, Fassung LV ${entry.lv}` : 'Im Erstdruck abweichend'}
-                      </Typography>
-                      {facts.map((fact) => (
-                        <Fact key={fact.label} label={fact.label} labelWidth={130} value={fact.value} />
-                      ))}
-                    </Stack>
-                  )
-                })}
-              </Stack>
-              {item.print?.title && <PrintTitlePage title={item.print.title} />}
-            </Box>
-          </AccordionDetails>
-        </Accordion>
+        <PrintCard key={item.siglum} item={item} />
       ))}
     </Stack>
   )
@@ -303,23 +285,14 @@ function manuscriptSummary(manuscript: ManuscriptWitness): string {
   return manuscript.title ?? `Handschrift ${manuscript.id}`
 }
 
-// Das RISM-Sigel als Fact-Wert: verlinkt auf den Online-Katalog, wenn die
-// Quelle dafuer einen Link traegt (Spalte "Link", meist RISM, vereinzelt ein
-// anderer Bibliothekskatalog), sonst schlichter Text. Fehlt umgekehrt das
-// Sigel selbst bei vorhandenem Link (7 von 8939 Zeugnissen), dient "Katalog"
-// als Linktext, damit der Verweis nicht verloren geht.
-function rismValue(manuscript: ManuscriptWitness): ReactNode {
-  if (!manuscript.rismSiglum && !manuscript.link) {
+// Link zum Online-Katalog (Spalte "Link", meist RISM, vereinzelt ein anderer
+// Bibliothekskatalog). Mit Sigel steht er schon als Chip in der Kopfzeile;
+// fehlt das Sigel (7 von 8939 Zeugnissen), hier, damit er nicht verloren geht.
+function catalogueValue(manuscript: ManuscriptWitness): ReactNode {
+  if (manuscript.rismSiglum || !manuscript.link) {
     return ''
   }
-  if (!manuscript.link) {
-    return manuscript.rismSiglum
-  }
-  return (
-    <Link href={manuscript.link} target="_blank" rel="noopener noreferrer">
-      {manuscript.rismSiglum ?? 'Katalog'}
-    </Link>
-  )
+  return <ExternalChip label="Online-Katalog" href={manuscript.link} />
 }
 
 // Je Handschrift ein ausklappbares Panel statt einer Tabellenzeile, im
@@ -348,7 +321,7 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
           </AccordionSummary>
           <AccordionDetails>
             <Stack spacing={1.5}>
-              <Fact label="RISM-Sigel" value={rismValue(manuscript)} />
+              <Fact label="Katalog" value={catalogueValue(manuscript)} />
               <Fact label="Ort" value={manuscript.place ?? ''} />
               <Fact label="Bibliothek" value={manuscript.library ?? ''} />
               <Fact label="Signatur" value={manuscript.shelfmark ?? ''} />
@@ -358,7 +331,7 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
               <Fact label="Datierung" value={manuscript.dating ?? ''} />
               <Fact label="Provenienz" value={manuscript.provenance ?? ''} />
               <Fact label="Quellenart" value={manuscript.sourceDescription ?? ''} />
-              <Fact label="Bemerkung (Stück)" value={manuscript.note ?? ''} />
+              <Fact label="Bemerkung" value={manuscript.note ?? ''} />
               <Fact label="Bemerkung (Quelle)" value={manuscript.sourceNote ?? ''} />
               <Fact label="Literatur" value={manuscript.literature ? <Linkified text={manuscript.literature} /> : ''} />
             </Stack>
@@ -405,10 +378,15 @@ export function WorkDetailPage() {
 
       {baseWork && (
         <Alert severity="info" sx={{ mb: 2 }}>
-          Dies ist {partLabel(work).toLowerCase()} von Werk LV {baseWork.lv}.{' '}
-          <Link component={RouterLink} to={`/werk/${workSlug(baseWork)}`}>
-            Zum Basiswerk
-          </Link>
+          Dies ist {partLabel(work).toLowerCase()} von Werk{' '}
+          <Chip
+            label={`LV ${baseWork.lv}`}
+            size="small"
+            clickable
+            component={RouterLink}
+            to={`/werk/${workSlug(baseWork)}`}
+            sx={{ verticalAlign: 'middle' }}
+          />
           .
         </Alert>
       )}
@@ -419,7 +397,7 @@ export function WorkDetailPage() {
           {!isBaseWork(work) && <Chip label={partLabel(work)} size="small" variant="outlined" />}
         </Stack>
         <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
-          {mainTitle(work)}
+          <WorkTitle basis={work.preferredTitleBasis}>{mainTitle(work)}</WorkTitle>
         </Typography>
 
         {/* Wie auf der Druckseite: breit in zwei Spalten, schmal untereinander.
@@ -443,7 +421,7 @@ export function WorkDetailPage() {
           <Fact
             label="Erstdruck"
             labelWidth={130}
-            value={firstEntry?.firstPrint ? <PrintLinks sigla={[firstEntry.firstPrint]} /> : ''}
+            value={firstEntry?.firstPrint ? <PrintChips sigla={[firstEntry.firstPrint]} /> : ''}
           />
           <Fact
             label={authorOrSourceLabel(work.textAuthors.length > 0, work.textSources.length > 0)}

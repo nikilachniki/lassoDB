@@ -15,9 +15,10 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import { BackButton } from '../components/BackButton.tsx'
 import { Fact } from '../components/Fact.tsx'
-import { PrintRism, RismBadge } from '../components/PrintRism.tsx'
+import { PrintRism } from '../components/PrintRism.tsx'
 import { PrintReferences, PrintTitlePage, TextWithPrintLinks } from '../components/PrintText.tsx'
 import { Section } from '../components/Section.tsx'
+import { WorkTitle } from '../components/WorkTitle.tsx'
 import { authorOrSourceLabel, AuthorOrSourceText } from '../helpers.tsx'
 import {
   findPrintBySiglum,
@@ -34,7 +35,8 @@ import {
 
 // Die Werke eines Drucks in der Reihenfolge der Stuecke. Die Angaben stammen
 // vom Werk, weil Nachdrucke keine eigenen Eintraege haben; der Titel in der
-// Schreibung des Drucks steht, wo bekannt, im Tooltip. Ein Klick fuehrt zum Werk.
+// Schreibung des Drucks steht, wo bekannt und abweichend, grau darunter.
+// Ein Klick fuehrt zum Werk.
 function PrintContentsTable({ contents }: { contents: WorkInPrint[] }) {
   const navigate = useNavigate()
   const works = contents.map(({ work }) => work)
@@ -61,9 +63,9 @@ function PrintContentsTable({ contents }: { contents: WorkInPrint[] }) {
       <Table size="small">
         <TableHead>
           <TableRow>
-            {hasPieces && <TableCell>Stück</TableCell>}
+            {hasPieces && <TableCell>Nr.</TableCell>}
             <TableCell>LV</TableCell>
-            <TableCell>Titel</TableCell>
+            <TableCell>Werktitel</TableCell>
             <TableCell>Stimmen</TableCell>
             <TableCell>{authorOrSourceHeader}</TableCell>
             <TableCell>Gesamtausgabe</TableCell>
@@ -94,10 +96,13 @@ function PrintContentsTable({ contents }: { contents: WorkInPrint[] }) {
                     </Tooltip>
                   )}
                 </TableCell>
-                <TableCell
-                  title={printTitles.length > 0 ? `Im Druck: ${printTitles.join(' / ')}` : undefined}
-                >
-                  {mainTitle(work)}
+                <TableCell>
+                  <WorkTitle basis={work.preferredTitleBasis}>{mainTitle(work)}</WorkTitle>
+                  {printTitles.length > 0 && (
+                    <Typography variant="body2" color="text.secondary">
+                      Im Druck: {printTitles.join(' / ')}
+                    </Typography>
+                  )}
                 </TableCell>
                 <TableCell>{work.voiceCounts.join(', ')}</TableCell>
                 <TableCell>
@@ -145,7 +150,6 @@ export function PrintDetailPage() {
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
           <Chip label="Druck" size="small" sx={{ fontWeight: 700 }} />
           {print.part && <Chip label={`Band ${print.part}`} size="small" variant="outlined" />}
-          <RismBadge print={print} />
         </Stack>
         <Typography variant="h4" component="h2">
           {print.siglum}

@@ -1,13 +1,13 @@
-import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import Tooltip from '@mui/material/Tooltip'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import type { Print } from '../types.ts'
 import { printRism } from '../worksData.ts'
+import { ExternalChip } from './ExternalChip.tsx'
 
 // Abzeichen "RISM", das den Druck in RISM Online oeffnet, im Stil der
-// GND/VIAF-Badges der Textdichter. Steht ueberall, wo ein Druck erscheint,
-// damit der Weg zur Quelle immer sichtbar ist. Ohne Link nichts.
+// GND/VIAF-Badges der Textdichter, fuer Tabellen wie die Druckuebersicht.
+// Auf den Detailseiten steht stattdessen PrintRism. Ohne Link nichts.
 // stopPropagation verhindert, dass der Klick zugleich die umgebende Zeile
 // bzw. das Akkordeon ausloest.
 export function RismBadge({ print }: { print: Print }) {
@@ -49,21 +49,21 @@ export function RismBadge({ print }: { print: Print }) {
   )
 }
 
-// RISM-Angabe als Wert der Detailseiten: Abzeichen und Nummer
+// RISM-Angabe als Wert der Detailseiten. Das Feld heisst schon "RISM", deshalb
+// hier kein Abzeichen: die Nummer selbst ist der Chip zu RISM Online.
 export function PrintRism({ print }: { print: Print }) {
   const rism = printRism(print)
   if (!rism) {
     return null
   }
+  if (!rism.url) {
+    return <>{rism.label}</>
+  }
   return (
-    <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
-      <RismBadge print={print} />
-      {rism.label}
-      {rism.url && !rism.confirmed && (
-        <Box component="span" sx={{ color: 'text.secondary' }}>
-          (laut Druckeverzeichnis, noch nicht bestätigt)
-        </Box>
-      )}
-    </Box>
+    <ExternalChip
+      label={rism.label ?? 'RISM Online'}
+      href={rism.url}
+      tooltip={`RISM ${rism.label ?? ''} – in RISM Online öffnen`.replace('  ', ' ')}
+    />
   )
 }

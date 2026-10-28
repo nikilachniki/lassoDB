@@ -56,6 +56,13 @@ export const theme = createTheme(
       subtitle1: { fontWeight: 700 },
     },
     components: {
+      // Verweise auf Datensaetze und Kataloge sind Chips (PrintChip,
+      // ExternalChip); Links bleiben nur im Fliesstext, dort ohne die
+      // dauerhafte Unterstreichung.
+      MuiLink: {
+        defaultProps: { underline: 'hover' },
+        styleOverrides: { root: { fontWeight: 500 } },
+      },
       MuiAppBar: {
         defaultProps: { position: 'static', elevation: 0 },
         styleOverrides: {
