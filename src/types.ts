@@ -1,5 +1,5 @@
 // Entspricht dem Feldmodell aus lassoDBData/schema/entry.schema.json.
-// Ein Werk kann in mehreren Drucken erscheinen, entryCount zeigt das an.
+// Ein Werk kann in mehreren Drucken erscheinen, siehe Work.entries.
 
 export interface Work {
   '@id': string
@@ -36,7 +36,6 @@ export interface Work {
   manuscripts: string[]
   // Fassungen des Werks, siehe Expression
   expressions: string[]
-  entryCount: number
 }
 
 // Ein Werk in einem Druck laut Gesamtregister: Stuecknummer im Druck und
@@ -88,14 +87,12 @@ export interface ExpressionsFile {
 export interface CatalogueEntry {
   '@id': string
   '@type': 'CatalogueEntry'
-  id: number
   lv: string | null
   lvBase: number | null
   lvPart: number | null
   lvVariant: string | null
   // Titel in der Schreibung des Drucks (diplomatisch)
   title: string | null
-  titleRaw: string | null
   // Werktitel in normalisierter Schreibung, siehe Work.preferredTitle
   normalizedTitle: string | null
   normalizedTitleBasis: string | null
@@ -129,15 +126,10 @@ export interface Print {
   '@type': 'Print'
   siglum: string
   year: number | null
-  no: number | null
   // Band bei mehrbaendigen Drucken, roemisch
   part: string | null
   // Datierung im Register mit "ca."
   dateApproximate: boolean
-  // RISM-Kennung (URI), nur bei bestaetigter Zuordnung
-  rism: string | null
-  // Nummern in den RISM-Reihen, etwa "A/I L 955"
-  rismSeries: string[]
   // Angaben aus dem Druckeverzeichnis (lassoDBData, entscheidungen.md,
   // Abschnitt 26), diplomatisch uebernommen.
   // Ueberschrift unter der Sigle, etwa "Nachdruck von 1555-1"
@@ -148,17 +140,14 @@ export interface Print {
   // Werte mit undefined, weil TypeScript beim Import der JSON-Datei jedem
   // Druck die Verzeichnisse der uebrigen als optionale Felder zuschreibt.
   references: string[] | Record<string, string | undefined>
-  // Link auf RISM Online, ermittelt aus der RISM-Nummer im Verzeichnis.
-  // Ein Indiz, keine bestaetigte Zuordnung wie rism.
-  rismCatalogue?: string | null
+  // Link auf RISM Online, ermittelt aus der RISM-Nummer im Verzeichnis
+  rism: string | null
   // Titelblatt, Zeilenwechsel als "|", Zusaetze des Verzeichnisses in ⟨⟩
   title: string | null
   // Stimmbuecher, durch ";" getrennt, oder "Chorbuch"
   partbooks: string | null
   // Werke mit Erstdruck in diesem Druck (Eintraege)
   entryCount: number
-  // Alle Werke in diesem Druck laut Register
-  workCount: number
 }
 
 export interface PrintsFile {
@@ -172,7 +161,6 @@ export interface PrintsFile {
 export interface ManuscriptWitness {
   '@id': string
   '@type': 'ManuscriptWitness'
-  id: number
   lv: string | null
   lvBase: number | null
   lvPart: number | null
@@ -187,7 +175,7 @@ export interface ManuscriptWitness {
   library: string | null
   shelfmark: string | null
   shelfmarkAlt: string | null
-  sourceDescription: string | null
+  sourceType: string | null
   provenance: string | null
   sourceNote: string | null
   literature: string | null
@@ -207,10 +195,9 @@ export interface Person {
   preferredName: string
   // Abweichende Schreibweisen aus der Quelle, ohne preferredName
   variantNames: string[]
-  role: string
+  // GND und VIAF als vollstaendige Adresse, etwa https://d-nb.info/gnd/118593234
   gnd: string | null
   viaf: string | null
-  entryCount: number
 }
 
 export interface PersonsFile {

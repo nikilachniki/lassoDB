@@ -15,9 +15,8 @@ export function RismBadge({ print }: { print: Print }) {
   if (!rism?.url) {
     return null
   }
-  const basis = rism.confirmed ? '' : ' (laut Druckeverzeichnis)'
   return (
-    <Tooltip title={`RISM ${rism.label ?? ''}${basis} – in RISM Online öffnen`.replace('  ', ' ')}>
+    <Tooltip title={`RISM ${rism.label ?? ''} – in RISM Online öffnen`.replace('  ', ' ')}>
       <Link
         href={rism.url}
         target="_blank"

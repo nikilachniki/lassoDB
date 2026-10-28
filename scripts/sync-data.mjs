@@ -17,7 +17,6 @@
  */
 
 import { existsSync, mkdirSync, copyFileSync } from 'node:fs'
-import { readFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
@@ -35,7 +34,6 @@ const FILES = [
   'expressions.json',
   'prints.json',
   'persons.json',
-  'meta.json',
 ]
 
 if (!existsSync(sourceDir)) {
@@ -60,11 +58,3 @@ for (const file of FILES) {
 
 console.log(`${copied} Datendateien kopiert von ${sourceDir}`)
 console.log(`  nach ${targetDir}`)
-
-// Sichtbar machen, welcher Datenstand tatsaechlich verbaut wurde. Praktisch
-// beim Debuggen eines Deployments, ohne dafuer in die Actions-Logs zu muessen.
-const metaPath = path.join(targetDir, 'meta.json')
-if (existsSync(metaPath)) {
-  const meta = JSON.parse(await readFile(metaPath, 'utf-8'))
-  console.log(`  Datenstand vom ${meta.generated}, ${meta.counts?.entries ?? '?'} Eintraege`)
-}

@@ -226,7 +226,10 @@ function PrintCard({ item }: { item: WorkInPrint }) {
   const open = item.print ? () => navigate(printPath(item.siglum)) : undefined
   return (
     <Accordion variant="outlined" disableGutters expanded={expanded}>
+      {/* Als div, weil der Pfeil selbst ein Button ist und Buttons nicht
+          verschachtelt sein duerfen */}
       <AccordionSummary
+        component="div"
         onClick={open}
         expandIcon={
           title ? (
@@ -282,7 +285,7 @@ function manuscriptSummary(manuscript: ManuscriptWitness): string {
   if (parts.length > 0) {
     return parts.join(', ')
   }
-  return manuscript.title ?? `Handschrift ${manuscript.id}`
+  return manuscript.title ?? `Handschrift ${Number(manuscript['@id'].split(':')[1])}`
 }
 
 // Link zum Online-Katalog (Spalte "Link", meist RISM, vereinzelt ein anderer
@@ -330,7 +333,7 @@ function ManuscriptsAccordion({ manuscripts }: { manuscripts: ManuscriptWitness[
               <Fact label="Stimmen" value={manuscript.voices ?? ''} />
               <Fact label="Datierung" value={manuscript.dating ?? ''} />
               <Fact label="Provenienz" value={manuscript.provenance ?? ''} />
-              <Fact label="Quellenart" value={manuscript.sourceDescription ?? ''} />
+              <Fact label="Quellenart" value={manuscript.sourceType ?? ''} />
               <Fact label="Bemerkung" value={manuscript.note ?? ''} />
               <Fact label="Bemerkung (Quelle)" value={manuscript.sourceNote ?? ''} />
               <Fact label="Literatur" value={manuscript.literature ? <Linkified text={manuscript.literature} /> : ''} />

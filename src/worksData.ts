@@ -116,15 +116,15 @@ export interface TextAuthorLabel {
 }
 
 // Textdichter eines Werks oder einer Fassung in der festgelegten Schreibweise.
-// Eine unsichere Zuschreibung bekommt das Fragezeichen des Rohwerts zurueck,
-// das in der Personen-ID verloren geht, siehe Work.uncertainTextAuthors.
+// Eine unsichere Zuschreibung bekommt ein Fragezeichen, siehe
+// Work.uncertainTextAuthors; der Personenname selbst traegt keins.
 export function textAuthorLabels(
   item: Pick<Work, 'textAuthors' | 'uncertainTextAuthors'>,
 ): TextAuthorLabel[] {
   return item.textAuthors.map((id) => {
     const person = personById.get(id)
     const name = person?.preferredName ?? id
-    const uncertain = item.uncertainTextAuthors.includes(id) && !name.endsWith('?')
+    const uncertain = item.uncertainTextAuthors.includes(id)
     return { name: uncertain ? `${name}?` : name, person }
   })
 }
@@ -338,23 +338,19 @@ export function printReferences(print: Print): PrintReference[] {
   return allPrintReferences(print).filter((reference) => !isRismReference(reference))
 }
 
-// RISM-Angabe eines Drucks. Eine bestaetigte Zuordnung (rism) geht dem Link
-// aus dem Druckeverzeichnis (rismCatalogue) vor.
+// RISM-Angabe eines Drucks: Link und Verweis aus dem Druckeverzeichnis
 export interface PrintRismInfo {
   url: string | null
-  confirmed: boolean
-  // Reihennummer bzw. Verweis, etwa "A/I L 757" oder "1555 c [L 757"
+  // Verweis, etwa "1555 c [L 757"
   label: string | null
 }
 
 export function printRism(print: Print): PrintRismInfo | null {
   const reference = allPrintReferences(print).find(isRismReference)
   const referenceLabel = reference ? reference.value.replace(/^RISM\s+/, '') : null
-  const confirmedUrl = print.rism?.startsWith('http') ? print.rism : null
-  const label = print.rismSeries.join('; ') || referenceLabel
-  const url = confirmedUrl ?? print.rismCatalogue ?? null
-  if (!url && !label) {
+  const url = print.rism
+  if (!url && !referenceLabel) {
     return null
   }
-  return { url, confirmed: confirmedUrl !== null, label }
+  return { url, label: referenceLabel }
 }

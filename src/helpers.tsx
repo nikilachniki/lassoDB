@@ -89,10 +89,10 @@ export function AuthorOrSourceText({
             {index > 0 && ', '}
             <Highlight text={name} query={highlight} />
             {person?.gnd && (
-              <AuthorityBadge label="GND" href={`https://d-nb.info/gnd/${person.gnd}`} color="authority.gnd" />
+              <AuthorityBadge label="GND" href={person.gnd} color="authority.gnd" />
             )}
             {person?.viaf && (
-              <AuthorityBadge label="VIAF" href={`https://viaf.org/viaf/${person.viaf}`} color="authority.viaf" />
+              <AuthorityBadge label="VIAF" href={person.viaf} color="authority.viaf" />
             )}
           </span>
         )
