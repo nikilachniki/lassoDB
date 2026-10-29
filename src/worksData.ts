@@ -235,6 +235,13 @@ export function findPrintBySiglum(siglum: string): Print | undefined {
   return printBySiglum.get(siglum)
 }
 
+// Anzeigename eines Drucks: Kurztitel mit Sigel in Klammern, weil Nachdrucke
+// denselben Kurztitel tragen ("Il primo libro di madrigali a cinque voci
+// (1557-1)"). Ohne Kurztitel bleibt das Sigel.
+export function printLabel(print: Pick<Print, 'siglum' | 'shortTitle'>): string {
+  return print.shortTitle ? `${print.shortTitle} (${print.siglum})` : print.siglum
+}
+
 // Erscheinungsjahr eines Drucks. Bei Sigeln ohne Jahresangabe in prints.json
 // (etwa "1575-3/I") steht das Jahr vorn im Sigel.
 export function printYear(siglum: string): number | null {

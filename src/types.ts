@@ -144,6 +144,8 @@ export interface Print {
   rism: string | null
   // Titelblatt, Zeilenwechsel als "|", Zusaetze des Verzeichnisses in ⟨⟩
   title: string | null
+  // Normalisierter Kurztitel, etwa "Il primo libro di madrigali a cinque voci"
+  shortTitle: string | null
   // Stimmbuecher, durch ";" getrennt, oder "Chorbuch"
   partbooks: string | null
   // Werke mit Erstdruck in diesem Druck (Eintraege)

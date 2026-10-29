@@ -152,7 +152,13 @@ export function PrintDetailPage() {
           {print.part && <Chip label={`Band ${print.part}`} size="small" variant="outlined" />}
         </Stack>
         <Typography variant="h4" component="h2">
-          {print.siglum}
+          {print.shortTitle ?? print.siglum}
+          {print.shortTitle && (
+            <Box component="span" sx={{ color: 'text.secondary', fontWeight: 400 }}>
+              {' '}
+              ({print.siglum})
+            </Box>
+          )}
         </Typography>
         {print.description && (
           <Typography variant="subtitle1" component="p" color="text.secondary" sx={{ fontWeight: 400, mt: 0.5 }}>

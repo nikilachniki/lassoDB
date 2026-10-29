@@ -1,5 +1,12 @@
 import type { Work } from '../types'
-import { getExpressions, getManuscripts, printYear, textAuthorSearchNames, workPrintSigla } from '../worksData'
+import {
+  findPrintBySiglum,
+  getExpressions,
+  getManuscripts,
+  printYear,
+  textAuthorSearchNames,
+  workPrintSigla,
+} from '../worksData'
 import { inYearRange, matchesLv } from './filterFields'
 import { indexDocument, parseQuery, scoreDocument, type SearchDocument } from './textSearch'
 
@@ -93,7 +100,10 @@ function fullDocument(work: Work): SearchDocument {
       ...getManuscripts(work).map((manuscript) => ({ text: manuscript.title ?? '', weight: 1.5, numbers: true })),
       ...work.textAuthors.flatMap(textAuthorSearchNames).map((text) => ({ text, weight: 1.5 })),
       ...work.textSources.map((text) => ({ text })),
-      ...workPrintSigla(work).map((text) => ({ text })),
+      ...workPrintSigla(work).flatMap((siglum) => [
+        { text: siglum },
+        { text: findPrintBySiglum(siglum)?.shortTitle ?? '', numbers: true },
+      ]),
       ...work.completeEditions.map((text) => ({ text })),
       ...work.genres.map((text) => ({ text })),
       ...work.languages.map((text) => ({ text })),

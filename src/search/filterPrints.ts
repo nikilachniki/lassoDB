@@ -96,6 +96,7 @@ function fullDocument(summary: PrintSummary): SearchDocument {
   return cachedDocument(`full|${summary.print.siglum}`, () =>
     indexDocument([
       { text: summary.print.siglum, weight: 3 },
+      { text: summary.print.shortTitle ?? '', weight: 3, numbers: true },
       { text: String(summary.year ?? '') },
       { text: printRism(summary.print)?.label ?? '' },
       { text: summary.print.description ?? '', weight: 2 },

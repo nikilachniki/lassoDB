@@ -16,6 +16,7 @@ import { getPerson, printPath, printRism, textAuthorSearchNames } from '../works
 interface Row {
   id: string
   siglum: string
+  shortTitle: string
   description: string
   print: Print
   // RISM-Nummer als Text, fuer Sortierung und Export; angezeigt wird das Abzeichen
@@ -80,6 +81,21 @@ function createColumns(query: string): GridColDef<Row>[] {
   return [
     { field: 'siglum', headerName: 'Sigel', width: 120, sortComparator: siglumComparator, ...highlighted('siglum') },
     {
+      field: 'shortTitle',
+      headerName: 'Kurztitel',
+      flex: 3,
+      minWidth: 240,
+      renderCell: (params: GridRenderCellParams<Row>) => (
+        <Box
+          component="span"
+          title={params.row.shortTitle}
+          sx={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+        >
+          <Highlight text={params.row.shortTitle} query={query} />
+        </Box>
+      ),
+    },
+    {
       field: 'description',
       headerName: 'Beschreibung',
       flex: 2,
@@ -131,6 +147,7 @@ export function PrintsPage({ filters, onFiltersChange }: PrintsPageProps) {
       filterPrints(printSummaries, filters).map((summary) => ({
         id: summary.print['@id'],
         siglum: summary.print.siglum,
+        shortTitle: summary.print.shortTitle ?? '',
         description: summary.print.description ?? '',
         print: summary.print,
         rism: printRism(summary.print)?.label ?? '',
@@ -155,7 +172,7 @@ export function PrintsPage({ filters, onFiltersChange }: PrintsPageProps) {
         onFiltersChange={onFiltersChange}
         defaultFilters={defaultPrintsFilters}
         fields={fields}
-        placeholder="Drucke durchsuchen – Sigel, Jahr, Beschreibung, Titel, Verweise, Gattung …"
+        placeholder="Drucke durchsuchen – Kurztitel, Sigel, Jahr, Beschreibung, Titelblatt, Verweise, Gattung …"
       />
       <Paper variant="outlined" sx={{ flex: 1, minHeight: 0, display: 'flex' }}>
         <DataGrid
