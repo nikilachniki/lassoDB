@@ -1,0 +1,3894 @@
+{
+  "@context": "../../schema/context.jsonld",
+  "entries": [
+    {
+      "@id": "manifestations:1555-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1555-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1555 c [L 757"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1555 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXVIII"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1555"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1555"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "4"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1421"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "2."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1",
+          "titleInSource": "Cantai hor piango",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:1-2",
+          "position": "1",
+          "part": "2",
+          "titleInSource": "Tengan dunque",
+          "voices": 5
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2",
+          "titleInSource": "Gvarda'l mio stat'a",
+          "voices": 5
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3",
+          "titleInSource": "Alma cortese",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:3-2",
+          "position": "3",
+          "part": "2",
+          "titleInSource": "Ch'udirai un se",
+          "voices": 5
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4",
+          "titleInSource": "Gia mi fu",
+          "voices": 5
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5",
+          "titleInSource": "Qvado'l uoler",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:5-2",
+          "position": "5",
+          "part": "2",
+          "titleInSource": "Onde come colui",
+          "voices": 5
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6",
+          "titleInSource": "Hor qui son lasso",
+          "voices": 5
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7",
+          "titleInSource": "Poi che'l camin",
+          "voices": 5
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8",
+          "titleInSource": "Mentre che'l cor",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:8-2",
+          "position": "8",
+          "part": "2",
+          "titleInSource": "Qvel fuoco e morto",
+          "voices": 5
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9",
+          "titleInSource": "Poi che l'iniquo",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:9-2",
+          "position": "9",
+          "part": "2",
+          "titleInSource": "Diuiso m'ha",
+          "voices": 5
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10",
+          "titleInSource": "Mia benigna Fortuna",
+          "voices": 5
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11",
+          "titleInSource": "O inuidia nemica",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:11-2",
+          "position": "11",
+          "part": "2",
+          "titleInSource": "Ne pero che con",
+          "voices": 5
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12",
+          "titleInSource": "Crudel acerba inesorabil Morte",
+          "voices": 5
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13",
+          "titleInSource": "Pon fren'al gra dolor",
+          "voices": 5
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14",
+          "titleInSource": "Fiera stella",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:14-2",
+          "position": "14",
+          "part": "2",
+          "titleInSource": "Ma tu predi",
+          "voices": 5
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15",
+          "titleInSource": "Qvando la sera",
+          "voices": 5
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16",
+          "titleInSource": "S'io tal'hor",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:16-2",
+          "position": "16",
+          "part": "2",
+          "titleInSource": "Al'hor lasso",
+          "voices": 5
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17",
+          "titleInSource": "Con lei fuss'io",
+          "voices": 5
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18",
+          "titleInSource": "Ben mi credea",
+          "voices": 5
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19",
+          "titleInSource": "Sol'e pensoso",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:19-2",
+          "position": "19",
+          "part": "2",
+          "titleInSource": "Si ch'io mi credo",
+          "voices": 5
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20",
+          "titleInSource": "Pien d'un uago pensier",
+          "voices": 5
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21",
+          "titleInSource": "L'altr'hier sul",
+          "voices": 5
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22",
+          "titleInSource": "Perche nemica",
+          "voices": 5
+        }
+      ],
+      "partbooks": "Cantus; Tenor; Altus; Bassus; Quintus",
+      "titlePages": [
+        {
+          "html": "TENOR | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DI MADRIGALI | A cinque uoci, Nouamente dato in luce. | LIBRO ⟨Drz⟩ PRIMO | In Venetia Apresso | di Antonio Gardano. | 1555"
+        }
+      ],
+      "publication": {
+        "startDate": "1555-01-01",
+        "endDate": "1555-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036544"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Erstausgabe (?)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1557-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1557-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1557 a [L 759"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1557 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1557 (unter 1555)"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1557 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1422"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "14."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Cantus; Altus; Tenor; Bassus; Quintus",
+      "titlePages": [
+        {
+          "html": "CANTVS | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DI MADRIGALI | A cinque Voci, Nouamente per Antonio Gardano ristampato. | A CINQVE ⟨Drz⟩ VOCI | In Venetia Appresso di | Antonio Gardano. | 1557"
+        }
+      ],
+      "publication": {
+        "startDate": "1557-01-01",
+        "endDate": "1557-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036546"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Auflage von 1555-1"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1559-2",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo et secondo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1559-2"
+        },
+        {
+          "list": "RISM",
+          "value": "1559 a [L 761"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1559 b"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX und S. XLVII"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1559 (unter 1559)"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1559 (unter 1559)"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "6"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1448"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "27."
+        },
+        {
+          "list": "Fétis",
+          "value": "40° (S.219)"
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Canto; Alto; Tenore; Basso; Quinta parte",
+      "titlePages": [
+        {
+          "html": "CANTO | DI ORLANDO DI LASSVS | IL PRIMO ET SECONDO LIBRO | DI MADRIGALI A CINQVE VOCI, | Nouamente riduti tutti insieme &amp; dato in luce. | ⟨Drz⟩ | In Vinegia, Appresso Girolamo Scoto. 1559."
+        }
+      ],
+      "publication": {
+        "startDate": "1559-01-01",
+        "endDate": "1559-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036548"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 und verkürzt von 1557-2"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1560-10",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Titel nicht erhalten"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1560-10"
+        },
+        {
+          "list": "RISM",
+          "value": "1560 d [L 766"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1560 l"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX"
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "nur Tenore, bei dem das erste Blatt mit Titel und (auf dessen Rückseite) der größte Teil des ersten Madrigals Cantai hor piango fehlt",
+      "titlePages": [
+        {
+          "html": "Titel nicht erhalten"
+        }
+      ],
+      "publication": {
+        "startDate": "1560-01-01",
+        "endDate": "1560-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036553"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 (verkürzte Auflage von 1559-2)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1562-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Li madrigali a cinque voci. Libro primo"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1562-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1562 e [L 772"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1562 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1562 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1424"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "5."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "nur Alto; Tenore",
+      "titlePages": [
+        {
+          "html": "ALTO | ORLANDO DI LASSVS | LI MADRIGALI A QINQVE VOCI, | LIBRO PRIMO. | NVOVAMENTE RISTAMPATI | Et con ogni diligentia coretti. | ⟨Drz⟩ | In Vinegia, Appresso Girolamo Scotto, | M D LXII."
+        }
+      ],
+      "publication": {
+        "startDate": "1562-01-01",
+        "endDate": "1562-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036559"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 (Auflage von 1560-10)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1562-5",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1562-5"
+        },
+        {
+          "list": "RISM",
+          "value": "1562 f [L 773"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1562 e"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1562 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1423"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "4."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Cantus; Altus; Tenor; Bassus; Quintus",
+      "titlePages": [
+        {
+          "html": "QVINTVS | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DI MADRIGALI | A CINQVE VOCI, NOVAMENTE RISTAMPATO. | A CINQVE ⟨Drz⟩ VOCI | IN VENETIA, appresso Francesco Rampazetto. | M D L X I I."
+        }
+      ],
+      "publication": {
+        "startDate": "1562-01-01",
+        "endDate": "1562-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036560"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1566-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1566-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1566 k [L 801"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1566 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1566 (unter 1555)"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1566 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1426"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "6."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Canto; Alto; Tenore; Basso; Quinto",
+      "titlePages": [
+        {
+          "html": "CANTO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DI MADRIGALI | A CINQVE VOCI, | NOVAMENTE RISTAMPATO. | A CINQVE ⟨Drz⟩ VOCI | IN VENETIA, Kolophon, unter der Tavola: In Venetia appresso Francesco Rampazetto. | M D LXVI."
+        }
+      ],
+      "publication": {
+        "startDate": "1566-01-01",
+        "endDate": "1566-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036588"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 (Auflage von 1562-5)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1566-10",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1566-10"
+        },
+        {
+          "list": "RISM",
+          "value": "1566 i [L 800"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1566 k"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1566 (unter 1555)"
+        },
+        {
+          "list": "Huys",
+          "value": "196"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1427"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "7."
+        },
+        {
+          "list": "Fétis",
+          "value": "unter 41° (S.219)"
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Canto; Alto; Tenore; Basso; Quinto",
+      "titlePages": [
+        {
+          "html": "QVINTO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DI MADRIGALI | A Cinque uoci, Nouamente per Antonio Gardano Ristampato. | A CINQVE ⟨Drz⟩ VOCI | In Venetia appresso di | Antonio Gardano. | 1566"
+        }
+      ],
+      "publication": {
+        "startDate": "1566-01-01",
+        "endDate": "1566-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036587"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Auflage von 1555-1"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1567-6",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro de madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1567-6"
+        },
+        {
+          "list": "RISM",
+          "value": "1567 g [L 810"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1567 z"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1567 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1428"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "8."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "nur Basso; Quinto",
+      "titlePages": [
+        {
+          "html": "BASSO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DE MADRIGALI | A cinque voci. | Nouamente stampato e coretto. | ⟨Drz⟩ | IN VINEGIA M D LXVII. | APPRESSO GIROLAMO SCOTTO."
+        }
+      ],
+      "publication": {
+        "startDate": "1567-01-01",
+        "endDate": "1567-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036597"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 (Auflage von 1560-10)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1570-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1570-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1570 k [L 840"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1570 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1570 (unter 1555)"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1570 (unter 1555)"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "51"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1529"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "9."
+        },
+        {
+          "list": "Fétis",
+          "value": "unter 41° (S.219)"
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Canto; Alto; Tenore; Basso; Quinto",
+      "titlePages": [
+        {
+          "html": "CANTO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DI MADRIGALI | A Cinque uoci, Nouamente con ogni dilligentia Ristampati. | A CINQVE ⟨Drz⟩ VOCI | In Venetia Apresso li | Figliuoli di Antonio Gardano. | 1570"
+        }
+      ],
+      "publication": {
+        "startDate": "1570-01-01",
+        "endDate": "1570-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036627"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Auflage von 1555-1"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1573-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro di madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1573-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1573 l [L 867"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1573 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1573 (unter 1555)"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "10."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "nur Canto; Quinto",
+      "titlePages": [
+        {
+          "html": "CANTO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO | DI MADRIGALI A CINQVE VOCI, | NVOVAMENTE CON OGNI | DILIGENZA RISTAMPATI. | ⟨Drz⟩ | IN VENETIA, M D LXXIII."
+        }
+      ],
+      "publication": {
+        "startDate": "1573-01-01",
+        "endDate": "1573-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036654"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1573-2",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro de madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1573-2"
+        },
+        {
+          "list": "RISM",
+          "value": "1573 k [L 866"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1573 b"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1431"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "11."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Canto; Alto; Tenore; Basso; Quinto",
+      "titlePages": [
+        {
+          "html": "CANTO | DI ORLANDO DI LASSVS | JL PRIMO LIBRO DE | MADRIGALI A CINQVE VOCI | Nuouamente ristampati. | ⟨Drz⟩ | IN VINEGIA, | APPRESSO GIROLAMO SCOTTO, | M D LXXIII."
+        }
+      ],
+      "publication": {
+        "startDate": "1573-01-01",
+        "endDate": "1573-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036653"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 (Auflage von 1560-10)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1576-7",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Les meslanges d'Orlande de Lassus"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1576-7"
+        },
+        {
+          "list": "RISM",
+          "value": "1576 i [L 891"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1576 h"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL und GA² XII, S. LXXXIX"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1576 c"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "79"
+        },
+        {
+          "list": "HuysS",
+          "value": "236"
+        },
+        {
+          "list": "Lesure/ThibaultRB",
+          "value": "199"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1465"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "56."
+        },
+        {
+          "list": "Fétis",
+          "value": "2° (S.221)"
+        },
+        {
+          "list": "Lasso Motets",
+          "value": "6, S.202"
+        }
+      ],
+      "contents": [
+        {
+          "position": "99",
+          "embodies": "expressions:17"
+        }
+      ],
+      "partbooks": "Superius; Contratenor (auf Titel und Stimmbuchbezeichnung: Contra); Tenor; Bassus; Quinta et Sexta pars",
+      "titlePages": [
+        {
+          "html": "SVPERIVS. | LES MESLANGES | D'ORLANDE DE LASSVS. | CONTENANTZ | PLVSIEVRS CHANSONS | A IIII, V, VI, VIII, X, PARTIES: | REVEVZ PAR LVY, ET AVGMENTEZ. | A PARIS. | Par Adrian le Roy, &amp; Robert Ballard. | Imprimeurs du Roy. | M. D. LXXVI. | Auec priuilege de sa majesté"
+        }
+      ],
+      "publication": {
+        "startDate": "1576-01-01",
+        "endDate": "1576-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036678"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "erweiterte, umgestellte Auflage von 1570-6 mit Erstbelegen"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1582-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Le thresor de musique d'Orlande de Lassus"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1582-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1582 h [L 942"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1582 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XLI und GA² XII, S. XC"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1582 (unter 1576 a)"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "110"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1473"
+        }
+      ],
+      "contents": [
+        {
+          "position": "117",
+          "embodies": "expressions:17"
+        }
+      ],
+      "partbooks": "nur Superius; Contratenor",
+      "titlePages": [
+        {
+          "html": "CONTRATENOR. | LE THRESOR DE MVSIQVE | D'ORLANDE DE LASSVS, | PRINCE DES MVSICIENS | DE NOSTRE TEMPS. | CONTENANT SES CHANSONS | Françoises, Italiennes &amp; Latines, à quatre, cinq &amp; six | parties: augmenté de plus de la moitié en ceste | seconde Edition. | M. D. LXXXII."
+        }
+      ],
+      "publication": {
+        "startDate": "1582-01-01",
+        "endDate": "1582-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036728"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "erweiterte, umgestellte Auflage von 1576-5"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1582-10",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro de madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1582-10"
+        },
+        {
+          "list": "RISM",
+          "value": "1582 k [L 944"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1582 k"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XXXIX"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1582 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1432"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "12."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "nur Quinto",
+      "titlePages": [
+        {
+          "html": "QVINTO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO DE MADRIGALI | A QVINQVE VOCI NOVAMENTE | Con ogni diligentia Ristampati. | ⟨Drz⟩ | In Venetia appresso Angelo Gardano | M D LXXXII."
+        }
+      ],
+      "publication": {
+        "startDate": "1582-01-01",
+        "endDate": "1582-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036730"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Auflage von 1555-1"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1586-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Il primo libro de madrigali a cinque voci"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1586-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1586 i [L 969"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1586 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1586 (unter 1555)"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1586 (unter 1555)"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1433"
+        },
+        {
+          "list": "Vogel Lasso",
+          "value": "13."
+        }
+      ],
+      "contents": [
+        {
+          "position": "1",
+          "embodies": "expressions:1"
+        },
+        {
+          "position": "2",
+          "embodies": "expressions:2"
+        },
+        {
+          "position": "3",
+          "embodies": "expressions:3"
+        },
+        {
+          "position": "4",
+          "embodies": "expressions:4"
+        },
+        {
+          "position": "5",
+          "embodies": "expressions:5"
+        },
+        {
+          "position": "6",
+          "embodies": "expressions:6"
+        },
+        {
+          "position": "7",
+          "embodies": "expressions:7"
+        },
+        {
+          "position": "8",
+          "embodies": "expressions:8"
+        },
+        {
+          "position": "9",
+          "embodies": "expressions:9"
+        },
+        {
+          "position": "10",
+          "embodies": "expressions:10"
+        },
+        {
+          "position": "11",
+          "embodies": "expressions:11"
+        },
+        {
+          "position": "12",
+          "embodies": "expressions:12"
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:13"
+        },
+        {
+          "position": "14",
+          "embodies": "expressions:14"
+        },
+        {
+          "position": "15",
+          "embodies": "expressions:15"
+        },
+        {
+          "position": "16",
+          "embodies": "expressions:16"
+        },
+        {
+          "position": "17",
+          "embodies": "expressions:17"
+        },
+        {
+          "position": "18",
+          "embodies": "expressions:18"
+        },
+        {
+          "position": "19",
+          "embodies": "expressions:19"
+        },
+        {
+          "position": "20",
+          "embodies": "expressions:20"
+        },
+        {
+          "position": "21",
+          "embodies": "expressions:21"
+        },
+        {
+          "position": "22",
+          "embodies": "expressions:22"
+        }
+      ],
+      "partbooks": "Canto; Alto; Tenore; Basso; Quinto",
+      "titlePages": [
+        {
+          "html": "CANTO | DI ORLANDO DI LASSVS | IL PRIMO LIBRO | DE MADRIGALI | A CINQVE VOCI. | Nouamente ristampati. | ⟨Drz⟩ | IN VINEGIA Appresso l'Herede di Girolamo Scotto. | M D L X X X V I."
+        }
+      ],
+      "publication": {
+        "startDate": "1586-01-01",
+        "endDate": "1586-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036755"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Nachdruck von 1555-1 (Auflage von 1560-10)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1586-9",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Meslanges de la musique d'Orlande de Lassus a 4, 5, 6, 8 et 10 parties"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1586-9"
+        },
+        {
+          "list": "RISM",
+          "value": "1586 g [L 967"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1586 l"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL und GA² XII, S. XCI"
+        },
+        {
+          "list": "Lesure/ThibaultRB",
+          "value": "279"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1467"
+        },
+        {
+          "list": "Fétis",
+          "value": "4° (S.221)"
+        }
+      ],
+      "contents": [
+        {
+          "position": "99",
+          "embodies": "expressions:17"
+        }
+      ],
+      "partbooks": "Superius; Contratenor (auf Titel und Stimmbuchzeichnung: Contra); Tenor; Bassus; Quinta pars",
+      "titlePages": [
+        {
+          "html": "MESLANGES | DE LA MVSIQVE | D'ORLANDE DE LASSVS. | A. 4. 5. 6. 8. &amp; 10. parties. | A PARIS. | Par Adrian le Roy, &amp; Robert Ballard. | Imprimeurs du Roy. | M. D. LXXXVI. | Auec priuilege de sa majesté pour dix ans. | TENOR."
+        }
+      ],
+      "publication": {
+        "startDate": "1586-01-01",
+        "endDate": "1586-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036753"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "erweiterte, umgestellte und veränderte Auflage von 1570-6 mit Kontrafakturen (umgestellte, veränderte Auflage von 1576-7)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1594-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Le thresor de musique d'Orlande de Lassus"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1594-1"
+        },
+        {
+          "list": "RISM",
+          "value": "1594 b [L 1008"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1594 a"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XLI und GA² XII, S. XCII"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1594 (unter 1576 a)"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1594 (unter 1576 a)"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "155"
+        },
+        {
+          "list": "N.Vogel",
+          "value": "1474"
+        },
+        {
+          "list": "Göhler",
+          "value": "504"
+        },
+        {
+          "list": "Fétis",
+          "value": "unter 5° (S.221)"
+        }
+      ],
+      "contents": [
+        {
+          "position": "116",
+          "embodies": "expressions:17"
+        }
+      ],
+      "partbooks": "Superius; Contratenor; Tenor; Bassus; Quinta et Sexta pars",
+      "titlePages": [
+        {
+          "html": "SVPERIVS. | LE THRESOR DE MVSIQVE | D'ORLANDE DE LASSVS | PRINCE DES MVSICIENS | DE NOSTRE TEMPS. | Contenant ses chansons Francoises, Italiennes, &amp; Latines, | à quatre, cinq, &amp; six parties: Reueu &amp; corrigè di- | ligemment en ceste troisieme Edition. | A COLOGNI. | M. D. XCIIII. | Par Paul Marceau."
+        }
+      ],
+      "publication": {
+        "startDate": "1594-01-01",
+        "endDate": "1594-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036793"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "erweiterte, umgestellte Auflage von 1576-5 (umgestellte Auflage von 1582-1)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1597-2",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Cinquante pseaumes de David avec la musique a cinq parties"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1597-2"
+        },
+        {
+          "list": "RISM",
+          "value": "1597⁶"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1597 b"
+        },
+        {
+          "list": "GA²",
+          "value": "IV, S. XXVI und GA² XII, S. XCIII"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1597"
+        },
+        {
+          "list": "EitnerV",
+          "value": "1597 a"
+        },
+        {
+          "list": "EitnerSW",
+          "value": "1597 a"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "164 und 5 (S.100)"
+        },
+        {
+          "list": "Göhler",
+          "value": "509"
+        },
+        {
+          "list": "Fétis",
+          "value": "20° (S.216)"
+        },
+        {
+          "list": "Schmieder",
+          "value": "587"
+        }
+      ],
+      "contents": [
+        {
+          "position": "4",
+          "embodies": "expressions:14",
+          "note": "nur I."
+        },
+        {
+          "position": "13",
+          "embodies": "expressions:11",
+          "note": "nur I."
+        }
+      ],
+      "partbooks": "Superius; Contratenor; Tenor; Bassus; Quinta pars; Sexta pars",
+      "titlePages": [
+        {
+          "html": "CINQVANTE PSEAVMES DE | DAVID, AVEC LA MVSIQVE A CINQ | parties d'Orlande de Lassus. | ⟨Drz⟩ | Vingt autres Pseaumes à cinq &amp; six parties, par diuers | excellents Musiciens de nostre temps. | SEXTA PARS | De l'imprimerie de Ierosme Commelin. | CI. I. XCVII."
+        }
+      ],
+      "publication": {
+        "startDate": "1597-01-01",
+        "endDate": "1597-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/993121045"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "Sammelwerk mit Kontrafakturen"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:1619-2",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "Meslanges de la musique d'Orlando de Lassus a 4, 5, 6, 8 et dix parties"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Print"
+      ],
+      "identifiers": [
+        {
+          "list": "Sigle",
+          "value": "1619-2"
+        },
+        {
+          "list": "RISM",
+          "value": "1619 b [L 1032"
+        },
+        {
+          "list": "Boetticher",
+          "value": "1619 b"
+        },
+        {
+          "list": "GA²",
+          "value": "II, S. XL und GA² XII, S. XCIII"
+        },
+        {
+          "list": "EitnerQL",
+          "value": "1619 (unter 1570 c)"
+        },
+        {
+          "list": "Delmotte/Dehn",
+          "value": "187"
+        }
+      ],
+      "contents": [
+        {
+          "position": "99",
+          "embodies": "expressions:17"
+        }
+      ],
+      "partbooks": "Dessus; Haute-Contre; Taille; Basse-Contre; Cinquiesme",
+      "titlePages": [
+        {
+          "html": "MESLANGES | DE LA MVSIQVE | d'Orlando de Lassvs, | A IIII. V. VI. VIII. ET DIX PARTIES. | A PARIS, | Par Pierre Ballard, Imprimeur en Musique du Roy, de- | meurant ruë S. Iean de Beauuais, à l'enseigne du mont Parnasse. | 1619. | Avec Privilege de sa Maiesté. | DESSVS."
+        }
+      ],
+      "publication": {
+        "startDate": "1619-01-01",
+        "endDate": "1619-12-31"
+      },
+      "sameAs": [
+        "https://rism.online/sources/990036817"
+      ],
+      "notes": [
+        {
+          "label": "Beschreibung",
+          "html": "erweiterte, umgestellte und veränderte Auflage von 1570-6 mit Kontrafakturen (wie 1586-9)"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:hs-I-Bc-M-225",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "I-Bc M.225"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:14",
+          "titleInSource": "Fiera stella",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:14-2",
+          "titleInSource": "Ma tu pretendi",
+          "voices": 5
+        },
+        {
+          "titleInSource": "Gustate et videte",
+          "voices": 5,
+          "note": "LV 54"
+        },
+        {
+          "titleInSource": "Divites eguerunt",
+          "voices": 5,
+          "note": "LV 54-2"
+        },
+        {
+          "titleInSource": "Confitemini Domino",
+          "voices": 5,
+          "note": "LV 108"
+        },
+        {
+          "titleInSource": "Narrate omnia mirabilia",
+          "voices": 5,
+          "note": "LV 108-2"
+        },
+        {
+          "titleInSource": "Omnia quae fecisti",
+          "voices": 5,
+          "note": "LV 109"
+        },
+        {
+          "titleInSource": "Veni in hortum meum",
+          "voices": 5,
+          "note": "LV 114"
+        },
+        {
+          "titleInSource": "Angelus ad pastores ait",
+          "voices": 5,
+          "note": "LV 115"
+        },
+        {
+          "titleInSource": "Quam benignus es",
+          "voices": 5,
+          "note": "LV 120"
+        },
+        {
+          "titleInSource": "O beatum hominem",
+          "voices": 5,
+          "note": "LV 120-2"
+        },
+        {
+          "titleInSource": "Surrexit pastor bonus",
+          "voices": 5,
+          "note": "LV 126"
+        },
+        {
+          "titleInSource": "Benedicam Dominum in omni tempore",
+          "voices": 5,
+          "note": "LV 131"
+        },
+        {
+          "titleInSource": "In Domino laudabitur",
+          "voices": 5,
+          "note": "LV 131-2"
+        },
+        {
+          "titleInSource": "Amen amen dico vobis",
+          "voices": 4,
+          "note": "LV 204"
+        },
+        {
+          "titleInSource": "Surge propera amica mea, et veni",
+          "voices": 6,
+          "note": "LV 206"
+        },
+        {
+          "titleInSource": "Surge propera amica mea speciosa",
+          "voices": 6,
+          "note": "LV 206-2"
+        },
+        {
+          "titleInSource": "Laudate Dominum de caelis",
+          "voices": 5,
+          "note": "LV 236"
+        },
+        {
+          "titleInSource": "Laudate Dominum de terra",
+          "voices": 5,
+          "note": "LV 236-2"
+        },
+        {
+          "titleInSource": "Iuvenes et virgines",
+          "voices": 3,
+          "note": "LV 236-3"
+        },
+        {
+          "titleInSource": "Laudate eum in virtutibus",
+          "voices": 6,
+          "note": "LV 236-4"
+        },
+        {
+          "titleInSource": "Tristis est anima mea",
+          "voices": 5,
+          "note": "LV 238"
+        },
+        {
+          "titleInSource": "In convertendo Dominus",
+          "voices": 8,
+          "note": "LV 250"
+        },
+        {
+          "titleInSource": "Convertere Domine captivitatem",
+          "voices": 8,
+          "note": "LV 250-2"
+        },
+        {
+          "titleInSource": "Quo properas facunde",
+          "voices": 10,
+          "note": "LV 251"
+        },
+        {
+          "titleInSource": "Levavi oculos meos",
+          "voices": 8,
+          "note": "LV 267"
+        },
+        {
+          "titleInSource": "In monte oliveti",
+          "voices": 6,
+          "note": "LV 334"
+        },
+        {
+          "titleInSource": "O quam suavis est Domine",
+          "voices": 6,
+          "note": "LV 335"
+        },
+        {
+          "titleInSource": "Audite nova: Der Bauer",
+          "voices": 4,
+          "note": "LV 483"
+        },
+        {
+          "titleInSource": "Nun grüß dich Gott",
+          "voices": 8,
+          "note": "LV 497"
+        },
+        {
+          "titleInSource": "Ego sum panis vivus",
+          "voices": 5,
+          "note": "LV 699"
+        },
+        {
+          "titleInSource": "O sacrum convivium",
+          "voices": 5,
+          "note": "LV 702"
+        },
+        {
+          "titleInSource": "O salutaris hostia",
+          "voices": 5,
+          "note": "LV 708"
+        },
+        {
+          "titleInSource": "Ave regina caelorum",
+          "voices": 6,
+          "note": "LV 717"
+        },
+        {
+          "titleInSource": "Pater noster",
+          "voices": 6,
+          "note": "LV 830"
+        },
+        {
+          "titleInSource": "Panem nostrum",
+          "voices": 6,
+          "note": "LV 830-2"
+        },
+        {
+          "titleInSource": "Regina caeli laetare",
+          "voices": 6,
+          "note": "LV 1106"
+        },
+        {
+          "titleInSource": "Resurrexit sicut dixit",
+          "voices": 6,
+          "note": "LV 1106-2"
+        },
+        {
+          "titleInSource": "Salve regina",
+          "voices": 6,
+          "note": "LV 1107"
+        }
+      ],
+      "dating": "1848",
+      "sourceType": "Sparten",
+      "notes": [
+        {
+          "label": "Bemerkung",
+          "html": "Quellentyp bisher nicht exakt ermittelt"
+        }
+      ]
+    },
+    {
+      "@id": "manifestations:hs-I-CMac-M-Se-1",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "I-CMac M Se 1"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:17",
+          "titleInSource": "Con lei fuss'io",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:19",
+          "titleInSource": "Sol'e pensoso",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:19-2",
+          "titleInSource": "Si ch'io mi credo",
+          "voices": 5
+        },
+        {
+          "titleInSource": "Per pianto la mia carne",
+          "voices": 4,
+          "note": "LV 24"
+        },
+        {
+          "titleInSource": "Queste non son più lagrime",
+          "voices": 4,
+          "note": "LV 25"
+        },
+        {
+          "titleInSource": "Se ben l'empia",
+          "voices": 4,
+          "note": "LV 26"
+        },
+        {
+          "titleInSource": "Occhi piangete",
+          "voices": 4,
+          "note": "LV 27"
+        },
+        {
+          "titleInSource": "Vatene lieta! homai",
+          "voices": 4,
+          "note": "LV 28"
+        },
+        {
+          "titleInSource": "Perch'io veggio",
+          "voices": 4,
+          "note": "LV 29"
+        },
+        {
+          "titleInSource": "Io son si stanco sotto il grave peso",
+          "voices": 5,
+          "note": "LV 71"
+        },
+        {
+          "titleInSource": "Hora per far",
+          "voices": 5,
+          "note": "LV 71-2"
+        },
+        {
+          "titleInSource": "Non ha tante serene stelle",
+          "voices": 5,
+          "note": "LV 74; [fehlt; nur die quarta pars ist vorhanden]"
+        },
+        {
+          "titleInSource": "In sonne eterno",
+          "voices": 5,
+          "note": "LV 74-2"
+        },
+        {
+          "titleInSource": "Secchi vedransi",
+          "voices": 3,
+          "note": "LV 74-3"
+        },
+        {
+          "titleInSource": "Io vo fuggendo",
+          "voices": 5,
+          "note": "LV 74-4"
+        },
+        {
+          "titleInSource": "Deh che fuss'io",
+          "voices": 5,
+          "note": "LV 74-5"
+        },
+        {
+          "titleInSource": "Ma sarò spento",
+          "voices": 6,
+          "note": "LV 74-6"
+        },
+        {
+          "titleInSource": "Vivo sol di speranza",
+          "voices": 4,
+          "note": "LV 81"
+        },
+        {
+          "titleInSource": "Appariran per me",
+          "voices": 4,
+          "note": "LV 82"
+        },
+        {
+          "titleInSource": "Ben veggio di lontan'",
+          "voices": 4,
+          "note": "LV 135"
+        },
+        {
+          "titleInSource": "La ver l'aurora",
+          "voices": 5,
+          "note": "LV 310"
+        },
+        {
+          "titleInSource": "Temprar' potess'io",
+          "voices": 5,
+          "note": "LV 310-2"
+        },
+        {
+          "titleInSource": "Quante lagrime",
+          "voices": 5,
+          "note": "LV 310-3"
+        },
+        {
+          "titleInSource": "Huomini et Dei",
+          "voices": 5,
+          "note": "LV 310-4"
+        },
+        {
+          "titleInSource": "Al'ultimo bisogno",
+          "voices": 5,
+          "note": "LV 310-5"
+        },
+        {
+          "titleInSource": "Ridon hor",
+          "voices": 5,
+          "note": "LV 310-6"
+        },
+        {
+          "titleInSource": "Che fai? Che pensi?",
+          "voices": 5,
+          "note": "LV 315"
+        },
+        {
+          "titleInSource": "Deh non rinovellar",
+          "voices": 5,
+          "note": "LV 315-2"
+        },
+        {
+          "titleInSource": "Ove d'altra montagn'ombra",
+          "voices": 4,
+          "note": "LV 323"
+        },
+        {
+          "titleInSource": "Malvaggio horrido gelo",
+          "voices": 4,
+          "note": "LV 393"
+        },
+        {
+          "titleInSource": "Vieni, dolc'Hymineo",
+          "voices": 4,
+          "note": "LV 396"
+        },
+        {
+          "titleInSource": "Indi gl'acuti stral",
+          "voices": 4,
+          "note": "LV 396-2"
+        }
+      ],
+      "sourceType": "Nicht ermittelt"
+    },
+    {
+      "@id": "manifestations:hs-I-Gu-ms-F-VII-a",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "I-Gu ms. F. VII.a"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:11-2",
+          "titleInSource": "Ma tu pretendi",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:11",
+          "titleInSource": "O invidia nemica",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:11-2",
+          "titleInSource": "Ne però che con",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:13",
+          "titleInSource": "Pon fren’ al gran dolor",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:14",
+          "titleInSource": "Fiera stella",
+          "voices": 5
+        },
+        {
+          "titleInSource": "Standomi un giorno",
+          "voices": 5,
+          "note": "LV 64"
+        },
+        {
+          "titleInSource": "Indi per alto mar",
+          "voices": 5,
+          "note": "LV 64-2"
+        },
+        {
+          "titleInSource": "In un boschetto",
+          "voices": 5,
+          "note": "LV 64-3"
+        },
+        {
+          "titleInSource": "Chiara fontana",
+          "voices": 5,
+          "note": "LV 64-4"
+        },
+        {
+          "titleInSource": "Una strania Fenice",
+          "voices": 5,
+          "note": "LV 64-5"
+        },
+        {
+          "titleInSource": "Al fin vidd’io",
+          "voices": 5,
+          "note": "LV 64-6"
+        },
+        {
+          "titleInSource": "Euro gentil",
+          "voices": 5,
+          "note": "LV 69"
+        },
+        {
+          "titleInSource": "Volgi cor mio",
+          "voices": 5,
+          "note": "LV 70"
+        },
+        {
+          "titleInSource": "Et a noi restarà",
+          "voices": 5,
+          "note": "LV 70-2"
+        }
+      ],
+      "dating": "1551-1600",
+      "sourceType": "Lautentabulatur",
+      "literature": [
+        "Biblioteca Universitaria di Genova, Lamusica dei libri. Opere musicali dei secoli XIII-XIX. Catalogo, a cura di O. Cartaregia, C. Farinella, G. Grigoletti, con saggi di A. De Floriani e G.E. Cortese. Genova 1996."
+      ]
+    },
+    {
+      "@id": "manifestations:hs-I-Mc-Ms-o-Sign-Tarasconi-oder-Clerici-Codex",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "I-Mc Ms. o. Sign. (Tarasconi- oder Clerici-Codex)"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:14",
+          "titleInSource": "Fiera stella",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:14-2",
+          "titleInSource": "Ma tu prendi",
+          "voices": 5
+        },
+        {
+          "titleInSource": "Vatene lieta! homai",
+          "voices": 4,
+          "note": "LV 28"
+        },
+        {
+          "titleInSource": "Appariran per me",
+          "voices": 4,
+          "note": "LV 82"
+        },
+        {
+          "titleInSource": "Non vi vieto",
+          "voices": 4,
+          "note": "LV 83; [opus dubium: Hoste da Reggio?]"
+        },
+        {
+          "titleInSource": "Oh d'amarissime onde",
+          "voices": 5,
+          "note": "LV 104"
+        },
+        {
+          "titleInSource": "Ove sei vita mia",
+          "voices": 5,
+          "note": "LV 105"
+        },
+        {
+          "titleInSource": "Come sei stat'o ciel",
+          "voices": 5,
+          "note": "LV 105-2"
+        },
+        {
+          "titleInSource": "La notte che segui",
+          "voices": 5,
+          "note": "LV 106"
+        },
+        {
+          "titleInSource": "Riconosci colei",
+          "voices": 5,
+          "note": "LV 106-2"
+        },
+        {
+          "titleInSource": "Come non conosch'io",
+          "voices": 5,
+          "note": "LV 106-3"
+        },
+        {
+          "titleInSource": "Che fai? Che pensi?",
+          "voices": 5,
+          "note": "LV 315"
+        },
+        {
+          "titleInSource": "Deh non rinovellar",
+          "voices": 5,
+          "note": "LV 315-2"
+        },
+        {
+          "titleInSource": "Voi ch'ascoltate",
+          "voices": 5,
+          "note": "LV 318"
+        },
+        {
+          "titleInSource": "Ma ben veggi'hor",
+          "voices": 5,
+          "note": "LV 318-2"
+        },
+        {
+          "titleInSource": "I vo piangendo",
+          "voices": 5,
+          "note": "LV 319"
+        },
+        {
+          "titleInSource": "Si che s'io vissi",
+          "voices": 5,
+          "note": "LV 319-2"
+        },
+        {
+          "titleInSource": "Misera che farò",
+          "voices": 5,
+          "note": "LV 591"
+        }
+      ],
+      "dating": "vor 1589",
+      "sourceType": "Partitur",
+      "literature": [
+        "Milan, Biblioteca del Conservatorio di Musica Giuseppe Verdi, The Tarasconi Codex. Introduction by Jessie Ann Owens, New York und London 1986 (= Renaissance Music in Facsimile 11)."
+      ]
+    },
+    {
+      "@id": "manifestations:hs-MEX-Pc-Ms-mus-C-B-XIX",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "MEX-Pc ? Ms. mus. C.B. XIX"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:11",
+          "titleInSource": "O invidia nemica",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:11-2",
+          "titleInSource": "Ne però che con",
+          "voices": 5
+        }
+      ],
+      "dating": "um 1580 - 1610",
+      "sourceType": "Chorbuch"
+    },
+    {
+      "@id": "manifestations:hs-NL-Uim-Ms-3-L-16-Codex-Lerma",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "NL-Uim Ms. 3. L. 16 (Codex Lerma)"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:14",
+          "titleInSource": "Fiera stella",
+          "voices": 5,
+          "note": "[fehlt?]"
+        },
+        {
+          "embodies": "expressions:14-2",
+          "titleInSource": "Ma tu prendi",
+          "voices": 5
+        },
+        {
+          "titleInSource": "Tu sai madonna mia",
+          "voices": 4,
+          "note": "LV 31"
+        },
+        {
+          "titleInSource": "Se sai che del tuo laccio",
+          "voices": 4,
+          "note": "LV 31-2"
+        },
+        {
+          "titleInSource": "Se sai che la mia fede",
+          "voices": 4,
+          "note": "LV 31-3"
+        },
+        {
+          "titleInSource": "Dunque madonna",
+          "voices": 4,
+          "note": "LV 31-4"
+        },
+        {
+          "titleInSource": "La cortesia voi donne",
+          "voices": 4,
+          "note": "LV 33"
+        },
+        {
+          "titleInSource": "Se la dicete",
+          "voices": 4,
+          "note": "LV 33-2"
+        },
+        {
+          "titleInSource": "Quando vi tengo",
+          "voices": 4,
+          "note": "LV 33-3"
+        },
+        {
+          "titleInSource": "Va figlia mia",
+          "voices": 4,
+          "note": "LV 33-4"
+        },
+        {
+          "titleInSource": "Las! Voulez vous qu’ une personne",
+          "voices": 4,
+          "note": "LV 36"
+        },
+        {
+          "titleInSource": "En espoir vis ... Votre doux",
+          "voices": 4,
+          "note": "LV 37"
+        },
+        {
+          "titleInSource": "Avecques vous mon amour",
+          "voices": 4,
+          "note": "LV 38"
+        },
+        {
+          "titleInSource": "Je l’ayme bien",
+          "voices": 4,
+          "note": "LV 39"
+        },
+        {
+          "titleInSource": "Trop endurer",
+          "voices": 4,
+          "note": "LV 40"
+        },
+        {
+          "titleInSource": "Fremuit Spiritu Iesus",
+          "voices": 6,
+          "note": "LV 59"
+        },
+        {
+          "titleInSource": "Videns Dominus",
+          "voices": 6,
+          "note": "LV 59-2"
+        },
+        {
+          "titleInSource": "Veux tu ton mal",
+          "voices": 5,
+          "note": "LV 76"
+        },
+        {
+          "titleInSource": "Le voulez vous",
+          "voices": 5,
+          "note": "LV 76-2"
+        },
+        {
+          "titleInSource": "Helas quel jour",
+          "voices": 4,
+          "note": "LV 85"
+        },
+        {
+          "titleInSource": "Un doux nenny",
+          "voices": 4,
+          "note": "LV 86"
+        },
+        {
+          "titleInSource": "Elle s’en va",
+          "voices": 5,
+          "note": "LV 90"
+        },
+        {
+          "titleInSource": "Le Rossignol plaisant",
+          "voices": 5,
+          "note": "LV 91"
+        },
+        {
+          "titleInSource": "Sur tous regretz le mien",
+          "voices": 5,
+          "note": "LV 92"
+        },
+        {
+          "titleInSource": "Mon coeur se recommande à vous",
+          "voices": 5,
+          "note": "LV 94"
+        },
+        {
+          "titleInSource": "Vous qui aymez les dames",
+          "voices": 5,
+          "note": "LV 95"
+        },
+        {
+          "titleInSource": "Ardant amour souuent",
+          "voices": 5,
+          "note": "LV 96"
+        },
+        {
+          "titleInSource": "J’atendz le tems",
+          "voices": 5,
+          "note": "LV 97"
+        },
+        {
+          "titleInSource": "Susanne un jour",
+          "voices": 5,
+          "note": "LV 98"
+        },
+        {
+          "titleInSource": "Un triste coeur",
+          "voices": 5,
+          "note": "LV 99"
+        },
+        {
+          "titleInSource": "Ce faux amour",
+          "voices": 4,
+          "note": "LV 133"
+        },
+        {
+          "titleInSource": "Qui dort icy",
+          "voices": 4,
+          "note": "LV 152"
+        },
+        {
+          "titleInSource": "Quand mon mary",
+          "voices": 4,
+          "note": "LV 153"
+        },
+        {
+          "titleInSource": "Monsieur l'Abé",
+          "voices": 4,
+          "note": "LV 154; als Kontrafaktur: Maistre robin"
+        },
+        {
+          "titleInSource": "A ce matin ce seroit bonne estreine",
+          "voices": 4,
+          "note": "LV 156"
+        },
+        {
+          "titleInSource": "Le temps peut bien",
+          "voices": 4,
+          "note": "LV 162"
+        },
+        {
+          "titleInSource": "Petite folle",
+          "voices": 4,
+          "note": "LV 163"
+        },
+        {
+          "titleInSource": "Fuyons tous d’ amour le jeu",
+          "voices": 4,
+          "note": "LV 164"
+        },
+        {
+          "titleInSource": "Bon jour mon coeur",
+          "voices": 4,
+          "note": "LV 167"
+        },
+        {
+          "titleInSource": "Margot labourez les vignes",
+          "voices": 4,
+          "note": "LV 169"
+        },
+        {
+          "titleInSource": "Du corps absent ... sans fin",
+          "voices": 4,
+          "note": "LV 171"
+        },
+        {
+          "titleInSource": "O comme heureulx",
+          "voices": 4,
+          "note": "LV 173"
+        },
+        {
+          "titleInSource": "Ardant amour souuent",
+          "voices": 4,
+          "note": "LV 174"
+        },
+        {
+          "titleInSource": "Soyons joyeux",
+          "voices": 4,
+          "note": "LV 176"
+        },
+        {
+          "titleInSource": "Mon coeur ravi d’ amour fort variable",
+          "voices": 5,
+          "note": "LV 178"
+        },
+        {
+          "titleInSource": "De tout mon coeur ... Et dy pour vray",
+          "voices": 5,
+          "note": "LV 181"
+        },
+        {
+          "titleInSource": "J’endure un tourment",
+          "voices": 5,
+          "note": "LV 182"
+        },
+        {
+          "titleInSource": "In te Domine speravi",
+          "voices": 6,
+          "note": "LV 193"
+        },
+        {
+          "titleInSource": "Quoniam fortitudo mea",
+          "voices": 6,
+          "note": "LV 193-2"
+        },
+        {
+          "titleInSource": "Gloria Patri",
+          "voices": 6,
+          "note": "LV 193-3"
+        },
+        {
+          "titleInSource": "Hatez vouz de me faire grace",
+          "voices": 4,
+          "note": "LV 333"
+        },
+        {
+          "titleInSource": "Si par souhait",
+          "voices": 4,
+          "note": "LV 377"
+        },
+        {
+          "titleInSource": "Comme un qui prend une couppe",
+          "voices": 5,
+          "note": "LV 438"
+        }
+      ],
+      "dating": "um 1600 - 1620",
+      "sourceType": "Chorbuch"
+    },
+    {
+      "@id": "manifestations:hs-S-Sk-S-227",
+      "@type": "Manifestation",
+      "titles": [
+        {
+          "text": {
+            "@none": "S-Sk S 227"
+          }
+        }
+      ],
+      "classifications": [
+        "terms:Manuscript"
+      ],
+      "contents": [
+        {
+          "embodies": "expressions:1",
+          "titleInSource": "Cantai hor piango",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:1-2",
+          "titleInSource": "Tengan dunque",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:3",
+          "titleInSource": "Alma cortese",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:3-2",
+          "titleInSource": "Ch'udirai",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:6",
+          "titleInSource": "Hor qui son lasso",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:8",
+          "titleInSource": "Mentre che'l cor",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:8-2",
+          "titleInSource": "Quel fuoco e morto",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:13",
+          "titleInSource": "Pon fren'al gran dolor",
+          "voices": 5,
+          "note": "[ohne Text]"
+        },
+        {
+          "embodies": "expressions:14",
+          "titleInSource": "Fiera stella",
+          "voices": 5
+        },
+        {
+          "embodies": "expressions:16",
+          "titleInSource": "S'io tal'hor",
+          "voices": 5,
+          "note": "[nur II. Pars]"
+        },
+        {
+          "embodies": "expressions:16-2",
+          "titleInSource": "Al'hor lasso",
+          "voices": 5
+        },
+        {
+          "titleInSource": "Delitiae Phoebi",
+          "voices": 5,
+          "note": "LV 47"
+        },
+        {
+          "titleInSource": "Peccavi quid faciam",
+          "voices": 5,
+          "note": "LV 48"
+        },
+        {
+          "titleInSource": "Gustate et videte",
+          "voices": 5,
+          "note": "LV 54"
+        },
+        {
+          "titleInSource": "Divites eguerunt",
+          "voices": 5,
+          "note": "LV 54-2"
+        },
+        {
+          "titleInSource": "Candid'allhor",
+          "voices": 5,
+          "note": "LV 73"
+        },
+        {
+          "titleInSource": "Est il possible a moy",
+          "voices": 5,
+          "note": "LV 88"
+        },
+        {
+          "titleInSource": "Alma Venus",
+          "voices": 5,
+          "note": "LV 89"
+        },
+        {
+          "titleInSource": "Nunc elegos divae",
+          "voices": 5,
+          "note": "LV 89-2"
+        },
+        {
+          "titleInSource": "Sur tous regretz le mien",
+          "voices": 5,
+          "note": "LV 92"
+        },
+        {
+          "titleInSource": "Las! me faut il",
+          "voices": 5,
+          "note": "LV 93"
+        },
+        {
+          "titleInSource": "Ardant amour souuent",
+          "voices": 5,
+          "note": "LV 96; als Kontrafaktur: Divine amour"
+        },
+        {
+          "titleInSource": "Susanne un jour",
+          "voices": 5,
+          "note": "LV 98"
+        },
+        {
+          "titleInSource": "Au temps jadis",
+          "voices": 5,
+          "note": "LV 103"
+        },
+        {
+          "titleInSource": "Heu quantus dolor",
+          "voices": 5,
+          "note": "LV 113"
+        },
+        {
+          "titleInSource": "Veni in hortum meum",
+          "voices": 5,
+          "note": "LV 114"
+        },
+        {
+          "titleInSource": "Angelus ad pastores ait",
+          "voices": 5,
+          "note": "LV 115"
+        },
+        {
+          "titleInSource": "Exaudi Domine vocem meam",
+          "voices": 5,
+          "note": "LV 116"
+        },
+        {
+          "titleInSource": "Ne avertas faciem tuam",
+          "voices": 5,
+          "note": "LV 116-2"
+        },
+        {
+          "titleInSource": "O Domine salvum me fac",
+          "voices": 5,
+          "note": "LV 118"
+        },
+        {
+          "titleInSource": "Non moriar",
+          "voices": 5,
+          "note": "LV 118-2"
+        },
+        {
+          "titleInSource": "Benedicam Dominum in omni tempore",
+          "voices": 5,
+          "note": "LV 131"
+        },
+        {
+          "titleInSource": "In Domino laudabitur",
+          "voices": 5,
+          "note": "LV 131-2"
+        },
+        {
+          "titleInSource": "Mon coeur ravi d'amour fort variable",
+          "voices": 5,
+          "note": "LV 178"
+        },
+        {
+          "titleInSource": "Le departir",
+          "voices": 5,
+          "note": "LV 180"
+        },
+        {
+          "titleInSource": "Puisque fortune",
+          "voices": 5,
+          "note": "LV 184; als Kontrafaktur: Peché infame"
+        },
+        {
+          "titleInSource": "Beati omnes qui timent",
+          "voices": 5,
+          "note": "LV 242"
+        },
+        {
+          "titleInSource": "Ecce sie benedicetur homo",
+          "voices": 5,
+          "note": "LV 242-2"
+        },
+        {
+          "titleInSource": "Animam meam dilectam",
+          "voices": 5,
+          "note": "LV 244"
+        },
+        {
+          "titleInSource": "Congregamini et properate",
+          "voices": 5,
+          "note": "LV 244-2"
+        },
+        {
+          "titleInSource": "Que gaignez vous",
+          "voices": 5,
+          "note": "LV 383"
+        },
+        {
+          "titleInSource": "Se'l vostro sol ch'alteramente",
+          "voices": 5,
+          "note": "nicht identifiziert; [Text in keinem Verzeichnis nachweisbar. Fehlzuschreibung?]"
+        },
+        {
+          "titleInSource": "Tanto più che virtute",
+          "voices": 5
+        }
+      ],
+      "dating": "1566",
+      "sourceType": "Stimmbücher (1): Quintus"
+    }
+  ]
+}

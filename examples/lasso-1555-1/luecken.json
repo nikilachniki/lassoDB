@@ -1,0 +1,17 @@
+{
+  "Name nicht in Vor- und Nachname zerlegt": {
+    "Anzahl": 3,
+    "Beispiele": [
+      "Francesco Petrarca",
+      "Ronconi",
+      "Horst Leuchtmann"
+    ]
+  },
+  "Stück in Handschrift ohne Nummer": {
+    "Anzahl": 2,
+    "Beispiele": [
+      "Se'l vostro sol ch'alteramente",
+      "Tanto più che virtute"
+    ]
+  }
+}

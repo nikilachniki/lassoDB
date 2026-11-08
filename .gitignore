@@ -1,0 +1,22 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Excel-Sperrdateien beim Öffnen einer Quelldatei
+~$*.xlsx
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+
+
+# Druckeverzeichnis (TeX-Vorlage), nicht zur Veroeffentlichung
+texDateien/
