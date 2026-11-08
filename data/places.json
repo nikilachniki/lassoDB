@@ -1,4 +1,555 @@
 {
   "@context": "../schema/context.jsonld",
-  "entries": []
+  "entries": [
+    {
+      "@id": "places:Aachen",
+      "@type": "Place",
+      "name": "Aachen"
+    },
+    {
+      "@id": "places:Alt-tting",
+      "@type": "Place",
+      "name": "Altötting"
+    },
+    {
+      "@id": "places:Amsterdam",
+      "@type": "Place",
+      "name": "Amsterdam"
+    },
+    {
+      "@id": "places:Ansbach",
+      "@type": "Place",
+      "name": "Ansbach"
+    },
+    {
+      "@id": "places:Aschaffenburg",
+      "@type": "Place",
+      "name": "Aschaffenburg"
+    },
+    {
+      "@id": "places:Augsburg",
+      "@type": "Place",
+      "name": "Augsburg"
+    },
+    {
+      "@id": "places:Barcelona",
+      "@type": "Place",
+      "name": "Barcelona"
+    },
+    {
+      "@id": "places:Basel",
+      "@type": "Place",
+      "name": "Basel"
+    },
+    {
+      "@id": "places:Berlin",
+      "@type": "Place",
+      "name": "Berlin"
+    },
+    {
+      "@id": "places:Bologna",
+      "@type": "Place",
+      "name": "Bologna"
+    },
+    {
+      "@id": "places:Bonn",
+      "@type": "Place",
+      "name": "Bonn"
+    },
+    {
+      "@id": "places:Br-ssel",
+      "@type": "Place",
+      "name": "Brüssel"
+    },
+    {
+      "@id": "places:Braunschweig",
+      "@type": "Place",
+      "name": "Braunschweig"
+    },
+    {
+      "@id": "places:Bressanone",
+      "@type": "Place",
+      "name": "Bressanone"
+    },
+    {
+      "@id": "places:Bruxelles-Br-ssel",
+      "@type": "Place",
+      "name": "Bruxelles (= Brüssel)"
+    },
+    {
+      "@id": "places:Budapest",
+      "@type": "Place",
+      "name": "Budapest"
+    },
+    {
+      "@id": "places:Cambrai",
+      "@type": "Place",
+      "name": "Cambrai"
+    },
+    {
+      "@id": "places:Cambridge",
+      "@type": "Place",
+      "name": "Cambridge"
+    },
+    {
+      "@id": "places:Casale-Monferrato",
+      "@type": "Place",
+      "name": "Casale Monferrato"
+    },
+    {
+      "@id": "places:Coimbra",
+      "@type": "Place",
+      "name": "Coimbra"
+    },
+    {
+      "@id": "places:Dessau",
+      "@type": "Place",
+      "name": "Dessau"
+    },
+    {
+      "@id": "places:Dresden",
+      "@type": "Place",
+      "name": "Dresden"
+    },
+    {
+      "@id": "places:Dublin",
+      "@type": "Place",
+      "name": "Dublin"
+    },
+    {
+      "@id": "places:Ecaussines-Lalaing-bei-Mons",
+      "@type": "Place",
+      "name": "Ecaussines-Lalaing (bei Mons)"
+    },
+    {
+      "@id": "places:Edinburgh",
+      "@type": "Place",
+      "name": "Edinburgh"
+    },
+    {
+      "@id": "places:Eichst-tt",
+      "@type": "Place",
+      "name": "Eichstätt"
+    },
+    {
+      "@id": "places:Einsiedeln",
+      "@type": "Place",
+      "name": "Einsiedeln"
+    },
+    {
+      "@id": "places:Freiberg",
+      "@type": "Place",
+      "name": "Freiberg"
+    },
+    {
+      "@id": "places:Freising",
+      "@type": "Place",
+      "name": "Freising"
+    },
+    {
+      "@id": "places:Gda-sk-Danzig",
+      "@type": "Place",
+      "name": "Gdańsk (= Danzig)"
+    },
+    {
+      "@id": "places:Genova-Genua",
+      "@type": "Place",
+      "name": "Genova (= Genua)"
+    },
+    {
+      "@id": "places:Graz",
+      "@type": "Place",
+      "name": "Graz"
+    },
+    {
+      "@id": "places:Gy-r-Raab",
+      "@type": "Place",
+      "name": "Györ (=Raab)"
+    },
+    {
+      "@id": "places:Hamburg",
+      "@type": "Place",
+      "name": "Hamburg"
+    },
+    {
+      "@id": "places:Haslemere",
+      "@type": "Place",
+      "name": "Haslemere"
+    },
+    {
+      "@id": "places:Heilbronn",
+      "@type": "Place",
+      "name": "Heilbronn"
+    },
+    {
+      "@id": "places:K-benhavn-Kopenhagen",
+      "@type": "Place",
+      "name": "København (= Kopenhagen)"
+    },
+    {
+      "@id": "places:K-ln",
+      "@type": "Place",
+      "name": "Köln"
+    },
+    {
+      "@id": "places:Karlsruhe",
+      "@type": "Place",
+      "name": "Karlsruhe"
+    },
+    {
+      "@id": "places:Kassel",
+      "@type": "Place",
+      "name": "Kassel"
+    },
+    {
+      "@id": "places:Kassel-u-a",
+      "@type": "Place",
+      "name": "Kassel u.a."
+    },
+    {
+      "@id": "places:Krak-w-Krakau",
+      "@type": "Place",
+      "name": "Kraków (= Krakau)"
+    },
+    {
+      "@id": "places:Kremsm-nster",
+      "@type": "Place",
+      "name": "Kremsmünster"
+    },
+    {
+      "@id": "places:L-beck",
+      "@type": "Place",
+      "name": "Lübeck"
+    },
+    {
+      "@id": "places:L-neburg",
+      "@type": "Place",
+      "name": "Lüneburg"
+    },
+    {
+      "@id": "places:Legnica-Liegnitz",
+      "@type": "Place",
+      "name": "Legnica (= Liegnitz)"
+    },
+    {
+      "@id": "places:Leiden",
+      "@type": "Place",
+      "name": "Leiden"
+    },
+    {
+      "@id": "places:Leipzig",
+      "@type": "Place",
+      "name": "Leipzig"
+    },
+    {
+      "@id": "places:Leuven-Louvain",
+      "@type": "Place",
+      "name": "Leuven (= Louvain)"
+    },
+    {
+      "@id": "places:Levo-a",
+      "@type": "Place",
+      "name": "Levoča"
+    },
+    {
+      "@id": "places:Ljubljana-Laibach",
+      "@type": "Place",
+      "name": "Ljubljana (= Laibach)"
+    },
+    {
+      "@id": "places:London",
+      "@type": "Place",
+      "name": "London"
+    },
+    {
+      "@id": "places:Loreto",
+      "@type": "Place",
+      "name": "Loreto"
+    },
+    {
+      "@id": "places:Lublin",
+      "@type": "Place",
+      "name": "Lublin"
+    },
+    {
+      "@id": "places:M-nchen",
+      "@type": "Place",
+      "name": "München"
+    },
+    {
+      "@id": "places:M-nster",
+      "@type": "Place",
+      "name": "Münster"
+    },
+    {
+      "@id": "places:Madrid",
+      "@type": "Place",
+      "name": "Madrid"
+    },
+    {
+      "@id": "places:Melk",
+      "@type": "Place",
+      "name": "Melk"
+    },
+    {
+      "@id": "places:Metten",
+      "@type": "Place",
+      "name": "Metten"
+    },
+    {
+      "@id": "places:Milano-Mailand",
+      "@type": "Place",
+      "name": "Milano (= Mailand)"
+    },
+    {
+      "@id": "places:Modena",
+      "@type": "Place",
+      "name": "Modena"
+    },
+    {
+      "@id": "places:N-rnberg",
+      "@type": "Place",
+      "name": "Nürnberg"
+    },
+    {
+      "@id": "places:Neuburg-an-der-Donau",
+      "@type": "Place",
+      "name": "Neuburg an der Donau"
+    },
+    {
+      "@id": "places:New-Haven-Connecticut",
+      "@type": "Place",
+      "name": "New Haven (Connecticut)"
+    },
+    {
+      "@id": "places:New-York",
+      "@type": "Place",
+      "name": "New York"
+    },
+    {
+      "@id": "places:Ottobeuren",
+      "@type": "Place",
+      "name": "Ottobeuren"
+    },
+    {
+      "@id": "places:Oxford",
+      "@type": "Place",
+      "name": "Oxford"
+    },
+    {
+      "@id": "places:Paris",
+      "@type": "Place",
+      "name": "Paris"
+    },
+    {
+      "@id": "places:Passau",
+      "@type": "Place",
+      "name": "Passau"
+    },
+    {
+      "@id": "places:Pelplin",
+      "@type": "Place",
+      "name": "Pelplin"
+    },
+    {
+      "@id": "places:Pistoia",
+      "@type": "Place",
+      "name": "Pistoia"
+    },
+    {
+      "@id": "places:Praha-Prag",
+      "@type": "Place",
+      "name": "Praha (= Prag)"
+    },
+    {
+      "@id": "places:Puebla",
+      "@type": "Place",
+      "name": "Puebla"
+    },
+    {
+      "@id": "places:Regensburg",
+      "@type": "Place",
+      "name": "Regensburg"
+    },
+    {
+      "@id": "places:Rein",
+      "@type": "Place",
+      "name": "Rein"
+    },
+    {
+      "@id": "places:Rokycany",
+      "@type": "Place",
+      "name": "Rokycany"
+    },
+    {
+      "@id": "places:Roma-Rom",
+      "@type": "Place",
+      "name": "Roma (= Rom)"
+    },
+    {
+      "@id": "places:Salzburg",
+      "@type": "Place",
+      "name": "Salzburg"
+    },
+    {
+      "@id": "places:Santiago-de-Compostela-La-Coru-a",
+      "@type": "Place",
+      "name": "Santiago de Compostela (La Coruña),"
+    },
+    {
+      "@id": "places:Scheyern",
+      "@type": "Place",
+      "name": "Scheyern"
+    },
+    {
+      "@id": "places:Schm-lln",
+      "@type": "Place",
+      "name": "Schmölln"
+    },
+    {
+      "@id": "places:Sevilla",
+      "@type": "Place",
+      "name": "Sevilla"
+    },
+    {
+      "@id": "places:Speyer",
+      "@type": "Place",
+      "name": "Speyer"
+    },
+    {
+      "@id": "places:Stockholm",
+      "@type": "Place",
+      "name": "Stockholm"
+    },
+    {
+      "@id": "places:Stuttgart",
+      "@type": "Place",
+      "name": "Stuttgart"
+    },
+    {
+      "@id": "places:T-bingen",
+      "@type": "Place",
+      "name": "Tübingen"
+    },
+    {
+      "@id": "places:Tenbury-Wells-Worcestershire",
+      "@type": "Place",
+      "name": "Tenbury Wells (Worcestershire)"
+    },
+    {
+      "@id": "places:Torino-Turin",
+      "@type": "Place",
+      "name": "Torino (= Turin)"
+    },
+    {
+      "@id": "places:Treviso",
+      "@type": "Place",
+      "name": "Treviso"
+    },
+    {
+      "@id": "places:Udestedt",
+      "@type": "Place",
+      "name": "Udestedt"
+    },
+    {
+      "@id": "places:Ulm",
+      "@type": "Place",
+      "name": "Ulm"
+    },
+    {
+      "@id": "places:Upsala",
+      "@type": "Place",
+      "name": "Upsala"
+    },
+    {
+      "@id": "places:Utrecht",
+      "@type": "Place",
+      "name": "Utrecht"
+    },
+    {
+      "@id": "places:V-ster-s",
+      "@type": "Place",
+      "name": "Västerås"
+    },
+    {
+      "@id": "places:Valencia",
+      "@type": "Place",
+      "name": "Valencia"
+    },
+    {
+      "@id": "places:Valladolid",
+      "@type": "Place",
+      "name": "Valladolid"
+    },
+    {
+      "@id": "places:Velk-Velk-Losiny",
+      "@type": "Place",
+      "name": "Velké: Velké Losiny"
+    },
+    {
+      "@id": "places:Verona",
+      "@type": "Place",
+      "name": "Verona"
+    },
+    {
+      "@id": "places:Vesoul",
+      "@type": "Place",
+      "name": "Vesoul"
+    },
+    {
+      "@id": "places:Waldheim",
+      "@type": "Place",
+      "name": "Waldheim"
+    },
+    {
+      "@id": "places:Warszawa-Warschau",
+      "@type": "Place",
+      "name": "Warszawa (= Warschau)"
+    },
+    {
+      "@id": "places:Washington",
+      "@type": "Place",
+      "name": "Washington"
+    },
+    {
+      "@id": "places:Wien",
+      "@type": "Place",
+      "name": "Wien"
+    },
+    {
+      "@id": "places:Wiesbaden",
+      "@type": "Place",
+      "name": "Wiesbaden"
+    },
+    {
+      "@id": "places:Wolfenb-ttel",
+      "@type": "Place",
+      "name": "Wolfenbüttel"
+    },
+    {
+      "@id": "places:Wroc-aw-Breslau",
+      "@type": "Place",
+      "name": "Wrocław (=Breslau)"
+    },
+    {
+      "@id": "places:Z-rbig",
+      "@type": "Place",
+      "name": "Zörbig"
+    },
+    {
+      "@id": "places:Zwickau",
+      "@type": "Place",
+      "name": "Zwickau"
+    },
+    {
+      "@id": "places:ehemals-1976-Tutzing",
+      "@type": "Place",
+      "name": "ehemals (1976) Tutzing"
+    },
+    {
+      "@id": "places:zesk-Krumlov-B-hmisch-Krummau",
+      "@type": "Place",
+      "name": "Čzeský Krumlov (=Böhmisch-Krummau)"
+    }
+  ]
 }

@@ -1,4 +1,1001 @@
 {
   "@context": "../schema/context.jsonld",
-  "entries": []
+  "entries": [
+    {
+      "@id": "institutions:A-Gu",
+      "@type": "Institution",
+      "name": "Universitätsbibliothek",
+      "siglum": "A-Gu",
+      "place": "places:Graz"
+    },
+    {
+      "@id": "institutions:A-KR",
+      "@type": "Institution",
+      "name": "Benediktiner-Stift Kremsmünster",
+      "siglum": "A-KR",
+      "place": "places:Kremsm-nster"
+    },
+    {
+      "@id": "institutions:A-M",
+      "@type": "Institution",
+      "name": "Benediktiner-Stift Melk, Bibliothek",
+      "siglum": "A-M",
+      "place": "places:Melk"
+    },
+    {
+      "@id": "institutions:A-R",
+      "@type": "Institution",
+      "name": "Zisterzienserstift",
+      "siglum": "A-R",
+      "place": "places:Rein"
+    },
+    {
+      "@id": "institutions:A-Sca",
+      "@type": "Institution",
+      "name": "Museum Carolino Augusteum",
+      "siglum": "A-Sca",
+      "place": "places:Salzburg"
+    },
+    {
+      "@id": "institutions:A-Wgm",
+      "@type": "Institution",
+      "name": "Gesellschaft der Musikfreunde in Wien",
+      "siglum": "A-Wgm",
+      "place": "places:Wien"
+    },
+    {
+      "@id": "institutions:A-Wm",
+      "@type": "Institution",
+      "name": "Minoritenkonvent, Klosterbibliothek und Archiv",
+      "siglum": "A-Wm",
+      "place": "places:Wien"
+    },
+    {
+      "@id": "institutions:A-Wn",
+      "@type": "Institution",
+      "name": "Österreichische Nationalbibliothek",
+      "siglum": "A-Wn",
+      "place": "places:Wien"
+    },
+    {
+      "@id": "institutions:B-Bc",
+      "@type": "Institution",
+      "name": "Conservatoire Royal de Musique / Koninklijk Conservatorium",
+      "siglum": "B-Bc",
+      "place": "places:Bruxelles-Br-ssel"
+    },
+    {
+      "@id": "institutions:B-Br",
+      "@type": "Institution",
+      "name": "Bibliothèque Royale Albert 1er",
+      "siglum": "B-Br",
+      "place": "places:Br-ssel"
+    },
+    {
+      "@id": "institutions:B-LVu",
+      "@type": "Institution",
+      "name": "Katholieke Universiteit van Leuven",
+      "siglum": "B-LVu",
+      "place": "places:Leuven-Louvain"
+    },
+    {
+      "@id": "institutions:B-RISM-deest",
+      "@type": "Institution",
+      "name": "Schloßbibliothek, Fondation van der Burch",
+      "siglum": "B-RISM deest",
+      "place": "places:Ecaussines-Lalaing-bei-Mons"
+    },
+    {
+      "@id": "institutions:Bibliotheca-Rudolphina",
+      "@type": "Institution",
+      "name": "Bibliotheca Rudolphina",
+      "place": "places:Legnica-Liegnitz"
+    },
+    {
+      "@id": "institutions:CH-Bu",
+      "@type": "Institution",
+      "name": "Öffentliche Bibliothek der Universität, Musiksammlung",
+      "siglum": "CH-Bu",
+      "place": "places:Basel"
+    },
+    {
+      "@id": "institutions:CH-E",
+      "@type": "Institution",
+      "name": "Kloster Einsiedeln, Musikbibliothek",
+      "siglum": "CH-E",
+      "place": "places:Einsiedeln"
+    },
+    {
+      "@id": "institutions:CZ-K",
+      "@type": "Institution",
+      "name": "Sátní oblastní archiv v Treboni, pobocka Czesky Krumlov",
+      "siglum": "CZ-K",
+      "place": "places:zesk-Krumlov-B-hmisch-Krummau"
+    },
+    {
+      "@id": "institutions:CZ-Pdobrovsk-ho",
+      "@type": "Institution",
+      "name": "Národní muzeum, Dobrovského (Nostická) knihovna Prag, Národní Muzeum, Dobrovského Knihova",
+      "siglum": "CZ-Pdobrovského",
+      "place": "places:Praha-Prag"
+    },
+    {
+      "@id": "institutions:CZ-ROk",
+      "@type": "Institution",
+      "name": "Římsko-Katolicka farnost v Rokycanech, knihovna [Römisch-Katholisches Pfarramt zu Rokycany, Bibliothek]",
+      "siglum": "CZ-ROk",
+      "place": "places:Rokycany"
+    },
+    {
+      "@id": "institutions:D-A-hk",
+      "@type": "Institution",
+      "name": "Heilige Kapelle",
+      "siglum": "D-AÖhk",
+      "place": "places:Alt-tting"
+    },
+    {
+      "@id": "institutions:D-A-hk-2",
+      "@type": "Institution",
+      "name": "Helige Kapelle",
+      "siglum": "D-AÖhk",
+      "place": "places:Alt-tting"
+    },
+    {
+      "@id": "institutions:D-AAm",
+      "@type": "Institution",
+      "name": "Domarchiv",
+      "siglum": "D-AAm",
+      "place": "places:Aachen"
+    },
+    {
+      "@id": "institutions:D-AN",
+      "@type": "Institution",
+      "name": "Staatliche Bibliothek",
+      "siglum": "D-AN",
+      "place": "places:Ansbach"
+    },
+    {
+      "@id": "institutions:D-ASsb",
+      "@type": "Institution",
+      "name": "Schloss Johannisburg, Stiftsbibliothek",
+      "siglum": "D-ASsb",
+      "place": "places:Aschaffenburg"
+    },
+    {
+      "@id": "institutions:D-As",
+      "@type": "Institution",
+      "name": "Staats- und Stadtbibliothek",
+      "siglum": "D-As",
+      "place": "places:Augsburg"
+    },
+    {
+      "@id": "institutions:D-B",
+      "@type": "Institution",
+      "name": "Staatsbibliothek zu Berlin Preußischer Kulturbesitz",
+      "siglum": "D-B",
+      "place": "places:Berlin"
+    },
+    {
+      "@id": "institutions:D-BNms",
+      "@type": "Institution",
+      "name": "Musikwissenschaftliches Seminar der Rheinischen Friedrich-Wilhelm-Universität Bonn",
+      "siglum": "D-BNms",
+      "place": "places:Bonn"
+    },
+    {
+      "@id": "institutions:D-BS",
+      "@type": "Institution",
+      "name": "Stadtarchiv und Stadtbibliothek Braunschweig, Stadtarchiv",
+      "siglum": "D-BS",
+      "place": "places:Braunschweig"
+    },
+    {
+      "@id": "institutions:D-BSstb",
+      "@type": "Institution",
+      "name": "Stadtbibliothek",
+      "siglum": "D-BSstb",
+      "place": "places:Braunschweig"
+    },
+    {
+      "@id": "institutions:D-DEl",
+      "@type": "Institution",
+      "name": "Anhaltische Landesbücherei, Abteilung Sondersammlungen",
+      "siglum": "D-DEl",
+      "place": "places:Dessau"
+    },
+    {
+      "@id": "institutions:D-Dl",
+      "@type": "Institution",
+      "name": "Sächsische Landesbibliothek - Staats- und Universitätsbibliothek (SLUB)",
+      "siglum": "D-Dl",
+      "place": "places:Dresden"
+    },
+    {
+      "@id": "institutions:D-Eu",
+      "@type": "Institution",
+      "name": "Universitätsbibliothek Eichstätt-Ingolstadt",
+      "siglum": "D-Eu",
+      "place": "places:Eichst-tt"
+    },
+    {
+      "@id": "institutions:D-FBo",
+      "@type": "Institution",
+      "name": "Geschwister-Scholl-Gymnasium, Andreas-Möller-Bibliothek Freiberg (Sachsen), Archiv der Oberschule „Geschwister Scholl“",
+      "siglum": "D-FBo",
+      "place": "places:Freiberg"
+    },
+    {
+      "@id": "institutions:D-FS",
+      "@type": "Institution",
+      "name": "Dombibliothek",
+      "siglum": "D-FS",
+      "place": "places:Freising"
+    },
+    {
+      "@id": "institutions:D-HB",
+      "@type": "Institution",
+      "name": "Stadtbibliothek",
+      "siglum": "D-HB",
+      "place": "places:Heilbronn"
+    },
+    {
+      "@id": "institutions:D-Hs",
+      "@type": "Institution",
+      "name": "Staats- und Universitätsbibliothek Carl von Ossietzky, Musikabteilung",
+      "siglum": "D-Hs",
+      "place": "places:Hamburg"
+    },
+    {
+      "@id": "institutions:D-KA",
+      "@type": "Institution",
+      "name": "Badische Landesbibliothek",
+      "siglum": "D-KA",
+      "place": "places:Karlsruhe"
+    },
+    {
+      "@id": "institutions:D-Kl",
+      "@type": "Institution",
+      "name": "Gesamthochschulbibliothek",
+      "siglum": "D-Kl",
+      "place": "places:Kassel"
+    },
+    {
+      "@id": "institutions:D-L-h",
+      "@type": "Institution",
+      "name": "Bibliothek der Hansestadt Lübeck, Musikabteilung",
+      "siglum": "D-LÜh",
+      "place": "places:L-beck"
+    },
+    {
+      "@id": "institutions:D-LEm",
+      "@type": "Institution",
+      "name": "Städtische Bibliotheken, Musiksammlung",
+      "siglum": "D-LEm",
+      "place": "places:Leipzig"
+    },
+    {
+      "@id": "institutions:D-Lr",
+      "@type": "Institution",
+      "name": "Ratsbücherei und Stadtarchiv, Musikabteilung",
+      "siglum": "D-Lr",
+      "place": "places:L-neburg"
+    },
+    {
+      "@id": "institutions:D-Lr-2",
+      "@type": "Institution",
+      "name": "Ratsbücherei und Stadtarchiv der Stadt Lüneburg, Musikabteilung Lüneburg Ratsbücherei und Stadtarchiv Musiksammlung",
+      "siglum": "D-Lr",
+      "place": "places:L-neburg"
+    },
+    {
+      "@id": "institutions:D-Lr-3",
+      "@type": "Institution",
+      "name": "Ratsbücherei und Stadtarchiv der Stadt Lüneburg, Musikabteilung",
+      "siglum": "D-Lr",
+      "place": "places:L-neburg"
+    },
+    {
+      "@id": "institutions:D-M-s-in-M-p",
+      "@type": "Institution",
+      "name": "Santini-Sammlung in der Bischöflichen Diözesanbibliothek",
+      "siglum": "D-MÜs (in MÜp)",
+      "place": "places:M-nster"
+    },
+    {
+      "@id": "institutions:D-MT",
+      "@type": "Institution",
+      "name": "Benediktinerabtei Metten, Bibliothek",
+      "siglum": "D-MT",
+      "place": "places:Metten"
+    },
+    {
+      "@id": "institutions:D-Mb",
+      "@type": "Institution",
+      "name": "Benediktinerabtei St. Bonifaz, Bibliothek",
+      "siglum": "D-Mb",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Mbm-jetzt-als-Depositum-in-D-FS",
+      "@type": "Institution",
+      "name": "Bibliothek des Metropolitankapitels",
+      "siglum": "D-Mbm (jetzt als Depositum in D-FS)",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Mbs",
+      "@type": "Institution",
+      "name": "Bayerische Staatsbibliothek, Musikabteilung",
+      "siglum": "D-Mbs",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Mbs-2",
+      "@type": "Institution",
+      "name": "Bayerische Staatsbibliothek",
+      "siglum": "D-Mbs",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Mbs-3",
+      "@type": "Institution",
+      "name": "Bayerische Staatsbibliothek, Handschriftenabteilung",
+      "siglum": "D-Mbs",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Mbs-4",
+      "@type": "Institution",
+      "name": "Bayerische Staatsbibliothek Musikabteilung",
+      "siglum": "D-Mbs",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Msa",
+      "@type": "Institution",
+      "name": "Staatsarchiv München",
+      "siglum": "D-Msa",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-Msta",
+      "@type": "Institution",
+      "name": "Stadtarchiv München",
+      "siglum": "D-Msta",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:D-NBss",
+      "@type": "Institution",
+      "name": "Studienseminar, Bibliothek",
+      "siglum": "D-NBss",
+      "place": "places:Neuburg-an-der-Donau"
+    },
+    {
+      "@id": "institutions:D-Ngm",
+      "@type": "Institution",
+      "name": "Germanisches Nationalmuseum, Bibliothek",
+      "siglum": "D-Ngm",
+      "place": "places:N-rnberg"
+    },
+    {
+      "@id": "institutions:D-Nla",
+      "@type": "Institution",
+      "name": "Bibliothek beim Landeskirchlichen Archiv",
+      "siglum": "D-Nla",
+      "place": "places:N-rnberg"
+    },
+    {
+      "@id": "institutions:D-OB",
+      "@type": "Institution",
+      "name": "Benediktiner-Abtei, Bibliothek",
+      "siglum": "D-OB",
+      "place": "places:Ottobeuren"
+    },
+    {
+      "@id": "institutions:D-Po",
+      "@type": "Institution",
+      "name": "Archiv des Bistums Passau",
+      "siglum": "D-Po",
+      "place": "places:Passau"
+    },
+    {
+      "@id": "institutions:D-RISM-deest",
+      "@type": "Institution",
+      "name": "Musikantiquariat H. Schneider",
+      "siglum": "D-[RISM deest]",
+      "place": "places:ehemals-1976-Tutzing"
+    },
+    {
+      "@id": "institutions:D-Rp",
+      "@type": "Institution",
+      "name": "Bischöfliche Zentralbibliothek, Sammlung Proske",
+      "siglum": "D-Rp",
+      "place": "places:Regensburg"
+    },
+    {
+      "@id": "institutions:D-Rtt",
+      "@type": "Institution",
+      "name": "Fürst Thurn und Taxis Hofbibliothek und Zentralbibliothek, Regensburg",
+      "siglum": "D-Rtt",
+      "place": "places:Regensburg"
+    },
+    {
+      "@id": "institutions:D-SCHEY",
+      "@type": "Institution",
+      "name": "Bibliothek der Benediktinerabtei",
+      "siglum": "D-SCHEY",
+      "place": "places:Scheyern"
+    },
+    {
+      "@id": "institutions:D-SCHM",
+      "@type": "Institution",
+      "name": "Stadtkirche St. Nikolaus, Archiv",
+      "siglum": "D-SCHM",
+      "place": "places:Schm-lln"
+    },
+    {
+      "@id": "institutions:D-SPlb",
+      "@type": "Institution",
+      "name": "Pfälzische Landesbibliothek",
+      "siglum": "D-SPlb",
+      "place": "places:Speyer"
+    },
+    {
+      "@id": "institutions:D-Sl",
+      "@type": "Institution",
+      "name": "Württembergische Landesbibliothek",
+      "siglum": "D-Sl",
+      "place": "places:Stuttgart"
+    },
+    {
+      "@id": "institutions:D-Tmi",
+      "@type": "Institution",
+      "name": "Schwäbisches Landesmusikarchiv im Musikwissenschaftlichen Institut der Eberhard-Karls-Universität",
+      "siglum": "D-Tmi",
+      "place": "places:T-bingen"
+    },
+    {
+      "@id": "institutions:D-UDa",
+      "@type": "Institution",
+      "name": "Evangelisch-Lutherisches Pfarramt, Archiv",
+      "siglum": "D-UDa",
+      "place": "places:Udestedt"
+    },
+    {
+      "@id": "institutions:D-Usch",
+      "@type": "Institution",
+      "name": "von Schermar’sche Familienstiftung, Bibliothek",
+      "siglum": "D-Usch",
+      "place": "places:Ulm"
+    },
+    {
+      "@id": "institutions:D-Usch-2",
+      "@type": "Institution",
+      "name": "von Schermarsche Familienstiftung, Bibliothek",
+      "siglum": "D-Usch",
+      "place": "places:Ulm"
+    },
+    {
+      "@id": "institutions:D-W",
+      "@type": "Institution",
+      "name": "Herzog-August-Bibliothek, Musikabteilung",
+      "siglum": "D-W",
+      "place": "places:Wolfenb-ttel"
+    },
+    {
+      "@id": "institutions:D-WA",
+      "@type": "Institution",
+      "name": "Stadtkirche St. Nicolai, Pfarrarchiv",
+      "siglum": "D-WA",
+      "place": "places:Waldheim"
+    },
+    {
+      "@id": "institutions:D-Z",
+      "@type": "Institution",
+      "name": "Ratsschulbibliothek",
+      "siglum": "D-Z",
+      "place": "places:Zwickau"
+    },
+    {
+      "@id": "institutions:D-ZGsj-in-D-ZGsm",
+      "@type": "Institution",
+      "name": "Pfarrarchiv St. Jacobi, in: Evangelisches Pfarramt St. Mauritius, Bibliothek Zörbig, Pfarrarchiv der Stadtkirche St. Jakobi",
+      "siglum": "D-ZGsj (in: D-ZGsm)",
+      "place": "places:Z-rbig"
+    },
+    {
+      "@id": "institutions:DK-Kk",
+      "@type": "Institution",
+      "name": "Det kongelige Bibliotek Slotsholmen Kopenhagen",
+      "siglum": "DK-Kk",
+      "place": "places:K-benhavn-Kopenhagen"
+    },
+    {
+      "@id": "institutions:E-Bsm",
+      "@type": "Institution",
+      "name": "Basílica de Santa María del Mar",
+      "siglum": "E-Bsm",
+      "place": "places:Barcelona"
+    },
+    {
+      "@id": "institutions:E-Mmc",
+      "@type": "Institution",
+      "name": "Casa Ducal de Medinaceli, Biblioteca Madrid, Bibl. de Medinaceli",
+      "siglum": "E-Mmc",
+      "place": "places:Madrid"
+    },
+    {
+      "@id": "institutions:E-Mn",
+      "@type": "Institution",
+      "name": "Biblioteca Nacional Madrid, Bibl. Nacional",
+      "siglum": "E-Mn",
+      "place": "places:Madrid"
+    },
+    {
+      "@id": "institutions:E-SC",
+      "@type": "Institution",
+      "name": "Catedral Metropolitana",
+      "siglum": "E-SC",
+      "place": "places:Santiago-de-Compostela-La-Coru-a"
+    },
+    {
+      "@id": "institutions:E-Sc-2",
+      "@type": "Institution",
+      "name": "Catedral Metropolitana (Santa María de la Sede) Sevilla, Archivio capitular de la Catedral Metropolitana",
+      "siglum": "E-Sc",
+      "place": "places:Sevilla"
+    },
+    {
+      "@id": "institutions:E-V",
+      "@type": "Institution",
+      "name": "Catedral, Archivio Musical Valladolid, Archivo musical de la Catedral",
+      "siglum": "E-V",
+      "place": "places:Valladolid"
+    },
+    {
+      "@id": "institutions:E-VAcp",
+      "@type": "Institution",
+      "name": "Real Colegio-Seminario del Corpus Christi (Patriarca), Archivio Valencia, Bibl. del Colegio y Seminario del Corpus Christi del Patriarca",
+      "siglum": "E-VAcp",
+      "place": "places:Valencia"
+    },
+    {
+      "@id": "institutions:F-CA",
+      "@type": "Institution",
+      "name": "Bibliothèque municipale",
+      "siglum": "F-CA",
+      "place": "places:Cambrai"
+    },
+    {
+      "@id": "institutions:F-Pn",
+      "@type": "Institution",
+      "name": "Bibliothèque nationale de France, Département de la Musique",
+      "siglum": "F-Pn",
+      "place": "places:Paris"
+    },
+    {
+      "@id": "institutions:F-VE",
+      "@type": "Institution",
+      "name": "Bibliothèque municipale",
+      "siglum": "F-VE",
+      "place": "places:Vesoul"
+    },
+    {
+      "@id": "institutions:GB-Cfm",
+      "@type": "Institution",
+      "name": "Fitzwilliam Museum Cambridge, Fitzwilliam Museum",
+      "siglum": "GB-Cfm",
+      "place": "places:Cambridge"
+    },
+    {
+      "@id": "institutions:GB-Cfm-2",
+      "@type": "Institution",
+      "name": "Fitzwilliam Museum",
+      "siglum": "GB-Cfm",
+      "place": "places:Cambridge"
+    },
+    {
+      "@id": "institutions:GB-En",
+      "@type": "Institution",
+      "name": "The National Library of Scotland",
+      "siglum": "GB-En",
+      "place": "places:Edinburgh"
+    },
+    {
+      "@id": "institutions:GB-HAdolmetsch",
+      "@type": "Institution",
+      "name": "Carl Dolmetsch Library Jesses, Dolmetsch-Foundation",
+      "siglum": "GB-HAdolmetsch",
+      "place": "places:Haslemere"
+    },
+    {
+      "@id": "institutions:GB-Lbl",
+      "@type": "Institution",
+      "name": "The British Library",
+      "siglum": "GB-Lbl",
+      "place": "places:London"
+    },
+    {
+      "@id": "institutions:GB-Lcm",
+      "@type": "Institution",
+      "name": "Royal College of Music",
+      "siglum": "GB-Lcm",
+      "place": "places:London"
+    },
+    {
+      "@id": "institutions:GB-Lwa",
+      "@type": "Institution",
+      "name": "Westminster Abbey Library London, Westminster Abbey Library",
+      "siglum": "GB-Lwa",
+      "place": "places:London"
+    },
+    {
+      "@id": "institutions:GB-Ob",
+      "@type": "Institution",
+      "name": "Bodleian Library",
+      "siglum": "GB-Ob",
+      "place": "places:Oxford"
+    },
+    {
+      "@id": "institutions:GB-Ob-siehe-auch-GB-T",
+      "@type": "Institution",
+      "name": "Bodleian Library",
+      "siglum": "GB-Ob (siehe auch: GB-T)",
+      "place": "places:Oxford"
+    },
+    {
+      "@id": "institutions:GB-Och",
+      "@type": "Institution",
+      "name": "Christ Church Library",
+      "siglum": "GB-Och",
+      "place": "places:Oxford"
+    },
+    {
+      "@id": "institutions:GB-T-in-GB-Ob",
+      "@type": "Institution",
+      "name": "St. Michael’s College Library",
+      "siglum": "GB-T (in: GB-Ob)",
+      "place": "places:Tenbury-Wells-Worcestershire"
+    },
+    {
+      "@id": "institutions:Gb-Cu",
+      "@type": "Institution",
+      "name": "University Library",
+      "siglum": "Gb-Cu",
+      "place": "places:Cambridge"
+    },
+    {
+      "@id": "institutions:H-Bn",
+      "@type": "Institution",
+      "name": "Orszagos Széchényi Könyvtar (= National Széchényi Library)",
+      "siglum": "H-Bn",
+      "place": "places:Budapest"
+    },
+    {
+      "@id": "institutions:H-G",
+      "@type": "Institution",
+      "name": "Györ, Bibliothek des Bischöflichen Priesterseminars",
+      "siglum": "H-G ?",
+      "place": "places:Gy-r-Raab"
+    },
+    {
+      "@id": "institutions:Historisches-Archiv-des-Erzbistums-K-ln-Bestand-St",
+      "@type": "Institution",
+      "name": "Historisches Archiv des Erzbistums Köln (Bestand St. Maria im Kapitol, Salvator-Kapelle, Stiftung Hardenrath)",
+      "place": "places:K-ln"
+    },
+    {
+      "@id": "institutions:I-BREd",
+      "@type": "Institution",
+      "name": "Archivio diocesano",
+      "siglum": "I-BREd",
+      "place": "places:Bressanone"
+    },
+    {
+      "@id": "institutions:I-Bc",
+      "@type": "Institution",
+      "name": "Civico Museo Bibliografico Musicale",
+      "siglum": "I-Bc",
+      "place": "places:Bologna"
+    },
+    {
+      "@id": "institutions:I-Bsf",
+      "@type": "Institution",
+      "name": "Biblioteca S. Francesco (Convento dei Fratri Minori Conventuali)",
+      "siglum": "I-Bsf",
+      "place": "places:Bologna"
+    },
+    {
+      "@id": "institutions:I-CMac",
+      "@type": "Institution",
+      "name": "Archivio Capitolare, Biblioteca del Seminario",
+      "siglum": "I-CMac",
+      "place": "places:Casale-Monferrato"
+    },
+    {
+      "@id": "institutions:I-Gu",
+      "@type": "Institution",
+      "name": "Biblioteca Universitaria",
+      "siglum": "I-Gu",
+      "place": "places:Genova-Genua"
+    },
+    {
+      "@id": "institutions:I-LT",
+      "@type": "Institution",
+      "name": "Santa Casa, Biblioteca e Archivio Storico",
+      "siglum": "I-LT",
+      "place": "places:Loreto"
+    },
+    {
+      "@id": "institutions:I-MOe",
+      "@type": "Institution",
+      "name": "Biblioteca Estense",
+      "siglum": "I-MOe",
+      "place": "places:Modena"
+    },
+    {
+      "@id": "institutions:I-Mc",
+      "@type": "Institution",
+      "name": "Conservatorio di Musica Giuseppe Verdi",
+      "siglum": "I-Mc",
+      "place": "places:Milano-Mailand"
+    },
+    {
+      "@id": "institutions:I-PS",
+      "@type": "Institution",
+      "name": "Biblioteca dell’Archivio Capitolare",
+      "siglum": "I-PS",
+      "place": "places:Pistoia"
+    },
+    {
+      "@id": "institutions:I-Rc",
+      "@type": "Institution",
+      "name": "Biblioteca Casanatense",
+      "siglum": "I-Rc",
+      "place": "places:Roma-Rom"
+    },
+    {
+      "@id": "institutions:I-Rn",
+      "@type": "Institution",
+      "name": "Biblioteca Nazionale Centrale Vittorio Emanuele II.",
+      "siglum": "I-Rn",
+      "place": "places:Roma-Rom"
+    },
+    {
+      "@id": "institutions:I-Rsc",
+      "@type": "Institution",
+      "name": "Conservatorio di Santa Cecilia, Biblioteca Musicale Governativa",
+      "siglum": "I-Rsc",
+      "place": "places:Roma-Rom"
+    },
+    {
+      "@id": "institutions:I-Rvat",
+      "@type": "Institution",
+      "name": "Città del Vaticano, Biblioteca Apostolica Vaticana",
+      "siglum": "I-Rvat",
+      "place": "places:Roma-Rom"
+    },
+    {
+      "@id": "institutions:I-TVd",
+      "@type": "Institution",
+      "name": "Biblioteca Capitolare della Cattedrale Treviso, Archivio capitolare del Duomo",
+      "siglum": "I-TVd",
+      "place": "places:Treviso"
+    },
+    {
+      "@id": "institutions:I-Tn",
+      "@type": "Institution",
+      "name": "Biblioteca Nazionale Universitaria",
+      "siglum": "I-Tn",
+      "place": "places:Torino-Turin"
+    },
+    {
+      "@id": "institutions:I-VE",
+      "@type": "Institution",
+      "name": "Biblioteca Capitolare / Archivio capitolare (Cattedrale)",
+      "siglum": "I-VE",
+      "place": "places:Verona"
+    },
+    {
+      "@id": "institutions:IRL-Dtc",
+      "@type": "Institution",
+      "name": "Trinity College Library",
+      "siglum": "IRL-Dtc",
+      "place": "places:Dublin"
+    },
+    {
+      "@id": "institutions:MEX-Pc",
+      "@type": "Institution",
+      "name": "Catedral, Archivo de Música Sacra ? = Puebla (Mexico), Archivio Capitol",
+      "siglum": "MEX-Pc ?",
+      "place": "places:Puebla"
+    },
+    {
+      "@id": "institutions:Musikantiquariat-Raab",
+      "@type": "Institution",
+      "name": "Musikantiquariat Raab",
+      "place": "places:M-nchen"
+    },
+    {
+      "@id": "institutions:NL-At-in-NL-Au",
+      "@type": "Institution",
+      "name": "Toonkunst Bibliotheek",
+      "siglum": "NL-At (in: NL-Au)",
+      "place": "places:Amsterdam"
+    },
+    {
+      "@id": "institutions:NL-Lt-in-Lu",
+      "@type": "Institution",
+      "name": "Bibliotheca Thysiana, in: Rijksuniversiteit, Bibliotheek",
+      "siglum": "NL-Lt (in Lu)",
+      "place": "places:Leiden"
+    },
+    {
+      "@id": "institutions:NL-Uim",
+      "@type": "Institution",
+      "name": "Instituut voor Muziekwetenschap der Rijksuniversiteit Utrecht, Rijksuniversiteit Bibl. Instituut voor Muziekwetenschap",
+      "siglum": "NL-Uim",
+      "place": "places:Utrecht"
+    },
+    {
+      "@id": "institutions:NL-Uim-2",
+      "@type": "Institution",
+      "name": "Instituut voor Muziekwetenschap, Rijksuniversiteit Utrecht",
+      "siglum": "NL-Uim",
+      "place": "places:Utrecht"
+    },
+    {
+      "@id": "institutions:P-Cug",
+      "@type": "Institution",
+      "name": "Biblioteca Geral da Universidade",
+      "siglum": "P-Cug",
+      "place": "places:Coimbra"
+    },
+    {
+      "@id": "institutions:PL-GD",
+      "@type": "Institution",
+      "name": "Biblioteka Gdańska Polskiej Akademii Nauk",
+      "siglum": "PL-GD",
+      "place": "places:Gda-sk-Danzig"
+    },
+    {
+      "@id": "institutions:PL-Kj",
+      "@type": "Institution",
+      "name": "Biblioteka Jagielloñska",
+      "siglum": "PL-Kj",
+      "place": "places:Krak-w-Krakau"
+    },
+    {
+      "@id": "institutions:PL-LEtpn",
+      "@type": "Institution",
+      "name": "Biblioteka Towarzystwa Przyaciól Nauk",
+      "siglum": "PL-LEtpn",
+      "place": "places:Legnica-Liegnitz"
+    },
+    {
+      "@id": "institutions:PL-Lk",
+      "@type": "Institution",
+      "name": "Biblioteka Uniwersytecka Katolickiego Uniwersytetu Lubelskiego",
+      "siglum": "PL-Lk",
+      "place": "places:Lublin"
+    },
+    {
+      "@id": "institutions:PL-PE",
+      "@type": "Institution",
+      "name": "Seminarium Duchowne, Biblioteka",
+      "siglum": "PL-PE",
+      "place": "places:Pelplin"
+    },
+    {
+      "@id": "institutions:PL-WRu",
+      "@type": "Institution",
+      "name": "ehem. Musikwiss. Institut der Universität",
+      "siglum": "PL-WRu",
+      "place": "places:Wroc-aw-Breslau"
+    },
+    {
+      "@id": "institutions:PL-WRu-2",
+      "@type": "Institution",
+      "name": "Biblioteka Uniwersytecka",
+      "siglum": "PL-WRu",
+      "place": "places:Wroc-aw-Breslau"
+    },
+    {
+      "@id": "institutions:PL-Wn",
+      "@type": "Institution",
+      "name": "Biblioteka Narodowa. Dział Zbiorów Specjalnych. Zakład Zbiorów Muzycznych",
+      "siglum": "PL-Wn",
+      "place": "places:Warszawa-Warschau"
+    },
+    {
+      "@id": "institutions:PL-Wu",
+      "@type": "Institution",
+      "name": "Biblioteka Uniwersytecka, Oddział Zbiorów Muzycznych",
+      "siglum": "PL-Wu",
+      "place": "places:Warszawa-Warschau"
+    },
+    {
+      "@id": "institutions:Privat",
+      "@type": "Institution",
+      "name": "Privat (?)"
+    },
+    {
+      "@id": "institutions:RISM-deest",
+      "@type": "Institution",
+      "name": "Historisches Museum der Stadt Regensburg",
+      "siglum": "RISM deest",
+      "place": "places:Regensburg"
+    },
+    {
+      "@id": "institutions:S-Sk",
+      "@type": "Institution",
+      "name": "Kungliga Biblioteket",
+      "siglum": "S-Sk",
+      "place": "places:Stockholm"
+    },
+    {
+      "@id": "institutions:S-Skma",
+      "@type": "Institution",
+      "name": "Musik- och teaterbiblioteket",
+      "siglum": "S-Skma",
+      "place": "places:Stockholm"
+    },
+    {
+      "@id": "institutions:S-Uu",
+      "@type": "Institution",
+      "name": "Universitetsbibliotek, Carolina Rediviva",
+      "siglum": "S-Uu",
+      "place": "places:Upsala"
+    },
+    {
+      "@id": "institutions:S-V",
+      "@type": "Institution",
+      "name": "Stadsbiblioteket Västerås",
+      "siglum": "S-V",
+      "place": "places:V-ster-s"
+    },
+    {
+      "@id": "institutions:SK-Le",
+      "@type": "Institution",
+      "name": "Evanjelicka a. v. cirkevna knižnica",
+      "siglum": "SK-Le",
+      "place": "places:Levo-a"
+    },
+    {
+      "@id": "institutions:Sl-Lnr",
+      "@type": "Institution",
+      "name": "Narodna in univerzitetna knjižnica",
+      "siglum": "Sl-Lnr",
+      "place": "places:Ljubljana-Laibach"
+    },
+    {
+      "@id": "institutions:US-NH",
+      "@type": "Institution",
+      "name": "Yale University, Music Library",
+      "siglum": "US-NH",
+      "place": "places:New-Haven-Connecticut"
+    },
+    {
+      "@id": "institutions:US-NYp",
+      "@type": "Institution",
+      "name": "Public Library at Lincoln Center, Music Division",
+      "siglum": "US-NYp",
+      "place": "places:New-York"
+    },
+    {
+      "@id": "institutions:US-Ws",
+      "@type": "Institution",
+      "name": "Folger Shakespeare Library",
+      "siglum": "US-Ws",
+      "place": "places:Washington"
+    },
+    {
+      "@id": "institutions:deest",
+      "@type": "Institution",
+      "name": "Schloßbibliothek",
+      "siglum": "deest ?",
+      "place": "places:Velk-Velk-Losiny"
+    }
+  ]
 }

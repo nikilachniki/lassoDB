@@ -1,4 +1,543 @@
 {
   "@context": "../schema/context.jsonld",
-  "entries": []
+  "entries": [
+    {
+      "@id": "persons:lasso",
+      "@type": "Person",
+      "familyName": "Lasso",
+      "givenName": "Orlando di"
+    },
+    {
+      "@id": "persons:a-beccuti-detto-il-coppetta",
+      "@type": "Person",
+      "familyName": "A. Beccuti, detto il Coppetta"
+    },
+    {
+      "@id": "persons:gnd-100214037",
+      "@type": "Person",
+      "familyName": "Antonio Sebastiano Minturno",
+      "alternateNames": [
+        "Minturno"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/100214037",
+        "https://viaf.org/viaf/29685362"
+      ]
+    },
+    {
+      "@id": "persons:asinari",
+      "@type": "Person",
+      "familyName": "Asinari"
+    },
+    {
+      "@id": "persons:b-tasso",
+      "@type": "Person",
+      "familyName": "B. Tasso"
+    },
+    {
+      "@id": "persons:gnd-118698753",
+      "@type": "Person",
+      "familyName": "Battista Guarini",
+      "alternateNames": [
+        "B. Guarini"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118698753",
+        "https://viaf.org/viaf/54142932"
+      ]
+    },
+    {
+      "@id": "persons:belleau",
+      "@type": "Person",
+      "familyName": "Belleau"
+    },
+    {
+      "@id": "persons:berno-von-cluny",
+      "@type": "Person",
+      "familyName": "Berno von Cluny"
+    },
+    {
+      "@id": "persons:besalio",
+      "@type": "Person",
+      "familyName": "Besalio"
+    },
+    {
+      "@id": "persons:camilli",
+      "@type": "Person",
+      "familyName": "Camilli"
+    },
+    {
+      "@id": "persons:gnd-118731122",
+      "@type": "Person",
+      "familyName": "Clément Marot",
+      "alternateNames": [
+        "C.Marot",
+        "Cl. Marot",
+        "Marot"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118731122",
+        "https://viaf.org/viaf/59086239"
+      ]
+    },
+    {
+      "@id": "persons:de-baif",
+      "@type": "Person",
+      "familyName": "de Baif"
+    },
+    {
+      "@id": "persons:della-terza",
+      "@type": "Person",
+      "familyName": "della Terza"
+    },
+    {
+      "@id": "persons:f-spira",
+      "@type": "Person",
+      "familyName": "F. Spira"
+    },
+    {
+      "@id": "persons:gnd-118593234",
+      "@type": "Person",
+      "familyName": "Francesco Petrarca",
+      "alternateNames": [
+        "Petrarca"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118593234",
+        "https://viaf.org/viaf/39382430"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118534947",
+      "@type": "Person",
+      "familyName": "Franz I. von Frankreich",
+      "alternateNames": [
+        "François I roi de France"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118534947",
+        "https://viaf.org/viaf/88805531"
+      ]
+    },
+    {
+      "@id": "persons:fulbert-v-chartres",
+      "@type": "Person",
+      "familyName": "Fulbert v. Chartres"
+    },
+    {
+      "@id": "persons:g-pontano",
+      "@type": "Person",
+      "familyName": "G. Pontano"
+    },
+    {
+      "@id": "persons:gnd-130088730",
+      "@type": "Person",
+      "familyName": "Gabriele Fiamma",
+      "alternateNames": [
+        "Fiamma",
+        "Fiamme",
+        "Gabriel Fiamma"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/130088730",
+        "https://viaf.org/viaf/88878886"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118719297",
+      "@type": "Person",
+      "familyName": "Giovanni Guidiccioni",
+      "alternateNames": [
+        "Guidiccione"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118719297",
+        "https://viaf.org/viaf/88331"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118605933",
+      "@type": "Person",
+      "familyName": "Girolamo Savonarola",
+      "alternateNames": [
+        "Savonarola"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118605933",
+        "https://viaf.org/viaf/74117553"
+      ]
+    },
+    {
+      "@id": "persons:greiter",
+      "@type": "Person",
+      "familyName": "Greiter"
+    },
+    {
+      "@id": "persons:gr-nwald",
+      "@type": "Person",
+      "familyName": "Grünwald"
+    },
+    {
+      "@id": "persons:gnd-124384927",
+      "@type": "Person",
+      "familyName": "Guillaume Guéroult",
+      "alternateNames": [
+        "G. Guéroult"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/124384927",
+        "https://viaf.org/viaf/202471443"
+      ]
+    },
+    {
+      "@id": "persons:gnd-120054981",
+      "@type": "Person",
+      "familyName": "Guy du Faur de Pibrac",
+      "alternateNames": [
+        "Pibrac"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/120054981",
+        "https://viaf.org/viaf/39467880"
+      ]
+    },
+    {
+      "@id": "persons:gnd-132638134",
+      "@type": "Person",
+      "familyName": "Hans Sachs",
+      "sameAs": [
+        "https://d-nb.info/gnd/132638134",
+        "https://viaf.org/viaf/15937295"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118553569",
+      "@type": "Person",
+      "familyName": "Horaz",
+      "sameAs": [
+        "https://d-nb.info/gnd/118553569",
+        "https://viaf.org/viaf/100227522"
+      ]
+    },
+    {
+      "@id": "persons:hoste-da-reggio",
+      "@type": "Person",
+      "familyName": "Hoste da Reggio"
+    },
+    {
+      "@id": "persons:h-tzer",
+      "@type": "Person",
+      "familyName": "Hätzer"
+    },
+    {
+      "@id": "persons:gnd-118794469",
+      "@type": "Person",
+      "familyName": "Jacopo Sannazaro",
+      "alternateNames": [
+        "Sannazaro"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118794469",
+        "https://viaf.org/viaf/87990970"
+      ]
+    },
+    {
+      "@id": "persons:jean-bouchet",
+      "@type": "Person",
+      "familyName": "Jean Bouchet"
+    },
+    {
+      "@id": "persons:gnd-118527649",
+      "@type": "Person",
+      "familyName": "Joachim du Bellay",
+      "alternateNames": [
+        "du Bellay"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118527649",
+        "https://viaf.org/viaf/39447168"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118501070",
+      "@type": "Person",
+      "familyName": "Johannes Agricola",
+      "sameAs": [
+        "https://d-nb.info/gnd/118501070",
+        "https://viaf.org/viaf/46803216"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118744658",
+      "@type": "Person",
+      "familyName": "Johannes Reuchlin",
+      "alternateNames": [
+        "Reuchlin"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118744658",
+        "https://viaf.org/viaf/66542815"
+      ]
+    },
+    {
+      "@id": "persons:klieber",
+      "@type": "Person",
+      "familyName": "Klieber"
+    },
+    {
+      "@id": "persons:kn-pken",
+      "@type": "Person",
+      "familyName": "Knöpken"
+    },
+    {
+      "@id": "persons:gnd-118613200",
+      "@type": "Person",
+      "familyName": "Lucius Annaeus Seneca",
+      "alternateNames": [
+        "Seneca"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118613200",
+        "https://viaf.org/viaf/90637919"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118503952",
+      "@type": "Person",
+      "familyName": "Ludovico Ariosto",
+      "alternateNames": [
+        "Ariost",
+        "Ariosto"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118503952",
+        "https://viaf.org/viaf/71386455"
+      ]
+    },
+    {
+      "@id": "persons:gnd-124661122",
+      "@type": "Person",
+      "familyName": "Ludwig Helmbold",
+      "sameAs": [
+        "https://d-nb.info/gnd/124661122",
+        "https://viaf.org/viaf/69867276"
+      ]
+    },
+    {
+      "@id": "persons:luigi-cassola",
+      "@type": "Person",
+      "familyName": "Luigi Cassola"
+    },
+    {
+      "@id": "persons:m-d-angoul-me",
+      "@type": "Person",
+      "familyName": "M. d'Angoulême"
+    },
+    {
+      "@id": "persons:manrrique",
+      "@type": "Person",
+      "familyName": "Manrrique"
+    },
+    {
+      "@id": "persons:marsi",
+      "@type": "Person",
+      "familyName": "Marsi"
+    },
+    {
+      "@id": "persons:gnd-118575449",
+      "@type": "Person",
+      "familyName": "Martin Luther",
+      "sameAs": [
+        "https://d-nb.info/gnd/118575449",
+        "https://viaf.org/viaf/14773105"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118750801",
+      "@type": "Person",
+      "familyName": "Mellin de Saint-Gelais",
+      "alternateNames": [
+        "Melin de Saint Gelais",
+        "Saint Gelais"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118750801",
+        "https://viaf.org/viaf/64045845"
+      ]
+    },
+    {
+      "@id": "persons:n-stopio",
+      "@type": "Person",
+      "familyName": "N. Stopio"
+    },
+    {
+      "@id": "persons:nach-villon",
+      "@type": "Person",
+      "familyName": "nach Villon"
+    },
+    {
+      "@id": "persons:nicetas-von-remesiana",
+      "@type": "Person",
+      "familyName": "Nicetas von Remesiana"
+    },
+    {
+      "@id": "persons:gnd-118588850",
+      "@type": "Person",
+      "familyName": "Notker Balbulus",
+      "sameAs": [
+        "https://d-nb.info/gnd/118588850",
+        "https://viaf.org/viaf/27863792"
+      ]
+    },
+    {
+      "@id": "persons:octavien-de-saint-gelais",
+      "@type": "Person",
+      "familyName": "Octavien de Saint Gelais"
+    },
+    {
+      "@id": "persons:olivier-de-magny",
+      "@type": "Person",
+      "familyName": "Olivier de Magny"
+    },
+    {
+      "@id": "persons:orlando-di-lasso",
+      "@type": "Person",
+      "familyName": "Orlando di Lasso"
+    },
+    {
+      "@id": "persons:p-du-val",
+      "@type": "Person",
+      "familyName": "P. du Val"
+    },
+    {
+      "@id": "persons:gnd-118602519",
+      "@type": "Person",
+      "familyName": "Pierre de Ronsard",
+      "alternateNames": [
+        "Ronsard"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118602519",
+        "https://viaf.org/viaf/61551687"
+      ]
+    },
+    {
+      "@id": "persons:pierre-grognet",
+      "@type": "Person",
+      "familyName": "Pierre Grognet"
+    },
+    {
+      "@id": "persons:gnd-118658115",
+      "@type": "Person",
+      "familyName": "Pietro Bembo",
+      "alternateNames": [
+        "Bembo"
+      ],
+      "sameAs": [
+        "https://d-nb.info/gnd/118658115",
+        "https://viaf.org/viaf/54144140"
+      ]
+    },
+    {
+      "@id": "persons:ronconi",
+      "@type": "Person",
+      "familyName": "Ronconi"
+    },
+    {
+      "@id": "persons:s-brant",
+      "@type": "Person",
+      "familyName": "S. Brant"
+    },
+    {
+      "@id": "persons:gnd-124214169",
+      "@type": "Person",
+      "familyName": "Stefano Tucci",
+      "sameAs": [
+        "https://d-nb.info/gnd/124214169",
+        "https://viaf.org/viaf/95293442"
+      ]
+    },
+    {
+      "@id": "persons:tansillo",
+      "@type": "Person",
+      "familyName": "Tansillo"
+    },
+    {
+      "@id": "persons:gnd-118622110",
+      "@type": "Person",
+      "familyName": "Thomas von Aquin",
+      "sameAs": [
+        "https://d-nb.info/gnd/118622110",
+        "https://viaf.org/viaf/100910150"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118626574",
+      "@type": "Person",
+      "familyName": "Vergil",
+      "sameAs": [
+        "https://d-nb.info/gnd/118626574",
+        "https://viaf.org/viaf/8194433"
+      ]
+    },
+    {
+      "@id": "persons:gnd-118807633",
+      "@type": "Person",
+      "familyName": "Wipo von Burgund",
+      "sameAs": [
+        "https://d-nb.info/gnd/118807633",
+        "https://viaf.org/viaf/89474915"
+      ]
+    },
+    {
+      "@id": "persons:Adolf-Sandberger",
+      "@type": "Person",
+      "familyName": "Adolf Sandberger"
+    },
+    {
+      "@id": "persons:Franz-Xaver-Haberl",
+      "@type": "Person",
+      "familyName": "Franz Xaver Haberl"
+    },
+    {
+      "@id": "persons:Fritz-Jensch",
+      "@type": "Person",
+      "familyName": "Fritz Jensch"
+    },
+    {
+      "@id": "persons:Horst-Leuchtmann",
+      "@type": "Person",
+      "familyName": "Horst Leuchtmann"
+    },
+    {
+      "@id": "persons:James-Erb",
+      "@type": "Person",
+      "familyName": "James Erb"
+    },
+    {
+      "@id": "persons:Kurt-von-Fischer",
+      "@type": "Person",
+      "familyName": "Kurt von Fischer"
+    },
+    {
+      "@id": "persons:Peter-Bergquist",
+      "@type": "Person",
+      "familyName": "Peter Bergquist"
+    },
+    {
+      "@id": "persons:Reinhold-Schl-tterer",
+      "@type": "Person",
+      "familyName": "Reinhold Schlötterer"
+    },
+    {
+      "@id": "persons:Siegfried-Hermelink",
+      "@type": "Person",
+      "familyName": "Siegfried Hermelink"
+    },
+    {
+      "@id": "persons:Wolfgang-Boetticher",
+      "@type": "Person",
+      "familyName": "Wolfgang Boetticher"
+    }
+  ]
 }

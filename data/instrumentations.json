@@ -1,4 +1,135 @@
 {
   "@context": "../schema/context.jsonld",
-  "entries": []
+  "entries": [
+    {
+      "@id": "instrumentations:1-stimmen",
+      "@type": "Instrumentation",
+      "label": "1 Stimme",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:2-stimmen",
+      "@type": "Instrumentation",
+      "label": "2 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:3-stimmen",
+      "@type": "Instrumentation",
+      "label": "3 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 3
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:4-stimmen",
+      "@type": "Instrumentation",
+      "label": "4 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 4
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:5-stimmen",
+      "@type": "Instrumentation",
+      "label": "5 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 5
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:6-stimmen",
+      "@type": "Instrumentation",
+      "label": "6 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 6
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:7-stimmen",
+      "@type": "Instrumentation",
+      "label": "7 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 7
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:8-stimmen",
+      "@type": "Instrumentation",
+      "label": "8 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 8
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:9-stimmen",
+      "@type": "Instrumentation",
+      "label": "9 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 9
+        }
+      ]
+    },
+    {
+      "@id": "instrumentations:10-stimmen",
+      "@type": "Instrumentation",
+      "label": "10 Stimmen",
+      "details": [
+        {
+          "position": 1,
+          "medium": "terms:Voices",
+          "description": "Stimmen",
+          "quantity": 10
+        }
+      ]
+    }
+  ]
 }
